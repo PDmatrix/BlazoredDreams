@@ -5,8 +5,10 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System.Net.Mime;
-using BlazoredDreams.Data;
-using BlazoredDreams.Service;
+using System.Reflection;
+using BlazoredDreams.Application.Interfaces.DataAccess;
+using BlazoredDreams.Persistence;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Serialization;
@@ -24,17 +26,6 @@ namespace BlazoredDreams.Server
 		
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddMvcCore()
-				.AddJsonFormatters()
-				.SetCompatibilityVersion(CompatibilityVersion.Latest)
-				.AddJsonOptions(x =>
-				{
-					x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-					x.SerializerSettings.ContractResolver = new DefaultContractResolver
-					{
-						NamingStrategy = new SnakeCaseNamingStrategy()
-					};
-				});
 			services.AddServerSideBlazor<App.Startup>();
 
 			services.AddResponseCompression(options =>
@@ -45,19 +36,14 @@ namespace BlazoredDreams.Server
 					WasmMediaTypeNames.Application.Wasm,
 				});
 			});
-
-			services.AddScoped<IRepository<Tag>, TagRepository>();
-			services.AddScoped<ITagService, TagService>();
+			services.AddMediatR(typeof(Application.Tags.Queries.GetAllTags)
+				.GetTypeInfo().Assembly);
+			services.AddScoped<IUnitOfWork>(s => 
+				new UnitOfWork(Configuration.GetConnectionString("Source")));
 		}
 
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 		{
-			app.UseMvc(routes =>
-			{
-				routes.MapRoute(
-					"DefaultApi",
-					"api/{controller}/{action}");
-			});
 			app.UseResponseCompression();
 
 			if (env.IsDevelopment())

@@ -1,0 +1,29 @@
+@page "/test"
+@using System.Collections
+@using BlazoredDreams.Application.Tags.Queries
+@using BlazoredDreams.Domain.Entities
+@using MediatR
+@inject IMediator Mediator
+
+@if (_tags == null)
+{
+    <p>Loading...</p>    
+}
+else
+{
+    <ul>
+        @foreach (var tag in _tags)
+        {
+            <li>@tag.Name</li>
+        }
+    </ul>
+}
+
+@functions
+{
+    IEnumerable<Tag> _tags;
+    protected override async Task OnInitAsync()
+    {
+        _tags = await Mediator.Send(new GetAllTags());
+    }
+}
