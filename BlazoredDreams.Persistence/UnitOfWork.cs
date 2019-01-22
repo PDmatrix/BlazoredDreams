@@ -44,9 +44,9 @@ namespace BlazoredDreams.Persistence
             _userLikesRepository ?? (_userLikesRepository = new UserLikesRepository(_transaction));
         public IUserRepository UserRepository =>
             _userRepository ?? (_userRepository = new UserRepository(_transaction));
-
+        
         public IDbConnection Connection { get; private set; }
-
+        
         public void Commit()
         {
             try

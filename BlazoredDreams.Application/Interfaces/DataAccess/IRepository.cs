@@ -10,7 +10,6 @@ namespace BlazoredDreams.Application.Interfaces.DataAccess
 		Task AddAsync(T entity, CancellationToken ct = default);
 		Task UpdateAsync(T entity, CancellationToken ct = default);
 		Task<T> GetAsync(int id, CancellationToken ct = default);
-		Task<T> GetAsync(T entity, CancellationToken ct = default);
 		Task<IEnumerable<T>> GetAsync(CancellationToken ct = default);
 	}
 }

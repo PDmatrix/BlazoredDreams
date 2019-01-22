@@ -33,11 +33,6 @@ namespace BlazoredDreams.Persistence.Repositories
 			throw new System.NotImplementedException();
 		}
 
-		public Task<Comment> GetAsync(Comment entity, CancellationToken ct = default)
-		{
-			throw new System.NotImplementedException();
-		}
-
 		public Task<IEnumerable<Comment>> GetAsync(CancellationToken ct = default)
 		{
 			throw new System.NotImplementedException();

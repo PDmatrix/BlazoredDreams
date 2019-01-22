@@ -6,15 +6,11 @@ using Xunit;
 
 namespace BlazoredDreams.Persistence.Test.Repositories.Tag
 {
-	public class TagFixture : IDisposable, IAsyncLifetime
+	public class TagFixture : IAsyncLifetime
 	{
 		public TagFixture()
 		{
 			UnitOfWork = new UnitOfWork("Server=localhost;Port=5432;Database=test;User Id=test;Password=password");
-		}
-
-		public void Dispose()
-		{
 		}
 
 		public IUnitOfWork UnitOfWork { get; }

@@ -38,11 +38,6 @@ namespace BlazoredDreams.Persistence.Repositories
 				@"SELECT * FROM tag WHERE id = @id", new { id }, Transaction);
 		}
 
-		public async Task<Tag> GetAsync(Tag entity, CancellationToken ct = default)
-		{
-			return await GetAsync(entity.Id, ct);
-		}
-
 		public async Task<IEnumerable<Tag>> GetAsync(CancellationToken ct = default)
 		{
 			return await Connection.QueryAsync<Tag>(
