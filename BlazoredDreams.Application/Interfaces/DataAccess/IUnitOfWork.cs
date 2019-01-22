@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 
 namespace BlazoredDreams.Application.Interfaces.DataAccess
 {
@@ -10,6 +11,7 @@ namespace BlazoredDreams.Application.Interfaces.DataAccess
 		ITagRepository TagRepository { get; }
 		IUserLikesRepository UserLikesRepository { get; }
 		IUserRepository UserRepository { get; }
+		IDbConnection Connection { get; }
 
 		void Commit();
 	}

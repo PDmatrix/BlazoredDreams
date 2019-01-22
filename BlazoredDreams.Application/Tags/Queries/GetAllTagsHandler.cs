@@ -20,11 +20,9 @@ namespace BlazoredDreams.Application.Tags.Queries
 		
 		public async Task<IEnumerable<Tag>> Handle(GetAllTags request, CancellationToken ct)
 		{
-			//await _unitOfWork.TagRepository.RemoveAsync(4, ct);
 			await _unitOfWork.TagRepository.AddAsync(new Tag
 			{
-				Name = "Custom",
-				PostTags = null
+				Name = "Custom"
 			}, ct);
 			return await _unitOfWork.TagRepository.GetAsync(ct);
 		}

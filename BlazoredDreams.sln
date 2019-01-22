@@ -16,6 +16,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazoredDreams.Persistence"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BlazoredDreams.Presentation", "BlazoredDreams.Presentation", "{21BEC5EA-D16B-465F-BFA9-4E133AC21430}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BlazoredDreams.Test", "BlazoredDreams.Test", "{C228BCC0-B169-40C9-9C7D-A9B11D1D0F03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazoredDreams.Persistence.Test", "BlazoredDreams.Persistence.Test\BlazoredDreams.Persistence.Test.csproj", "{35B5E545-44A2-4C5A-9914-FC489F29EDA9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +46,10 @@ Global
 		{AE78AEC3-ED0C-4177-80D4-0C8E3A3080FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE78AEC3-ED0C-4177-80D4-0C8E3A3080FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE78AEC3-ED0C-4177-80D4-0C8E3A3080FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35B5E545-44A2-4C5A-9914-FC489F29EDA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35B5E545-44A2-4C5A-9914-FC489F29EDA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35B5E545-44A2-4C5A-9914-FC489F29EDA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35B5E545-44A2-4C5A-9914-FC489F29EDA9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0B6D5235-7EE7-47F2-AA6D-73CBC3885ED6} = {4BF99FAD-BE64-4873-A9C8-31B33187D639}
@@ -49,5 +57,6 @@ Global
 		{AE78AEC3-ED0C-4177-80D4-0C8E3A3080FA} = {04CD6467-F880-4F25-BE13-F12E615C5D44}
 		{8633432B-1B5E-4134-B62D-7503C89F7F99} = {21BEC5EA-D16B-465F-BFA9-4E133AC21430}
 		{FF956BD5-0F88-4156-94FD-EEE644D29D2B} = {21BEC5EA-D16B-465F-BFA9-4E133AC21430}
+		{35B5E545-44A2-4C5A-9914-FC489F29EDA9} = {C228BCC0-B169-40C9-9C7D-A9B11D1D0F03}
 	EndGlobalSection
 EndGlobal

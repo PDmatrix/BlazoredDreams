@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using BlazoredDreams.Application.Interfaces.DataAccess;
 using BlazoredDreams.Domain.Entities;
 using Dapper;
-using Dapper.Contrib.Extensions;
 
 namespace BlazoredDreams.Persistence.Repositories
 {
@@ -17,22 +16,26 @@ namespace BlazoredDreams.Persistence.Repositories
 
 		public async Task RemoveAsync(int id, CancellationToken ct = default)
 		{
-			await Connection.DeleteAsync(new Tag {Id = id});
+			await Connection.ExecuteAsync(
+				@"DELETE FROM tag WHERE id = @id", new {id}, Transaction);
 		}
 
 		public async Task AddAsync(Tag entity, CancellationToken ct = default)
 		{
-			await Connection.InsertAsync(entity, Transaction);
+			await Connection.ExecuteAsync(
+				@"INSERT INTO tag (name) values (@name)", entity, Transaction);
 		}
 
 		public async Task UpdateAsync(Tag entity, CancellationToken ct = default)
 		{
-			await Connection.UpdateAsync(entity, Transaction);
+			await Connection.ExecuteAsync(
+				@"UPDATE tag SET name = @name", entity, Transaction);
 		}
 
 		public async Task<Tag> GetAsync(int id, CancellationToken ct = default)
 		{
-			return await Connection.GetAsync<Tag>(id, Transaction);
+			return await Connection.QuerySingleOrDefaultAsync<Tag>(
+				@"SELECT * FROM tag WHERE id = @id", new { id }, Transaction);
 		}
 
 		public async Task<Tag> GetAsync(Tag entity, CancellationToken ct = default)
@@ -42,7 +45,8 @@ namespace BlazoredDreams.Persistence.Repositories
 
 		public async Task<IEnumerable<Tag>> GetAsync(CancellationToken ct = default)
 		{
-			return await Connection.GetAllAsync<Tag>(Transaction);
+			return await Connection.QueryAsync<Tag>(
+				@"SELECT * FROM tag", transaction: Transaction);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Data.SqlClient;
 using BlazoredDreams.Application.Interfaces.DataAccess;
 using BlazoredDreams.Persistence.Repositories;
 using Npgsql;
@@ -8,7 +9,6 @@ namespace BlazoredDreams.Persistence
 {
 	public class UnitOfWork : IUnitOfWork
 	{
-        private IDbConnection _connection;
         private IDbTransaction _transaction;
         
         private IDreamRepository _dreamRepository;
@@ -27,9 +27,9 @@ namespace BlazoredDreams.Persistence
 
         public UnitOfWork(IDbConnection dbConnection)
         {
-            _connection = dbConnection;
-            _connection.Open();
-            _transaction = _connection.BeginTransaction();
+            Connection = dbConnection;
+            Connection.Open();
+            _transaction = Connection.BeginTransaction();
         }
 
         public ICommentRepository CommentRepository => 
@@ -45,6 +45,8 @@ namespace BlazoredDreams.Persistence
         public IUserRepository UserRepository =>
             _userRepository ?? (_userRepository = new UserRepository(_transaction));
 
+        public IDbConnection Connection { get; private set; }
+
         public void Commit()
         {
             try
@@ -59,7 +61,7 @@ namespace BlazoredDreams.Persistence
             finally
             {
                 _transaction.Dispose();
-                _transaction = _connection.BeginTransaction();
+                _transaction = Connection.BeginTransaction();
                 ResetRepositories();
             }
         }
@@ -92,10 +94,10 @@ namespace BlazoredDreams.Persistence
                     _transaction.Dispose();
                     _transaction = null;
                 }
-                if(_connection != null)
+                if(Connection != null)
                 {
-                    _connection.Dispose();
-                    _connection = null;
+                    Connection.Dispose();
+                    Connection = null;
                 }
             }
             _disposed = true;
