@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BlazoredDreams.Domain.Entities
 {
-    public class IdentityUser
+    public class IdentityUser : Entity<int>
     {
         public IdentityUser()
         {
@@ -12,9 +12,6 @@ namespace BlazoredDreams.Domain.Entities
             Post = new HashSet<Post>();
         }
 
-        public int Id { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
         public string Identifier { get; set; }
 
         public virtual UserLikes UserLikes { get; set; }

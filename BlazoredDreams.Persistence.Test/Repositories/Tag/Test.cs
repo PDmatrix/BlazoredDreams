@@ -121,7 +121,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories.Tag
 			_tagFixture.UnitOfWork.Commit();
 			var all = await _tagFixture.UnitOfWork.TagRepository.GetAsync();
 			// Assert
-			Assert.Equal(0, all.Count());
+			Assert.Empty(all);
 		}
 
 		public void Dispose()

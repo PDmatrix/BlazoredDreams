@@ -2,7 +2,6 @@
 
 namespace BlazoredDreams.Domain.Entities
 {
-    [Table("post_tags")]
     public class PostTags
     {
         public int PostId { get; set; }
