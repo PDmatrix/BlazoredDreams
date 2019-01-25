@@ -5,7 +5,7 @@ namespace BlazoredDreams.Application.Interfaces.DataAccess
 {
 	public interface IUserLikesRepository
 	{
-		Task AddLikeAsync(int userId, CancellationToken ct = default);
-		Task RemoveLikeAsync(int userId, CancellationToken ct = default);
+		Task AddLikeAsync(int userId, int postId, CancellationToken ct = default);
+		Task RemoveLikeAsync(int userId, int postId, CancellationToken ct = default);
 	}
 }

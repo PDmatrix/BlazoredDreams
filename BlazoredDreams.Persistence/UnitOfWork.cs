@@ -30,6 +30,8 @@ namespace BlazoredDreams.Persistence
             Connection = dbConnection;
             Connection.Open();
             _transaction = Connection.BeginTransaction();
+            // Correct mapping of entities with underscores, e.g created_at With CreatedAt
+            Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
         }
 
         public ICommentRepository CommentRepository => 
