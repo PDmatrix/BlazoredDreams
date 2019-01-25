@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
@@ -6,11 +5,10 @@ using Xunit;
 
 namespace BlazoredDreams.Persistence.Test.Repositories
 {
-	public class TagTest : BaseRepositoryTest, IDisposable
+	public class TagTest : BaseRepositoryTest, IAsyncLifetime
 	{
 		public TagTest(DatabaseFixture databaseFixture) : base(databaseFixture)
 		{
-			TruncateTable("tag");
 		}
 		
 		[Fact]
@@ -100,9 +98,14 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			Assert.Empty(all);
 		}
 		
-		public void Dispose()
+		public async Task InitializeAsync()
 		{
-			TruncateTable("tag");
+			await TruncateTableAsync("tag");
+		}
+
+		public async Task DisposeAsync()
+		{
+			await TruncateTableAsync("tag");
 		}
 	}
 }
