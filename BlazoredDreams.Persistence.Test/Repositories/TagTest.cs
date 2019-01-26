@@ -97,15 +97,9 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			// Assert
 			Assert.Empty(all);
 		}
-		
-		public async Task InitializeAsync()
-		{
-			await TruncateTableAsync("tag");
-		}
 
-		public async Task DisposeAsync()
-		{
-			await TruncateTableAsync("tag");
-		}
+		public async Task InitializeAsync() => await TruncateTableAsync("tag");
+
+		public Task DisposeAsync() => Task.CompletedTask;
 	}
 }
