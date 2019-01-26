@@ -16,12 +16,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 		public async Task AddLike()
 		{
 			// Arrange
-			const string sql =
-				@"INSERT INTO identity_user (id, identifier) VALUES (1, 'user');
-				  INSERT INTO dream (content, user_id) VALUES ('dream', 1);
-				  INSERT INTO post (id, title, dream_id, user_id) VALUES (1, 'title', 1, 1);";
-			await DatabaseFixture.UnitOfWork.Connection.ExecuteAsync(sql);
-			DatabaseFixture.UnitOfWork.Commit();
+			await Init();
 			// Act
 			await DatabaseFixture.UnitOfWork.UserLikesRepository.AddLikeAsync(1, 1);
 			const string selectSql = 
@@ -38,11 +33,9 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 		public async Task DeleteLike()
 		{
 			// Arrange
+			await Init();
 			const string sql =
-				@"INSERT INTO identity_user (id, identifier) VALUES (1, 'user');
-				  INSERT INTO dream (content, user_id) VALUES ('dream', 1);
-				  INSERT INTO post (id, title, dream_id, user_id) VALUES (1, 'title', 1, 1);
-				  INSERT INTO user_likes VALUES (1, 1)";
+				@"INSERT INTO user_likes VALUES (1, 1)";
 			await DatabaseFixture.UnitOfWork.Connection.ExecuteAsync(sql);
 			DatabaseFixture.UnitOfWork.Commit();
 			// Act
@@ -52,6 +45,33 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 				await DatabaseFixture.UnitOfWork.Connection.QueryAsync<UserLikes>(selectSql);
 			// Assert
 			Assert.Empty(userLikes);
+		}
+
+		[Fact]
+		public async Task IsLikedTest()
+		{
+			// Arrange
+			await Init();
+			const string sql =
+				@"INSERT INTO user_likes VALUES (1, 1)";
+			await DatabaseFixture.UnitOfWork.Connection.ExecuteAsync(sql);
+			DatabaseFixture.UnitOfWork.Commit();
+			// Act
+			var liked = await DatabaseFixture.UnitOfWork.UserLikesRepository.IsLikedAsync(1, 1);
+			var notLiked = await DatabaseFixture.UnitOfWork.UserLikesRepository.IsLikedAsync(1, 2);
+			// Assert
+			Assert.True(liked);
+			Assert.False(notLiked);
+		}
+
+		private async Task Init()
+		{
+			const string sql =
+				@"INSERT INTO identity_user (id, identifier) VALUES (1, 'user');
+				  INSERT INTO dream (content, user_id) VALUES ('dream', 1);
+				  INSERT INTO post (id, title, dream_id, user_id) VALUES (1, 'title', 1, 1);";
+			await DatabaseFixture.UnitOfWork.Connection.ExecuteAsync(sql);
+			DatabaseFixture.UnitOfWork.Commit();
 		}
 
 		public async Task InitializeAsync()

@@ -7,5 +7,6 @@ namespace BlazoredDreams.Application.Interfaces.DataAccess
 	{
 		Task AddLikeAsync(int userId, int postId, CancellationToken ct = default);
 		Task RemoveLikeAsync(int userId, int postId, CancellationToken ct = default);
+		Task<bool> IsLikedAsync(int userId, int postId, CancellationToken ct = default);
 	}
 }

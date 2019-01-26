@@ -13,12 +13,12 @@ namespace BlazoredDreams.Persistence.Repositories
 		{
 		}
 
-		public Task RemoveAsync(int id, CancellationToken ct = default)
+		public Task DeleteAsync(int id, CancellationToken ct = default)
 		{
 			throw new System.NotImplementedException();
 		}
 
-		public Task AddAsync(IdentityUser entity, CancellationToken ct = default)
+		public Task InsertAsync(IdentityUser entity, CancellationToken ct = default)
 		{
 			throw new System.NotImplementedException();
 		}

@@ -14,13 +14,13 @@ namespace BlazoredDreams.Persistence.Repositories
 		{
 		}
 
-		public async Task RemoveAsync(int id, CancellationToken ct = default)
+		public async Task DeleteAsync(int id, CancellationToken ct = default)
 		{
 			await Connection.ExecuteAsync(
 				@"DELETE FROM tag WHERE id = @id", new {id}, Transaction);
 		}
 
-		public async Task AddAsync(Tag entity, CancellationToken ct = default)
+		public async Task InsertAsync(Tag entity, CancellationToken ct = default)
 		{
 			await Connection.ExecuteAsync(
 				@"INSERT INTO tag (name) values (@name)", entity, Transaction);

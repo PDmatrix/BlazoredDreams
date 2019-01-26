@@ -60,7 +60,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			// Arrange
 			var tag = new Domain.Entities.Tag {Id = 1, Name = "foo"}; 
 			// Act
-			await DatabaseFixture.UnitOfWork.TagRepository.AddAsync(tag);
+			await DatabaseFixture.UnitOfWork.TagRepository.InsertAsync(tag);
 			DatabaseFixture.UnitOfWork.Commit();
 			var selectedTag = await DatabaseFixture.UnitOfWork.TagRepository.GetAsync(1);
 			// Assert
@@ -91,7 +91,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			await DatabaseFixture.UnitOfWork.Connection.ExecuteAsync(sql);
 			DatabaseFixture.UnitOfWork.Commit();
 			// Act
-			await DatabaseFixture.UnitOfWork.TagRepository.RemoveAsync(1);
+			await DatabaseFixture.UnitOfWork.TagRepository.DeleteAsync(1);
 			DatabaseFixture.UnitOfWork.Commit();
 			var all = await DatabaseFixture.UnitOfWork.TagRepository.GetAsync();
 			// Assert

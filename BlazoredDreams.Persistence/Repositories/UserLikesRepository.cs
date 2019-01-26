@@ -1,7 +1,9 @@
 using System.Data;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using BlazoredDreams.Application.Interfaces.DataAccess;
+using BlazoredDreams.Domain.Entities;
 using Dapper;
 
 namespace BlazoredDreams.Persistence.Repositories
@@ -24,6 +26,15 @@ namespace BlazoredDreams.Persistence.Repositories
 			const string sql = 
 				@"DELETE FROM user_likes WHERE post_id = @postId AND user_id = @userId";
 			await Connection.ExecuteAsync(sql, new {userId, postId}, Transaction);
+		}
+
+		public async Task<bool> IsLikedAsync(int userId, int postId, CancellationToken ct = default)
+		{
+			const string sql =
+				@"SELECT * FROM user_likes WHERE user_id = @userId AND post_id = @postId";
+			var res = 
+				await Connection.QueryAsync<UserLikes>(sql, new {userId, postId}, Transaction);
+			return res.FirstOrDefault() != null;
 		}
 	}
 }
