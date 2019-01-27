@@ -29,7 +29,7 @@ namespace BlazoredDreams.Persistence.Repositories
 		public async Task UpdateAsync(Tag entity, CancellationToken ct = default)
 		{
 			await Connection.ExecuteAsync(
-				@"UPDATE tag SET name = @name", entity, Transaction);
+				@"UPDATE tag SET name = @name WHERE id = @id", entity, Transaction);
 		}
 
 		public async Task<Tag> GetAsync(int id, CancellationToken ct = default)

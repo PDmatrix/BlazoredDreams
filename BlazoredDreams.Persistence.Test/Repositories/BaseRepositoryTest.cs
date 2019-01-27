@@ -20,7 +20,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 		/// </summary>
 		/// <param name="tableName"></param>
 		/// <returns></returns>
-		public async Task TruncateTableAsync(string tableName)
+		protected async Task TruncateTableAsync(string tableName)
 		{
 			var sql =
 				$@"TRUNCATE {tableName} RESTART IDENTITY CASCADE";

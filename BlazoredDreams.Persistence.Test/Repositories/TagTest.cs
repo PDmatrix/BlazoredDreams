@@ -10,7 +10,14 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 		public TagTest(DatabaseFixture databaseFixture) : base(databaseFixture)
 		{
 		}
-		
+
+		private async Task InitSqlAsync()
+		{
+			const string sql = @"INSERT INTO tag (name) VALUES ('foo'), ('bar')";
+			await DatabaseFixture.UnitOfWork.Connection.ExecuteAsync(sql);
+			DatabaseFixture.UnitOfWork.Commit();
+		}
+
 		[Fact]
 		public async Task Exists()
 		{
@@ -28,9 +35,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 		public async Task SelectById()
 		{
 			// Arrange
-			const string sql = @"INSERT INTO tag (id, name) VALUES (1, 'foo'), (2, 'bar')";
-			await DatabaseFixture.UnitOfWork.Connection.ExecuteAsync(sql);
-			DatabaseFixture.UnitOfWork.Commit();
+			await InitSqlAsync();
 			// Act
 			var fooTag = await DatabaseFixture.UnitOfWork.TagRepository.GetAsync(1);
 			var barTag = await DatabaseFixture.UnitOfWork.TagRepository.GetAsync(2);
@@ -43,9 +48,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 		public async Task SelectEverything()
 		{
 			// Arrange
-			const string sql = @"INSERT INTO tag (id, name) VALUES (1, 'foo'), (2, 'bar')";
-			await DatabaseFixture.UnitOfWork.Connection.ExecuteAsync(sql);
-			DatabaseFixture.UnitOfWork.Commit();
+			await InitSqlAsync();
 			// Act
 			var all = (await DatabaseFixture.UnitOfWork.TagRepository.GetAsync()).ToList();
 			// Assert
@@ -71,31 +74,29 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 		public async Task UpdateOne()
 		{
 			// Arrange
-			const string sql = @"INSERT INTO tag (id, name) VALUES (1, 'foo')";
-			await DatabaseFixture.UnitOfWork.Connection.ExecuteAsync(sql);
-			DatabaseFixture.UnitOfWork.Commit();
-			var tag = new Domain.Entities.Tag {Id = 1, Name = "bar"}; 
+			await InitSqlAsync();
+			var tag = new Domain.Entities.Tag {Id = 1, Name = "baz"}; 
 			// Act
 			await DatabaseFixture.UnitOfWork.TagRepository.UpdateAsync(tag);
 			DatabaseFixture.UnitOfWork.Commit();
 			var selectedTag = await DatabaseFixture.UnitOfWork.TagRepository.GetAsync(1);
+			var notUpdatedTag = await DatabaseFixture.UnitOfWork.TagRepository.GetAsync(2);
 			// Assert
-			Assert.Equal("bar", selectedTag.Name);
+			Assert.Equal("baz", selectedTag.Name);
+			Assert.Equal("bar", notUpdatedTag.Name);
 		}
 
 		[Fact]
 		public async Task DeleteOne()
 		{
 			// Arrange
-			const string sql = @"INSERT INTO tag (id, name) VALUES (1, 'foo')";
-			await DatabaseFixture.UnitOfWork.Connection.ExecuteAsync(sql);
-			DatabaseFixture.UnitOfWork.Commit();
+			await InitSqlAsync();
 			// Act
 			await DatabaseFixture.UnitOfWork.TagRepository.DeleteAsync(1);
 			DatabaseFixture.UnitOfWork.Commit();
 			var all = await DatabaseFixture.UnitOfWork.TagRepository.GetAsync();
 			// Assert
-			Assert.Empty(all);
+			Assert.Single(all);
 		}
 
 		public async Task InitializeAsync() => await TruncateTableAsync("tag");
