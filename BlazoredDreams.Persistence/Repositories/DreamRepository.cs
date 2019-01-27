@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using BlazoredDreams.Application.Interfaces.DataAccess;
 using BlazoredDreams.Domain.Entities;
+using Dapper;
 
 namespace BlazoredDreams.Persistence.Repositories
 {
@@ -13,29 +14,34 @@ namespace BlazoredDreams.Persistence.Repositories
 		{
 		}
 		
-		public Task DeleteAsync(int id, CancellationToken ct = default)
+		public async Task DeleteAsync(int id, CancellationToken ct = default)
 		{
-			throw new System.NotImplementedException();
+			await Connection.ExecuteAsync(
+				@"DELETE FROM dream WHERE id = @id", new {id}, Transaction);
 		}
 
-		public Task InsertAsync(Dream entity, CancellationToken ct = default)
+		public async Task InsertAsync(Dream entity, CancellationToken ct = default)
 		{
-			throw new System.NotImplementedException();
+			await Connection.ExecuteAsync(
+				@"INSERT INTO dream (content, user_id) values (@content, @userId)", entity, Transaction);
 		}
 
-		public Task UpdateAsync(Dream entity, CancellationToken ct = default)
+		public async Task UpdateAsync(Dream entity, CancellationToken ct = default)
 		{
-			throw new System.NotImplementedException();
+			await Connection.ExecuteAsync(
+				@"UPDATE dream SET content = @content, user_id = @userId WHERE id = @id", entity, Transaction);
 		}
 
-		public Task<Dream> GetAsync(int id, CancellationToken ct = default)
+		public async Task<Dream> GetAsync(int id, CancellationToken ct = default)
 		{
-			throw new System.NotImplementedException();
+			return await Connection.QuerySingleOrDefaultAsync<Dream>(
+				@"SELECT * FROM dream WHERE id = @id", new {id}, Transaction);
 		}
 
-		public Task<IEnumerable<Dream>> GetAsync(CancellationToken ct = default)
+		public async Task<IEnumerable<Dream>> GetAsync(CancellationToken ct = default)
 		{
-			throw new System.NotImplementedException();
+			return await Connection.QueryAsync<Dream>(
+				@"SELECT * FROM dream", transaction: Transaction);
 		}
 	}
 }

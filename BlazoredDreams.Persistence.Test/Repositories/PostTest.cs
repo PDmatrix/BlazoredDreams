@@ -71,6 +71,8 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			var selectedPost = await DatabaseFixture.UnitOfWork.PostRepository.GetAsync(3);
 			// Assert
 			Assert.Equal(post.Title, selectedPost.Title);
+			Assert.Equal(post.UserId, selectedPost.UserId);
+			Assert.Equal(post.DreamId, selectedPost.DreamId);
 		}
 
 		[Fact]
@@ -82,10 +84,10 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			// Act
 			await DatabaseFixture.UnitOfWork.PostRepository.UpdateAsync(post);
 			DatabaseFixture.UnitOfWork.Commit();
-			var selectedPost = await DatabaseFixture.UnitOfWork.PostRepository.GetAsync(1);
+			var updatedPost = await DatabaseFixture.UnitOfWork.PostRepository.GetAsync(1);
 			var notUpdatedPost = await DatabaseFixture.UnitOfWork.PostRepository.GetAsync(2);
 			// Assert
-			Assert.Equal("baz", selectedPost.Title);
+			Assert.Equal("baz", updatedPost.Title);
 			Assert.Equal("title2", notUpdatedPost.Title);
 		}
 

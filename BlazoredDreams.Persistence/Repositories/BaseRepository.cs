@@ -7,7 +7,7 @@ namespace BlazoredDreams.Persistence.Repositories
 		protected IDbTransaction Transaction { get; }
         protected IDbConnection Connection => Transaction.Connection;
 
-        public BaseRepository(IDbTransaction transaction)
+        protected BaseRepository(IDbTransaction transaction)
         {
             Transaction = transaction;
         }
