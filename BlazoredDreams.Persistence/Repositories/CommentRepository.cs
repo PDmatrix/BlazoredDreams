@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using BlazoredDreams.Application.Interfaces.DataAccess;
 using BlazoredDreams.Domain.Entities;
+using Dapper;
 
 namespace BlazoredDreams.Persistence.Repositories
 {
@@ -13,29 +14,34 @@ namespace BlazoredDreams.Persistence.Repositories
 		{
 		}
 
-		public Task DeleteAsync(int id, CancellationToken ct = default)
+		public async Task DeleteAsync(int id, CancellationToken ct = default)
 		{
-			throw new System.NotImplementedException();
+			await Connection.ExecuteAsync(
+				@"DELETE FROM comment WHERE id = @id", new {id}, Transaction);
 		}
 
-		public Task InsertAsync(Comment entity, CancellationToken ct = default)
+		public async Task InsertAsync(Comment entity, CancellationToken ct = default)
 		{
-			throw new System.NotImplementedException();
+			await Connection.ExecuteAsync(
+				@"INSERT INTO comment (content, post_id, user_id) values (@content, @postId, @userId)", entity, Transaction);
 		}
 
-		public Task UpdateAsync(Comment entity, CancellationToken ct = default)
+		public async Task UpdateAsync(Comment entity, CancellationToken ct = default)
 		{
-			throw new System.NotImplementedException();
+			await Connection.ExecuteAsync(
+				@"UPDATE comment SET content = @content, post_id = @postId, user_id = @userId WHERE id = @id", entity, Transaction);
 		}
 
-		public Task<Comment> GetAsync(int id, CancellationToken ct = default)
+		public async Task<Comment> GetAsync(int id, CancellationToken ct = default)
 		{
-			throw new System.NotImplementedException();
+			return await Connection.QuerySingleOrDefaultAsync<Comment>(
+				@"SELECT * FROM comment WHERE id = @id", new {id}, Transaction);
 		}
 
-		public Task<IEnumerable<Comment>> GetAsync(CancellationToken ct = default)
+		public async Task<IEnumerable<Comment>> GetAsync(CancellationToken ct = default)
 		{
-			throw new System.NotImplementedException();
+			return await Connection.QueryAsync<Comment>(
+				@"SELECT * FROM comment", transaction: Transaction);
 		}
 	}
 }
