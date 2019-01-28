@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using BlazoredDreams.Application.Interfaces.DataAccess;
 using BlazoredDreams.Domain.Entities;
+using Dapper;
 
 namespace BlazoredDreams.Persistence.Repositories
 {
@@ -13,29 +14,35 @@ namespace BlazoredDreams.Persistence.Repositories
 		{
 		}
 
-		public Task DeleteAsync(int id, CancellationToken ct = default)
+		public async Task DeleteAsync(int id, CancellationToken ct = default)
 		{
-			throw new System.NotImplementedException();
+			await Connection.ExecuteAsync(
+				@"DELETE FROM identity_user WHERE id = @id", new {id}, Transaction);
 		}
 
-		public Task InsertAsync(IdentityUser entity, CancellationToken ct = default)
+		public async Task InsertAsync(IdentityUser entity, CancellationToken ct = default)
 		{
-			throw new System.NotImplementedException();
+			await Connection.ExecuteAsync(
+				@"INSERT INTO identity_user (identifier) values (@identifier)", entity, Transaction);
 		}
 
-		public Task UpdateAsync(IdentityUser entity, CancellationToken ct = default)
+		public async Task UpdateAsync(IdentityUser entity, CancellationToken ct = default)
 		{
-			throw new System.NotImplementedException();
+			await Connection.ExecuteAsync(
+				@"UPDATE identity_user SET identifier = @identifier WHERE id = @id", entity, Transaction);
 		}
 
-		public Task<IdentityUser> GetAsync(int id, CancellationToken ct = default)
+		public async Task<IdentityUser> GetAsync(int id, CancellationToken ct = default)
 		{
-			throw new System.NotImplementedException();
+			return await Connection.QuerySingleOrDefaultAsync<IdentityUser>(
+				@"SELECT * FROM identity_user WHERE id = @id", new {id}, Transaction);
 		}
 
-		public Task<IEnumerable<IdentityUser>> GetAsync(CancellationToken ct = default)
+		// TODO: Paging
+		public async Task<IEnumerable<IdentityUser>> GetAsync(CancellationToken ct = default)
 		{
-			throw new System.NotImplementedException();
+			return await Connection.QueryAsync<IdentityUser>(
+				@"SELECT * FROM identity_user", transaction: Transaction);
 		}
 	}
 }

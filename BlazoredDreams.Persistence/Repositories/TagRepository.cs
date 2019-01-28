@@ -38,6 +38,7 @@ namespace BlazoredDreams.Persistence.Repositories
 				@"SELECT * FROM tag WHERE id = @id", new { id }, Transaction);
 		}
 
+		// TODO: Paging
 		public async Task<IEnumerable<Tag>> GetAsync(CancellationToken ct = default)
 		{
 			return await Connection.QueryAsync<Tag>(
