@@ -14,10 +14,10 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 		private async Task InitSqlAsync()
 		{
 			const string sql =
-				@"INSERT INTO identity_user (id, identifier) VALUES (1, 'user');
-				  INSERT INTO dream (content, user_id) VALUES ('dream', 1);
+				@"INSERT INTO identity_user (id, identifier) VALUES (1, 'foo');
+				  INSERT INTO dream (content, user_id) VALUES ('foo', 1);
 				  INSERT INTO post (title, dream_id, user_id) 
-				  VALUES ('title', 1, 1), ('title2', 1, 1);";
+				  VALUES ('foo', 1, 1), ('bar', 1, 1);";
 			await DatabaseFixture.UnitOfWork.Connection.ExecuteAsync(sql);
 			DatabaseFixture.UnitOfWork.Commit();
 		}
@@ -43,7 +43,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			// Act
 			var post = await DatabaseFixture.UnitOfWork.PostRepository.GetAsync(1);
 			// Assert
-			Assert.Equal("title", post.Title);
+			Assert.Equal("foo", post.Title);
 		}
 
 		[Fact]
@@ -55,10 +55,22 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			var all = (await DatabaseFixture.UnitOfWork.PostRepository.GetAllAsync()).ToList();
 			// Assert
 			Assert.True(all.Count == 2);
-			Assert.Equal("title", all[0].Title);
-			Assert.Equal("title2", all[1].Title);
+			Assert.Equal("foo", all[0].Title);
+			Assert.Equal("bar", all[1].Title);
 		}
 
+		[Fact]
+		public async Task SelectOffset()
+		{
+			// Arrange
+			await InitSqlAsync();
+			// Act
+			var all = (await DatabaseFixture.UnitOfWork.PostRepository.GetAllAsync(1, 1)).ToList();
+			// Assert
+			Assert.Single(all);
+			Assert.Equal("foo", all[0].Title);
+		}
+		
 		[Fact]
 		public async Task InsertOne()
 		{
@@ -88,7 +100,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			var notUpdatedPost = await DatabaseFixture.UnitOfWork.PostRepository.GetAsync(2);
 			// Assert
 			Assert.Equal("baz", updatedPost.Title);
-			Assert.Equal("title2", notUpdatedPost.Title);
+			Assert.Equal("bar", notUpdatedPost.Title);
 		}
 
 		[Fact]

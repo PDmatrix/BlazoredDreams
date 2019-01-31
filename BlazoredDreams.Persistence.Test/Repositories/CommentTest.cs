@@ -59,6 +59,18 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			Assert.Equal("foo", all[0].Content);
 			Assert.Equal("bar", all[1].Content);
 		}
+		
+		[Fact]
+		public async Task SelectOffset()
+		{
+			// Arrange
+			await InitSqlAsync();
+			// Act
+			var all = (await DatabaseFixture.UnitOfWork.CommentRepository.GetAllAsync(1, 1)).ToList();
+			// Assert
+			Assert.Single(all);
+			Assert.Equal("foo", all[0].Content);
+		}
 
 		[Fact]
 		public async Task InsertOne()

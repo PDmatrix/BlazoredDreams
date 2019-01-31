@@ -57,6 +57,18 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 		}
 
 		[Fact]
+		public async Task SelectOffset()
+		{
+			// Arrange
+			await InitSqlAsync();
+			// Act
+			var all = (await DatabaseFixture.UnitOfWork.UserRepository.GetAllAsync(1, 1)).ToList();
+			// Assert
+			Assert.Single(all);
+			Assert.Equal("foo", all[0].Identifier);
+		}
+		
+		[Fact]
 		public async Task InsertOne()
 		{
 			// Arrange
