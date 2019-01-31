@@ -14,35 +14,35 @@ namespace BlazoredDreams.Persistence.Repositories
 		{
 		}
 
-		public async Task DeleteAsync(int id, CancellationToken ct = default)
+		public Task DeleteAsync(int id, CancellationToken ct = default)
+        {
+            return Connection.ExecuteAsync(
+                @"DELETE FROM comment WHERE id = @id", new {id}, Transaction);
+        }
+
+		public Task InsertAsync(Comment entity, CancellationToken ct = default)
+        {
+            return Connection.ExecuteAsync(
+                @"INSERT INTO comment (content, post_id, user_id) values (@content, @postId, @userId)", entity, Transaction);
+        }
+
+		public Task UpdateAsync(Comment entity, CancellationToken ct = default)
+        {
+            return Connection.ExecuteAsync(
+                @"UPDATE comment SET content = @content, post_id = @postId, user_id = @userId WHERE id = @id", entity, Transaction);
+        }
+
+		public Task<Comment> GetAsync(int id, CancellationToken ct = default)
 		{
-			await Connection.ExecuteAsync(
-				@"DELETE FROM comment WHERE id = @id", new {id}, Transaction);
+			return Connection.QuerySingleOrDefaultAsync<Comment>(
+                @"SELECT * FROM comment WHERE id = @id", new {id}, Transaction);
 		}
 
-		public async Task InsertAsync(Comment entity, CancellationToken ct = default)
+		public Task<IEnumerable<Comment>> GetAllAsync(int page = 1, int pageSize = 10, CancellationToken ct = default)
 		{
-			await Connection.ExecuteAsync(
-				@"INSERT INTO comment (content, post_id, user_id) values (@content, @postId, @userId)", entity, Transaction);
-		}
-
-		public async Task UpdateAsync(Comment entity, CancellationToken ct = default)
-		{
-			await Connection.ExecuteAsync(
-				@"UPDATE comment SET content = @content, post_id = @postId, user_id = @userId WHERE id = @id", entity, Transaction);
-		}
-
-		public async Task<Comment> GetAsync(int id, CancellationToken ct = default)
-		{
-			return await Connection.QuerySingleOrDefaultAsync<Comment>(
-				@"SELECT * FROM comment WHERE id = @id", new {id}, Transaction);
-		}
-
-		// TODO: Paging
-		public async Task<IEnumerable<Comment>> GetAsync(CancellationToken ct = default)
-		{
-			return await Connection.QueryAsync<Comment>(
-				@"SELECT * FROM comment", transaction: Transaction);
-		}
+			return Connection.QueryAsync<Comment>(
+                @"SELECT * FROM comment LIMIT @pageSize OFFSET @page",
+                new { pageSize, page = (page - 1) * pageSize }, Transaction);
+        }
 	}
 }

@@ -14,35 +14,35 @@ namespace BlazoredDreams.Persistence.Repositories
 		{
 		}
 
-		public async Task DeleteAsync(int id, CancellationToken ct = default)
+		public Task DeleteAsync(int id, CancellationToken ct = default)
+        {
+            return Connection.ExecuteAsync(
+                @"DELETE FROM identity_user WHERE id = @id", new {id}, Transaction);
+        }
+
+		public Task InsertAsync(IdentityUser entity, CancellationToken ct = default)
+        {
+            return Connection.ExecuteAsync(
+                @"INSERT INTO identity_user (identifier) values (@identifier)", entity, Transaction);
+        }
+
+		public Task UpdateAsync(IdentityUser entity, CancellationToken ct = default)
+        {
+            return Connection.ExecuteAsync(
+                @"UPDATE identity_user SET identifier = @identifier WHERE id = @id", entity, Transaction);
+        }
+
+		public Task<IdentityUser> GetAsync(int id, CancellationToken ct = default)
 		{
-			await Connection.ExecuteAsync(
-				@"DELETE FROM identity_user WHERE id = @id", new {id}, Transaction);
+			return Connection.QuerySingleOrDefaultAsync<IdentityUser>(
+                @"SELECT * FROM identity_user WHERE id = @id", new {id}, Transaction);
 		}
 
-		public async Task InsertAsync(IdentityUser entity, CancellationToken ct = default)
-		{
-			await Connection.ExecuteAsync(
-				@"INSERT INTO identity_user (identifier) values (@identifier)", entity, Transaction);
-		}
-
-		public async Task UpdateAsync(IdentityUser entity, CancellationToken ct = default)
-		{
-			await Connection.ExecuteAsync(
-				@"UPDATE identity_user SET identifier = @identifier WHERE id = @id", entity, Transaction);
-		}
-
-		public async Task<IdentityUser> GetAsync(int id, CancellationToken ct = default)
-		{
-			return await Connection.QuerySingleOrDefaultAsync<IdentityUser>(
-				@"SELECT * FROM identity_user WHERE id = @id", new {id}, Transaction);
-		}
-
-		// TODO: Paging
-		public async Task<IEnumerable<IdentityUser>> GetAsync(CancellationToken ct = default)
-		{
-			return await Connection.QueryAsync<IdentityUser>(
-				@"SELECT * FROM identity_user", transaction: Transaction);
-		}
+		public Task<IEnumerable<IdentityUser>> GetAllAsync(int page = 1, int pageSize = 10, CancellationToken ct = default)
+        {
+            return Connection.QueryAsync<IdentityUser>(
+                @"SELECT * FROM identity_user LIMIT @pageSize OFFSET @page",
+                new {pageSize, page = (page - 1) * pageSize}, Transaction);
+        }
 	}
 }

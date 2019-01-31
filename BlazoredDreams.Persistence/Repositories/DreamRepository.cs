@@ -14,35 +14,35 @@ namespace BlazoredDreams.Persistence.Repositories
 		{
 		}
 		
-		public async Task DeleteAsync(int id, CancellationToken ct = default)
+		public Task DeleteAsync(int id, CancellationToken ct = default)
+        {
+            return Connection.ExecuteAsync(
+                @"DELETE FROM dream WHERE id = @id", new {id}, Transaction);
+        }
+
+		public Task InsertAsync(Dream entity, CancellationToken ct = default)
+        {
+            return Connection.ExecuteAsync(
+                @"INSERT INTO dream (content, user_id) values (@content, @userId)", entity, Transaction);
+        }
+
+		public Task UpdateAsync(Dream entity, CancellationToken ct = default)
+        {
+            return Connection.ExecuteAsync(
+                @"UPDATE dream SET content = @content, user_id = @userId WHERE id = @id", entity, Transaction);
+        }
+
+		public Task<Dream> GetAsync(int id, CancellationToken ct = default)
 		{
-			await Connection.ExecuteAsync(
-				@"DELETE FROM dream WHERE id = @id", new {id}, Transaction);
+			return Connection.QuerySingleOrDefaultAsync<Dream>(
+                @"SELECT * FROM dream WHERE id = @id", new {id}, Transaction);
 		}
 
-		public async Task InsertAsync(Dream entity, CancellationToken ct = default)
+		public Task<IEnumerable<Dream>> GetAllAsync(int page = 1, int pageSize = 10, CancellationToken ct = default)
 		{
-			await Connection.ExecuteAsync(
-				@"INSERT INTO dream (content, user_id) values (@content, @userId)", entity, Transaction);
-		}
-
-		public async Task UpdateAsync(Dream entity, CancellationToken ct = default)
-		{
-			await Connection.ExecuteAsync(
-				@"UPDATE dream SET content = @content, user_id = @userId WHERE id = @id", entity, Transaction);
-		}
-
-		public async Task<Dream> GetAsync(int id, CancellationToken ct = default)
-		{
-			return await Connection.QuerySingleOrDefaultAsync<Dream>(
-				@"SELECT * FROM dream WHERE id = @id", new {id}, Transaction);
-		}
-
-		// TODO: Paging
-		public async Task<IEnumerable<Dream>> GetAsync(CancellationToken ct = default)
-		{
-			return await Connection.QueryAsync<Dream>(
-				@"SELECT * FROM dream", transaction: Transaction);
-		}
+			return Connection.QueryAsync<Dream>(
+                @"SELECT * FROM dream LIMIT @pageSize OFFSET @page",
+                new { pageSize, page = (page - 1) * pageSize }, Transaction);
+        }
 	}
 }

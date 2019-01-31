@@ -4,7 +4,6 @@ using Xunit;
 
 namespace BlazoredDreams.Persistence.Test.Repositories
 {
-	
 	[Collection("Database collection")]
 	public class BaseRepositoryTest
 	{

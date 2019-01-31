@@ -49,7 +49,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			// Arrange
 			await InitSqlAsync();
 			// Act
-			var all = (await DatabaseFixture.UnitOfWork.UserRepository.GetAsync()).ToList();
+			var all = (await DatabaseFixture.UnitOfWork.UserRepository.GetAllAsync()).ToList();
 			// Assert
 			Assert.True(all.Count == 2);
 			Assert.Equal("foo", all[0].Identifier);
@@ -94,15 +94,12 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			// Act
 			await DatabaseFixture.UnitOfWork.UserRepository.DeleteAsync(1);
 			DatabaseFixture.UnitOfWork.Commit();
-			var all = await DatabaseFixture.UnitOfWork.UserRepository.GetAsync();
+			var all = await DatabaseFixture.UnitOfWork.UserRepository.GetAllAsync();
 			// Assert
 			Assert.Single(all);
 		}
 
-		public async Task InitializeAsync()
-		{
-			await TruncateTableAsync("identity_user");
-		}
+		public Task InitializeAsync() => TruncateTableAsync("identity_user");
 
 		public Task DisposeAsync() => Task.CompletedTask;
 	}

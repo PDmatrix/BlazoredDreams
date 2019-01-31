@@ -79,7 +79,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			await TruncateTableAsync("identity_user");
 			await TruncateTableAsync("user_likes");
 			await TruncateTableAsync("post");
-			await TruncateTableAsync("dream");
+			await TruncateTableAsync("dream").ConfigureAwait(false);
 		}
 
 		public Task DisposeAsync() => Task.CompletedTask;

@@ -52,7 +52,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			// Arrange
 			await InitSqlAsync();
 			// Act
-			var all = (await DatabaseFixture.UnitOfWork.PostRepository.GetAsync()).ToList();
+			var all = (await DatabaseFixture.UnitOfWork.PostRepository.GetAllAsync()).ToList();
 			// Assert
 			Assert.True(all.Count == 2);
 			Assert.Equal("title", all[0].Title);
@@ -99,7 +99,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			// Act
 			await DatabaseFixture.UnitOfWork.PostRepository.DeleteAsync(1);
 			DatabaseFixture.UnitOfWork.Commit();
-			var all = await DatabaseFixture.UnitOfWork.PostRepository.GetAsync();
+			var all = await DatabaseFixture.UnitOfWork.PostRepository.GetAllAsync();
 			// Assert
 			Assert.Single(all);
 		}
@@ -108,7 +108,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 		{
 			await TruncateTableAsync("identity_user");
 			await TruncateTableAsync("post");
-			await TruncateTableAsync("dream");
+			await TruncateTableAsync("dream").ConfigureAwait(false);
 		}
 
 		public Task DisposeAsync() => Task.CompletedTask;

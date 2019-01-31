@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using BlazoredDreams.Application.Interfaces.DataAccess;
@@ -18,13 +17,9 @@ namespace BlazoredDreams.Application.Tags.Queries
 			_unitOfWork = unitOfWork;
 		}
 		
-		public async Task<IEnumerable<Tag>> Handle(GetAllTags request, CancellationToken ct)
+		public Task<IEnumerable<Tag>> Handle(GetAllTags request, CancellationToken ct)
 		{
-			await _unitOfWork.TagRepository.InsertAsync(new Tag
-			{
-				Name = "Custom"
-			}, ct);
-			return await _unitOfWork.TagRepository.GetAsync(ct);
+			return _unitOfWork.TagRepository.GetAllAsync(cancellationToken: ct);
 		}
 	}
 }

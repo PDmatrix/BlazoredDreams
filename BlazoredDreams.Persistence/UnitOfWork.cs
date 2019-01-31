@@ -1,6 +1,5 @@
 using System;
 using System.Data;
-using System.Data.SqlClient;
 using BlazoredDreams.Application.Interfaces.DataAccess;
 using BlazoredDreams.Persistence.Repositories;
 using Npgsql;
@@ -30,20 +29,25 @@ namespace BlazoredDreams.Persistence
             Connection = dbConnection;
             Connection.Open();
             _transaction = Connection.BeginTransaction();
-            // Correct mapping of entities with underscores, e.g created_at With CreatedAt
+            // Correct mapping of entities with underscores, e.g created_at with CreatedAt
             Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
         }
 
         public ICommentRepository CommentRepository => 
             _commentRepository ?? (_commentRepository = new CommentRepository(_transaction));
+
         public IDreamRepository DreamRepository =>
             _dreamRepository ?? (_dreamRepository = new DreamRepository(_transaction));
+
         public IPostRepository PostRepository =>
             _postRepository ?? (_postRepository = new PostRepository(_transaction));
+
         public ITagRepository TagRepository =>
             _tagRepository ?? (_tagRepository = new TagRepository(_transaction));
+
         public IUserLikesRepository UserLikesRepository =>
             _userLikesRepository ?? (_userLikesRepository = new UserLikesRepository(_transaction));
+
         public IUserRepository UserRepository =>
             _userRepository ?? (_userRepository = new UserRepository(_transaction));
         
