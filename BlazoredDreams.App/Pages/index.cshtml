@@ -1,4 +1,6 @@
 @page "/"
+@using BlazoredDreams.App.Redux
+@inherits BlazoredDreams.App.BaseComponents.BaseComponent
 
 <!-- ***** Welcome Area Start ***** -->
 <section class="welcome_area clearfix" id="home" style="background-image: url(img/bg-img/welcome-bg.png)">
@@ -376,3 +378,10 @@
     </div>
 </section>
 <!-- ***** CTA Area End ***** -->
+@functions
+{
+    protected override void OnInit()
+    {
+        Dispatch(new ChangePageInfo {Title = "Главная", BreadCrumb = "Главная"});
+    }
+}

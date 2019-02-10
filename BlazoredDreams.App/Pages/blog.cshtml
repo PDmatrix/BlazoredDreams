@@ -1,4 +1,6 @@
 @page "/blog"
+@using BlazoredDreams.App.Redux
+@inherits BlazoredDreams.App.BaseComponents.BaseComponent
 
 <!-- ***** Blog Area Start ***** -->
 <section class="blog-area section_padding_100">
@@ -196,5 +198,8 @@
 
 @functions
 {
-
+    protected override void OnInit()
+    {
+        Dispatch(new ChangePageInfo {Title = "Блог", BreadCrumb = "Блог"});
+    }
 }
