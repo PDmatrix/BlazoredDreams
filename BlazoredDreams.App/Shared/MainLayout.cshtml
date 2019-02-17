@@ -17,28 +17,31 @@
 
                         <div class="collapse navbar-collapse justify-content-end" id="mosh-navbar">
                             <ul class="navbar-nav animated" id="nav">
-                                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                                <li class="nav-item"><NavLink class="nav-link" href="/about">About Us</NavLink></li>
-                                <li class="nav-item"><NavLink class="nav-link" href="/services">Services</NavLink></li>
-                                <li class="nav-item"><NavLink class="nav-link" href="/portfolio">Portfolio</NavLink></li>
-                                <li class="nav-item"><NavLink class="nav-link" href="/blog">Blog</NavLink></li>
-                                <li class="nav-item"><NavLink class="nav-link" href="/contact">Contact</NavLink></li>
+                                @{
+                                    var mainLinkClass = "nav-link";
+                                    if (State.PageInfo.OnMainPage)
+                                    {
+                                        mainLinkClass += " active";
+                                    }
+                                }
+                                <li class="nav-item"><a class="@mainLinkClass" href="/">Главная</a></li>
+                                <li class="nav-item"><NavLink class="nav-link" href="/blog">Публикации</NavLink></li>
                             </ul>
                             <!-- Search Form Area Start -->
                             <div class="search-form-area animated">
                                 <form action="#" method="post">
-                                    <input type="search" name="search" id="search" placeholder="Type keywords &amp; hit enter">
+                                    <input type="search" name="search" id="search" placeholder="Введите коючевые слова &amp; нажмите поиск">
                                     <button type="submit" class="d-none"><img src="img/core-img/search-icon.png" alt="Search"></button>
                                 </form>
                             </div>
                             <!-- Search btn -->
                             <div class="search-button">
-                                <a onclick="@SearchButtonClick" href="#" id="search-btn"><img src="img/core-img/search-icon.png" alt="Search"></a>
+                                <a onclick="@SearchButtonClick" href="#" id="search-btn"><img src="img/core-img/search-icon.png" alt="Поиск"></a>
                             </div>
                             <!-- Login/Register btn -->
                             <div class="login-register-btn">
-                                <a href="#">Login</a>
-                                <a href="#">/ Register</a>
+                                <a href="#">Логин</a>
+                                <a href="#">/ Регистрация</a>
                             </div>
                         </div>
                     </nav>
@@ -58,8 +61,15 @@
                     <h2>@State.PageInfo.Title</h2>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">@State.PageInfo.BreadCrumb</li>
+                            @if (State.PageInfo.OnMainPage)
+                            {
+                                <li class="breadcrumb-item active"><a href="/">Главная</a></li>
+                            }
+                            else
+                            {
+                                <li class="breadcrumb-item"><a href="/">Главная</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">@State.PageInfo.BreadCrumb</li>
+                            }
                         </ol>
                     </nav>
                 </div>

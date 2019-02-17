@@ -20,12 +20,16 @@ namespace BlazoredDreams.App.Redux
 				case ChangePageInfo page:
 					return new PageInfo
 					{
-						Title = page.Title, BreadCrumb = page.BreadCrumb
+						Title = page.Title, 
+						BreadCrumb = page.BreadCrumb,
+						OnMainPage = page.OnMainPage
 					};
 				default:
 					return new PageInfo
 					{
-						Title = pageInfo.Title, BreadCrumb = pageInfo.BreadCrumb
+						Title = pageInfo.Title, 
+						BreadCrumb = pageInfo.BreadCrumb,
+						OnMainPage = pageInfo.OnMainPage
 					};
 			}
 		}
