@@ -401,7 +401,7 @@ img {
 }
 
 .menu_area #nav .nav-link:hover,
-.menu_area #nav .nav-item.active .nav-link,
+.menu_area #nav .nav-item .nav-link.active,
 .menu_area .dropdown-item:hover {
     color: #4a7aec;
 }
