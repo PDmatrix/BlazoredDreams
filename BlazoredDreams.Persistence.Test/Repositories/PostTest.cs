@@ -16,8 +16,8 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			const string sql =
 				@"INSERT INTO identity_user (id, identifier) VALUES (1, 'foo');
 				  INSERT INTO dream (content, user_id) VALUES ('foo', 1);
-				  INSERT INTO post (title, dream_id, user_id) 
-				  VALUES ('foo', 1, 1), ('bar', 1, 1);";
+				  INSERT INTO post (title, dream_id, user_id, excerpt) 
+				  VALUES ('foo', 1, 1, 'foo'), ('bar', 1, 1, 'bar');";
 			await DatabaseFixture.UnitOfWork.Connection.ExecuteAsync(sql);
 			DatabaseFixture.UnitOfWork.Commit();
 		}
@@ -44,6 +44,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			var post = await DatabaseFixture.UnitOfWork.PostRepository.GetAsync(1);
 			// Assert
 			Assert.Equal("foo", post.Title);
+			Assert.Equal("foo", post.Excerpt);
 		}
 
 		[Fact]
@@ -56,7 +57,9 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			// Assert
 			Assert.True(all.Count == 2);
 			Assert.Equal("foo", all[0].Title);
+			Assert.Equal("foo", all[0].Excerpt);
 			Assert.Equal("bar", all[1].Title);
+			Assert.Equal("bar", all[1].Excerpt);
 		}
 
 		[Fact]
@@ -69,6 +72,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			// Assert
 			Assert.Single(all);
 			Assert.Equal("foo", all[0].Title);
+			Assert.Equal("foo", all[0].Excerpt);
 		}
 		
 		[Fact]
@@ -76,7 +80,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 		{
 			// Arrange
 			await InitSqlAsync();
-			var post = new Domain.Entities.Post {Title = "baz", UserId = 1, DreamId = 1}; 
+			var post = new Domain.Entities.Post {Title = "baz", UserId = 1, DreamId = 1, Excerpt = "baz"}; 
 			// Act
 			await DatabaseFixture.UnitOfWork.PostRepository.InsertAsync(post);
 			DatabaseFixture.UnitOfWork.Commit();
@@ -85,6 +89,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			Assert.Equal(post.Title, selectedPost.Title);
 			Assert.Equal(post.UserId, selectedPost.UserId);
 			Assert.Equal(post.DreamId, selectedPost.DreamId);
+			Assert.Equal(post.Excerpt, selectedPost.Excerpt);
 		}
 
 		[Fact]
@@ -92,7 +97,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 		{
 			// Arrange
 			await InitSqlAsync();
-			var post = new Domain.Entities.Post {Id = 1, Title = "baz", UserId = 1, DreamId = 1}; 
+			var post = new Domain.Entities.Post {Id = 1, Title = "baz", UserId = 1, DreamId = 1, Excerpt = "baz"}; 
 			// Act
 			await DatabaseFixture.UnitOfWork.PostRepository.UpdateAsync(post);
 			DatabaseFixture.UnitOfWork.Commit();

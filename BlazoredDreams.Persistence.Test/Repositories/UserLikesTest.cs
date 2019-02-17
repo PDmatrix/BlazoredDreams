@@ -69,7 +69,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			const string sql =
 				@"INSERT INTO identity_user (id, identifier) VALUES (1, 'user');
 				  INSERT INTO dream (content, user_id) VALUES ('dream', 1);
-				  INSERT INTO post (id, title, dream_id, user_id) VALUES (1, 'title', 1, 1);";
+				  INSERT INTO post (id, title, dream_id, user_id, excerpt) VALUES (1, 'title', 1, 1, 'foo');";
 			await DatabaseFixture.UnitOfWork.Connection.ExecuteAsync(sql);
 			DatabaseFixture.UnitOfWork.Commit();
 		}

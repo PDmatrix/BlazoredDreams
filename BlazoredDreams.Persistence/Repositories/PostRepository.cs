@@ -23,13 +23,13 @@ namespace BlazoredDreams.Persistence.Repositories
 		public Task InsertAsync(Post entity, CancellationToken ct = default)
         {
             return Connection.ExecuteAsync(
-                @"INSERT INTO post (title, user_id, dream_id) values (@title, @userId, @dreamId)", entity, Transaction);
+                @"INSERT INTO post (title, user_id, dream_id, excerpt) values (@title, @userId, @dreamId, @excerpt)", entity, Transaction);
         }
 
 		public Task UpdateAsync(Post entity, CancellationToken ct = default)
         {
             return Connection.ExecuteAsync(
-                @"UPDATE post SET title = @title, user_id = @userId, dream_id = @dreamId WHERE id = @id", entity, Transaction);
+                @"UPDATE post SET title = @title, user_id = @userId, dream_id = @dreamId, excerpt = @excerpt WHERE id = @id", entity, Transaction);
         }
 
 		public Task<Post> GetAsync(int id, CancellationToken ct = default)

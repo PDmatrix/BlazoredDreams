@@ -20,8 +20,8 @@ SET row_security = off;
 --
 
 CREATE FUNCTION public.trigger_set_timestamp() RETURNS trigger
-  LANGUAGE plpgsql
-AS $$
+    LANGUAGE plpgsql
+    AS $$
 BEGIN
   NEW.updated_at = NOW();
   RETURN NEW;
@@ -40,12 +40,12 @@ SET default_with_oids = false;
 --
 
 CREATE TABLE public.comment (
-                              id integer NOT NULL,
-                              content text NOT NULL,
-                              created_at timestamp without time zone DEFAULT now() NOT NULL,
-                              updated_at timestamp without time zone DEFAULT now() NOT NULL,
-                              post_id integer NOT NULL,
-                              user_id integer NOT NULL
+    id integer NOT NULL,
+    content text NOT NULL,
+    created_at timestamp without time zone DEFAULT now() NOT NULL,
+    updated_at timestamp without time zone DEFAULT now() NOT NULL,
+    post_id integer NOT NULL,
+    user_id integer NOT NULL
 );
 
 
@@ -56,12 +56,12 @@ ALTER TABLE public.comment OWNER TO blazoreddreams;
 --
 
 CREATE SEQUENCE public.comment_id_seq
-  AS integer
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER TABLE public.comment_id_seq OWNER TO blazoreddreams;
@@ -78,11 +78,11 @@ ALTER SEQUENCE public.comment_id_seq OWNED BY public.comment.id;
 --
 
 CREATE TABLE public.dream (
-                            id integer NOT NULL,
-                            content text NOT NULL,
-                            created_at timestamp without time zone DEFAULT now() NOT NULL,
-                            updated_at timestamp without time zone DEFAULT now() NOT NULL,
-                            user_id integer NOT NULL
+    id integer NOT NULL,
+    content text NOT NULL,
+    created_at timestamp without time zone DEFAULT now() NOT NULL,
+    updated_at timestamp without time zone DEFAULT now() NOT NULL,
+    user_id integer NOT NULL
 );
 
 
@@ -93,12 +93,12 @@ ALTER TABLE public.dream OWNER TO blazoreddreams;
 --
 
 CREATE SEQUENCE public.dream_id_seq
-  AS integer
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER TABLE public.dream_id_seq OWNER TO blazoreddreams;
@@ -115,10 +115,10 @@ ALTER SEQUENCE public.dream_id_seq OWNED BY public.dream.id;
 --
 
 CREATE TABLE public.identity_user (
-                                    id integer NOT NULL,
-                                    created_at timestamp without time zone DEFAULT now() NOT NULL,
-                                    updated_at timestamp without time zone DEFAULT now() NOT NULL,
-                                    identifier text NOT NULL
+    id integer NOT NULL,
+    created_at timestamp without time zone DEFAULT now() NOT NULL,
+    updated_at timestamp without time zone DEFAULT now() NOT NULL,
+    identifier text NOT NULL
 );
 
 
@@ -129,11 +129,11 @@ ALTER TABLE public.identity_user OWNER TO blazoreddreams;
 --
 
 CREATE SEQUENCE public.identity_user_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER TABLE public.identity_user_id_seq OWNER TO blazoreddreams;
@@ -150,12 +150,13 @@ ALTER SEQUENCE public.identity_user_id_seq OWNED BY public.identity_user.id;
 --
 
 CREATE TABLE public.post (
-                           id integer NOT NULL,
-                           title text NOT NULL,
-                           user_id integer NOT NULL,
-                           created_at timestamp without time zone DEFAULT now() NOT NULL,
-                           updated_at timestamp without time zone DEFAULT now() NOT NULL,
-                           dream_id integer NOT NULL
+    id integer NOT NULL,
+    title text NOT NULL,
+    user_id integer NOT NULL,
+    created_at timestamp without time zone DEFAULT now() NOT NULL,
+    updated_at timestamp without time zone DEFAULT now() NOT NULL,
+    dream_id integer NOT NULL,
+    excerpt text NOT NULL
 );
 
 
@@ -166,12 +167,12 @@ ALTER TABLE public.post OWNER TO blazoreddreams;
 --
 
 CREATE SEQUENCE public.post_id_seq
-  AS integer
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER TABLE public.post_id_seq OWNER TO blazoreddreams;
@@ -188,8 +189,8 @@ ALTER SEQUENCE public.post_id_seq OWNED BY public.post.id;
 --
 
 CREATE TABLE public.post_tags (
-                                post_id integer NOT NULL,
-                                tag_id integer NOT NULL
+    post_id integer NOT NULL,
+    tag_id integer NOT NULL
 );
 
 
@@ -200,10 +201,10 @@ ALTER TABLE public.post_tags OWNER TO blazoreddreams;
 --
 
 CREATE TABLE public.tag (
-                          id integer NOT NULL,
-                          name text NOT NULL,
-                          created_at timestamp without time zone DEFAULT now() NOT NULL,
-                          updated_at timestamp without time zone DEFAULT now() NOT NULL
+    id integer NOT NULL,
+    name text NOT NULL,
+    created_at timestamp without time zone DEFAULT now() NOT NULL,
+    updated_at timestamp without time zone DEFAULT now() NOT NULL
 );
 
 
@@ -214,12 +215,12 @@ ALTER TABLE public.tag OWNER TO blazoreddreams;
 --
 
 CREATE SEQUENCE public.tag_id_seq
-  AS integer
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 ALTER TABLE public.tag_id_seq OWNER TO blazoreddreams;
@@ -236,8 +237,8 @@ ALTER SEQUENCE public.tag_id_seq OWNED BY public.tag.id;
 --
 
 CREATE TABLE public.user_likes (
-                                 user_id integer NOT NULL,
-                                 post_id integer NOT NULL
+    user_id integer NOT NULL,
+    post_id integer NOT NULL
 );
 
 
@@ -360,7 +361,7 @@ SELECT pg_catalog.setval('public.tag_id_seq', 1, false);
 --
 
 ALTER TABLE ONLY public.comment
-  ADD CONSTRAINT pk_comment PRIMARY KEY (id);
+    ADD CONSTRAINT pk_comment PRIMARY KEY (id);
 
 
 --
@@ -368,7 +369,7 @@ ALTER TABLE ONLY public.comment
 --
 
 ALTER TABLE ONLY public.dream
-  ADD CONSTRAINT pk_dream PRIMARY KEY (id);
+    ADD CONSTRAINT pk_dream PRIMARY KEY (id);
 
 
 --
@@ -376,7 +377,7 @@ ALTER TABLE ONLY public.dream
 --
 
 ALTER TABLE ONLY public.identity_user
-  ADD CONSTRAINT pk_identity_user PRIMARY KEY (id);
+    ADD CONSTRAINT pk_identity_user PRIMARY KEY (id);
 
 
 --
@@ -384,7 +385,7 @@ ALTER TABLE ONLY public.identity_user
 --
 
 ALTER TABLE ONLY public.post
-  ADD CONSTRAINT pk_post PRIMARY KEY (id);
+    ADD CONSTRAINT pk_post PRIMARY KEY (id);
 
 
 --
@@ -392,7 +393,7 @@ ALTER TABLE ONLY public.post
 --
 
 ALTER TABLE ONLY public.post_tags
-  ADD CONSTRAINT pk_post_tags PRIMARY KEY (post_id, tag_id);
+    ADD CONSTRAINT pk_post_tags PRIMARY KEY (post_id, tag_id);
 
 
 --
@@ -400,7 +401,7 @@ ALTER TABLE ONLY public.post_tags
 --
 
 ALTER TABLE ONLY public.tag
-  ADD CONSTRAINT pk_tag PRIMARY KEY (id);
+    ADD CONSTRAINT pk_tag PRIMARY KEY (id);
 
 
 --
@@ -408,7 +409,7 @@ ALTER TABLE ONLY public.tag
 --
 
 ALTER TABLE ONLY public.user_likes
-  ADD CONSTRAINT table_name_pk PRIMARY KEY (user_id, post_id);
+    ADD CONSTRAINT table_name_pk PRIMARY KEY (user_id, post_id);
 
 
 --
@@ -500,7 +501,7 @@ CREATE TRIGGER set_timestamp BEFORE UPDATE ON public.tag FOR EACH ROW EXECUTE PR
 --
 
 ALTER TABLE ONLY public.comment
-  ADD CONSTRAINT comment_identity_user_id_fk FOREIGN KEY (user_id) REFERENCES public.identity_user(id);
+    ADD CONSTRAINT comment_identity_user_id_fk FOREIGN KEY (user_id) REFERENCES public.identity_user(id);
 
 
 --
@@ -508,7 +509,7 @@ ALTER TABLE ONLY public.comment
 --
 
 ALTER TABLE ONLY public.dream
-  ADD CONSTRAINT dream_identity_user_id_fk FOREIGN KEY (user_id) REFERENCES public.identity_user(id);
+    ADD CONSTRAINT dream_identity_user_id_fk FOREIGN KEY (user_id) REFERENCES public.identity_user(id);
 
 
 --
@@ -516,7 +517,7 @@ ALTER TABLE ONLY public.dream
 --
 
 ALTER TABLE ONLY public.comment
-  ADD CONSTRAINT fk_comment__post_id FOREIGN KEY (post_id) REFERENCES public.post(id);
+    ADD CONSTRAINT fk_comment__post_id FOREIGN KEY (post_id) REFERENCES public.post(id);
 
 
 --
@@ -524,7 +525,7 @@ ALTER TABLE ONLY public.comment
 --
 
 ALTER TABLE ONLY public.post_tags
-  ADD CONSTRAINT fk_post_tags__post FOREIGN KEY (post_id) REFERENCES public.post(id);
+    ADD CONSTRAINT fk_post_tags__post FOREIGN KEY (post_id) REFERENCES public.post(id);
 
 
 --
@@ -532,7 +533,7 @@ ALTER TABLE ONLY public.post_tags
 --
 
 ALTER TABLE ONLY public.post_tags
-  ADD CONSTRAINT fk_post_tags__tag FOREIGN KEY (tag_id) REFERENCES public.tag(id);
+    ADD CONSTRAINT fk_post_tags__tag FOREIGN KEY (tag_id) REFERENCES public.tag(id);
 
 
 --
@@ -540,7 +541,7 @@ ALTER TABLE ONLY public.post_tags
 --
 
 ALTER TABLE ONLY public.post
-  ADD CONSTRAINT post_dream_id_fk FOREIGN KEY (dream_id) REFERENCES public.dream(id);
+    ADD CONSTRAINT post_dream_id_fk FOREIGN KEY (dream_id) REFERENCES public.dream(id);
 
 
 --
@@ -548,7 +549,7 @@ ALTER TABLE ONLY public.post
 --
 
 ALTER TABLE ONLY public.post
-  ADD CONSTRAINT post_identity_user_id_fk FOREIGN KEY (user_id) REFERENCES public.identity_user(id);
+    ADD CONSTRAINT post_identity_user_id_fk FOREIGN KEY (user_id) REFERENCES public.identity_user(id);
 
 
 --
@@ -556,7 +557,7 @@ ALTER TABLE ONLY public.post
 --
 
 ALTER TABLE ONLY public.user_likes
-  ADD CONSTRAINT table_name_post_id_fk FOREIGN KEY (post_id) REFERENCES public.post(id);
+    ADD CONSTRAINT table_name_post_id_fk FOREIGN KEY (post_id) REFERENCES public.post(id);
 
 
 --
@@ -564,9 +565,10 @@ ALTER TABLE ONLY public.user_likes
 --
 
 ALTER TABLE ONLY public.user_likes
-  ADD CONSTRAINT user_likes_identity_user_id_fk FOREIGN KEY (user_id) REFERENCES public.identity_user(id);
+    ADD CONSTRAINT user_likes_identity_user_id_fk FOREIGN KEY (user_id) REFERENCES public.identity_user(id);
 
 
 --
 -- PostgreSQL database dump complete
 --
+
