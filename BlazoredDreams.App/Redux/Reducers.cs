@@ -25,12 +25,7 @@ namespace BlazoredDreams.App.Redux
 						OnMainPage = page.OnMainPage
 					};
 				default:
-					return new PageInfo
-					{
-						Title = pageInfo.Title, 
-						BreadCrumb = pageInfo.BreadCrumb,
-						OnMainPage = pageInfo.OnMainPage
-					};
+					return pageInfo;
 			}
 		}
 	}
