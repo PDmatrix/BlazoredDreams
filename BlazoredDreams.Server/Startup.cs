@@ -9,9 +9,7 @@ using System.Reflection;
 using BlazoredDreams.Application.Interfaces.DataAccess;
 using BlazoredDreams.Persistence;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json.Serialization;
 
 namespace BlazoredDreams.Server
 {

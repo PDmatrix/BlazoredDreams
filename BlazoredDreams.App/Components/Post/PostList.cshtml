@@ -1,0 +1,24 @@
+@using BlazoredDreams.App.Redux
+@inherits BlazoredDreams.App.BaseComponents.BaseComponent
+
+@if (Store.State.IsLoading)
+{
+    <p>Loading...</p>
+}
+else
+{
+    foreach (var post in Store.State.Posts)
+    {
+        <p>@post.Id</p>
+        <p>@post.Title</p>
+        <p>@post.Excerpt</p>
+    }
+}
+
+@functions
+{
+    protected override async Task OnInitAsync()
+    {
+        await ActionCreators.FetchPosts(Store.Dispatch, Mediator);
+    }
+}
