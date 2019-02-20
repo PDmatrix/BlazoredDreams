@@ -3,6 +3,7 @@ using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 using BlazoredDreams.Application.Interfaces.DataAccess;
+using BlazoredDreams.Application.Posts.Models;
 using BlazoredDreams.Domain.Entities;
 using Dapper;
 
@@ -44,5 +45,30 @@ namespace BlazoredDreams.Persistence.Repositories
                 @"SELECT * FROM post LIMIT @pageSize OFFSET @page",
                 new { pageSize, page = (page - 1) * pageSize }, Transaction);
         }
+
+		//TODO: Cover with tests
+		public Task<IEnumerable<GetAllPostDto>> GetAllPostsAsync(int page = 1, int pageSize = 10)
+		{
+			const string sql = @"
+			SELECT
+				iu.identifier as username,
+				p.title,
+				(SELECT COUNT(*) FROM comment c WHERE c.post_id = p.id) as comments,
+				p.excerpt,
+				to_char(p.created_at, 'YYYY.mm.dd') as date,
+				COALESCE(t.name, 'Без тега') as tag,
+				(SELECT COUNT(*) FROM post) as total_pages,
+			    @page as page
+			FROM post p
+				INNER JOIN identity_user iu on p.user_id = iu.id
+				INNER JOIN dream d on d.id = p.dream_id
+				LEFT JOIN post_tags pt on p.id = pt.post_id
+				LEFT JOIN tag t on pt.tag_id = t.id
+			LIMIT @pageSize OFFSET @page
+			";
+
+			return Connection.QueryAsync<GetAllPostDto>(sql,
+				new {pageSize, page = (page - 1) * pageSize}, Transaction);
+		}
 	}
 }

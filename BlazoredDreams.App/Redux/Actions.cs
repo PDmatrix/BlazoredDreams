@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using BlazoredDreams.Domain.Entities;
+using BlazoredDreams.Application.Posts.Models;
 using BlazorRedux;
 
 namespace BlazoredDreams.App.Redux
@@ -18,6 +18,6 @@ namespace BlazoredDreams.App.Redux
 	
 	public class LoadPosts : IAction
 	{
-		public List<Post> Posts { get; set; }
+		public List<GetAllPostDto> Posts { get; set; }
 	}
 }

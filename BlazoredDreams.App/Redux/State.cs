@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using BlazoredDreams.Domain.Entities;
+using BlazoredDreams.Application.Posts.Models;
 
 namespace BlazoredDreams.App.Redux
 {
@@ -12,11 +12,11 @@ namespace BlazoredDreams.App.Redux
 				Title = "WIP",
 				BreadCrumb = "WIP"
 			};
-			Posts = new List<Post>();
+			Posts = new List<GetAllPostDto>();
 		}
 		public string Location { get; set; }
 		public PageInfo PageInfo { get; set; }
-		public List<Post> Posts { get; set; } 
+		public List<GetAllPostDto> Posts { get; set; } 
 		public bool IsLoading { get; set; }
 	}
 }

@@ -2,13 +2,13 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using BlazoredDreams.Application.Interfaces.DataAccess;
-using BlazoredDreams.Domain.Entities;
+using BlazoredDreams.Application.Posts.Models;
 using MediatR;
 
 namespace BlazoredDreams.Application.Posts.Queries
 {
 	// ReSharper disable once UnusedMember.Global
-	public class GetAllPostsHandler : IRequestHandler<GetAllPosts, IEnumerable<Post>>
+	public class GetAllPostsHandler : IRequestHandler<GetAllPosts, IEnumerable<GetAllPostDto>>
 	{
 		private readonly IUnitOfWork _unitOfWork;
 
@@ -17,9 +17,9 @@ namespace BlazoredDreams.Application.Posts.Queries
 			_unitOfWork = unitOfWork;
 		}
 		
-		public Task<IEnumerable<Post>> Handle(GetAllPosts request, CancellationToken ct)
+		public Task<IEnumerable<GetAllPostDto>> Handle(GetAllPosts request, CancellationToken ct)
 		{
-			return _unitOfWork.PostRepository.GetAllAsync(request.Page, cancellationToken: ct);
+			return _unitOfWork.PostRepository.GetAllPostsAsync(request.Page);
 		}
 	}
 }

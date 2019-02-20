@@ -1,1 +1,27 @@
+@using BlazoredDreams.Application.Posts.Models
 @inherits BlazoredDreams.App.BaseComponents.BaseComponent
+
+<div class="col-12">
+    <div class="single-blog">
+        <!-- Post Thumb -->
+        <div class="blog-post-thumb">
+            <img src="img/blog-img/1.jpg" alt="">
+        </div>
+        <!-- Post Meta -->
+        <div class="post-meta">
+            <h6><a href="#">@Post.Username,</a><a href="#">@Post.Date</a><a href="#">@Post.Tag,</a><a href="#">@Post.Comments комментария</a></h6>
+        </div>
+        <!-- Post Title -->
+        <h2>@Post.Title</h2>
+        <!-- Post Excerpt -->
+        <p>@Post.Excerpt</p>
+        <!-- Read More btn -->
+        <a href="#">Read More</a>
+    </div>
+</div>
+
+@functions
+{
+    [Parameter]
+    protected GetAllPostDto Post { get; set; }
+}

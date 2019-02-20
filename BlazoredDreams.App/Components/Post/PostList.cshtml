@@ -1,19 +1,29 @@
 @using BlazoredDreams.App.Redux
 @inherits BlazoredDreams.App.BaseComponents.BaseComponent
 
-@if (Store.State.IsLoading)
-{
-    <p>Loading...</p>
-}
-else
-{
-    foreach (var post in Store.State.Posts)
-    {
-        <p>@post.Id</p>
-        <p>@post.Title</p>
-        <p>@post.Excerpt</p>
-    }
-}
+<section class="blog-area section_padding_100">
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-8">
+            <div class="mosh-blog-posts">
+                <div class="row">
+                    @if (Store.State.IsLoading)
+                    {
+                        <p>Loading...</p>
+                    }
+                    else
+                    {
+                        foreach (var post in Store.State.Posts)
+                        {
+                            <PostItem Post="@post"/>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
 
 @functions
 {

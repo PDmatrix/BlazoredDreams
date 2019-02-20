@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using BlazoredDreams.Domain.Entities;
+using BlazoredDreams.Application.Posts.Models;
 using BlazorRedux;
 
 namespace BlazoredDreams.App.Redux
@@ -28,7 +28,7 @@ namespace BlazoredDreams.App.Redux
 			}
 		}
 
-		private static List<Post> PostsReducer(List<Post> posts, IAction action)
+		private static List<GetAllPostDto> PostsReducer(List<GetAllPostDto> posts, IAction action)
 		{
 			switch (action)
 			{
