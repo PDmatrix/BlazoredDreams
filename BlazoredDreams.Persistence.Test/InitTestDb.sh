@@ -7,6 +7,4 @@ if [[ ! "$(docker ps -q -f name=${name})" ]]; then
     fi
     echo "Running postgres container..."
     docker run -v $(pwd)/db:/docker-entrypoint-initdb.d --name ${name} -d -e POSTGRES_PASSWORD=password -e POSTGRES_USER=blazoreddreams -p 5432:5432 postgres:alpine
-    sleep 5
 fi
-dotnet test

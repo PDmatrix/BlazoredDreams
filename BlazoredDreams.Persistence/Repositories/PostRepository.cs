@@ -46,7 +46,6 @@ namespace BlazoredDreams.Persistence.Repositories
                 new { pageSize, page = (page - 1) * pageSize }, Transaction);
         }
 
-		//TODO: Cover with tests
 		public Task<IEnumerable<GetAllPostDto>> GetAllPostsAsync(int page = 1, int pageSize = 10)
 		{
 			const string sql = @"
@@ -57,8 +56,7 @@ namespace BlazoredDreams.Persistence.Repositories
 				p.excerpt,
 				to_char(p.created_at, 'YYYY.mm.dd') as date,
 				COALESCE(t.name, 'Без тега') as tag,
-				(SELECT COUNT(*) FROM post) as total_pages,
-			    @page as page
+				(SELECT COUNT(*) FROM post) as total_pages
 			FROM post p
 				INNER JOIN identity_user iu on p.user_id = iu.id
 				INNER JOIN dream d on d.id = p.dream_id

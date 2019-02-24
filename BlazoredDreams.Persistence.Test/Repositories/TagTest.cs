@@ -19,19 +19,6 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 		}
 
 		[Fact]
-		public async Task Exists()
-		{
-			// Arrange
-			const string sql = @"SELECT to_regclass('public.tag') IS NOT NULL AS exists;";
-			// Act
-			var queryData = await DatabaseFixture.UnitOfWork.Connection.QueryAsync(sql);
-			var exists = queryData.FirstOrDefault()?.exists;
-			// Assert
-			Assert.NotNull(exists);
-			Assert.True(exists);
-		}
-
-		[Fact]
 		public async Task SelectById()
 		{
 			// Arrange

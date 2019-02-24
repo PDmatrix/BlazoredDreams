@@ -1,6 +1,8 @@
 using System.Linq;
 using System.Threading.Tasks;
+using BlazoredDreams.Application.Posts.Models;
 using Dapper;
+using FluentAssertions;
 using Xunit;
 
 namespace BlazoredDreams.Persistence.Test.Repositories
@@ -21,19 +23,6 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			await DatabaseFixture.UnitOfWork.Connection.ExecuteAsync(sql);
 			DatabaseFixture.UnitOfWork.Commit();
 		}
-		
-		[Fact]
-		public async Task Exists()
-		{
-			// Arrange
-			const string sql = @"SELECT to_regclass('public.post') IS NOT NULL AS exists;";
-			// Act
-			var queryData = await DatabaseFixture.UnitOfWork.Connection.QueryAsync(sql);
-			var exists = queryData.FirstOrDefault()?.exists;
-			// Assert
-			Assert.NotNull(exists);
-			Assert.True(exists);
-		}
 
 		[Fact]
 		public async Task SelectById()
@@ -43,8 +32,8 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			// Act
 			var post = await DatabaseFixture.UnitOfWork.PostRepository.GetAsync(1);
 			// Assert
-			Assert.Equal("foo", post.Title);
-			Assert.Equal("foo", post.Excerpt);
+			post.Title.Should().Be("foo");
+			post.Excerpt.Should().Be("foo");
 		}
 
 		[Fact]
@@ -55,11 +44,11 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			// Act
 			var all = (await DatabaseFixture.UnitOfWork.PostRepository.GetAllAsync()).ToList();
 			// Assert
-			Assert.True(all.Count == 2);
-			Assert.Equal("foo", all[0].Title);
-			Assert.Equal("foo", all[0].Excerpt);
-			Assert.Equal("bar", all[1].Title);
-			Assert.Equal("bar", all[1].Excerpt);
+			all.Should().HaveCount(2);
+			all.First().Title.Should().Be("foo");
+			all.First().Excerpt.Should().Be("foo");
+			all.Last().Title.Should().Be("bar");
+			all.Last().Excerpt.Should().Be("bar");
 		}
 
 		[Fact]
@@ -70,9 +59,9 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			// Act
 			var all = (await DatabaseFixture.UnitOfWork.PostRepository.GetAllAsync(1, 1)).ToList();
 			// Assert
-			Assert.Single(all);
-			Assert.Equal("foo", all[0].Title);
-			Assert.Equal("foo", all[0].Excerpt);
+			all.Should().HaveCount(1);
+			all.First().Title.Should().Be("foo");
+			all.First().Excerpt.Should().Be("foo");
 		}
 		
 		[Fact]
@@ -86,10 +75,10 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			DatabaseFixture.UnitOfWork.Commit();
 			var selectedPost = await DatabaseFixture.UnitOfWork.PostRepository.GetAsync(3);
 			// Assert
-			Assert.Equal(post.Title, selectedPost.Title);
-			Assert.Equal(post.UserId, selectedPost.UserId);
-			Assert.Equal(post.DreamId, selectedPost.DreamId);
-			Assert.Equal(post.Excerpt, selectedPost.Excerpt);
+			post.Title.Should().Be(selectedPost.Title);
+			post.UserId.Should().Be(selectedPost.UserId);
+			post.DreamId.Should().Be(selectedPost.DreamId);
+			post.Excerpt.Should().Be(selectedPost.Excerpt);
 		}
 
 		[Fact]
@@ -104,8 +93,8 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			var updatedPost = await DatabaseFixture.UnitOfWork.PostRepository.GetAsync(1);
 			var notUpdatedPost = await DatabaseFixture.UnitOfWork.PostRepository.GetAsync(2);
 			// Assert
-			Assert.Equal("baz", updatedPost.Title);
-			Assert.Equal("bar", notUpdatedPost.Title);
+			updatedPost.Title.Should().Be("baz");
+			notUpdatedPost.Title.Should().Be("bar");
 		}
 
 		[Fact]
@@ -118,7 +107,41 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			DatabaseFixture.UnitOfWork.Commit();
 			var all = await DatabaseFixture.UnitOfWork.PostRepository.GetAllAsync();
 			// Assert
-			Assert.Single(all);
+			all.Should().HaveCount(1);
+		}
+
+		[Fact]
+		public async Task GetAllPostsDto()
+		{
+			// Arrange
+			await InitSqlAsync();
+			var expectedFirstPost = new GetAllPostDto
+			{
+				Tag = "Без тега",
+				Comments = 0,
+				Title = "foo",
+				Excerpt = "foo",
+				Username = "foo",
+				TotalPages = 2
+			};
+			var expectedSecondPost = new GetAllPostDto
+			{
+				Tag = "Без тега",
+				Comments = 0,
+				Title = "bar",
+				Excerpt = "bar",
+				Username = "foo",
+				TotalPages = 2
+			};
+			// Act
+			var posts = await DatabaseFixture.UnitOfWork.PostRepository.GetAllPostsAsync();
+			var getAllPostDtos = posts as GetAllPostDto[] ?? posts.ToArray();
+			expectedFirstPost.Date = getAllPostDtos.First().Date;
+			expectedSecondPost.Date = getAllPostDtos.Last().Date;
+			// Assert
+			getAllPostDtos.Should().HaveCount(2);
+			getAllPostDtos.First().Should().BeEquivalentTo(expectedFirstPost);
+			getAllPostDtos.Last().Should().BeEquivalentTo(expectedSecondPost);
 		}
 
 		public async Task InitializeAsync()
