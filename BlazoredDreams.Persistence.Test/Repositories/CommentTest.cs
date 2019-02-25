@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
+using FluentAssertions;
 using Xunit;
 
 namespace BlazoredDreams.Persistence.Test.Repositories
@@ -31,7 +32,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			// Act
 			var comment = await DatabaseFixture.UnitOfWork.CommentRepository.GetAsync(1);
 			// Assert
-			Assert.Equal("foo", comment.Content);
+			comment.Content.Should().Be("foo");
 		}
 
 		[Fact]
@@ -42,9 +43,9 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			// Act
 			var all = (await DatabaseFixture.UnitOfWork.CommentRepository.GetAllAsync()).ToList();
 			// Assert
-			Assert.True(all.Count == 2);
-			Assert.Equal("foo", all[0].Content);
-			Assert.Equal("bar", all[1].Content);
+			all.Should().HaveCount(2);
+			all.First().Content.Should().Be("foo");
+			all.Last().Content.Should().Be("bar");
 		}
 		
 		[Fact]
@@ -55,8 +56,8 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			// Act
 			var all = (await DatabaseFixture.UnitOfWork.CommentRepository.GetAllAsync(1, 1)).ToList();
 			// Assert
-			Assert.Single(all);
-			Assert.Equal("foo", all[0].Content);
+			all.Should().HaveCount(1);
+			all.First().Content.Should().Be("foo");
 		}
 
 		[Fact]
@@ -70,9 +71,13 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			DatabaseFixture.UnitOfWork.Commit();
 			var selectedComment = await DatabaseFixture.UnitOfWork.CommentRepository.GetAsync(3);
 			// Assert
-			Assert.Equal(comment.Content, selectedComment.Content);
-			Assert.Equal(comment.UserId, selectedComment.UserId);
-			Assert.Equal(comment.PostId, selectedComment.PostId);
+			selectedComment.Should().BeEquivalentTo(comment, options =>
+			{
+				return options
+					.Excluding(r => r.Id)
+					.Excluding(r => r.CreatedAt)
+					.Excluding(r => r.UpdatedAt);
+			});
 		}
 
 		[Fact]
@@ -87,8 +92,8 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			var updatedComment = await DatabaseFixture.UnitOfWork.CommentRepository.GetAsync(1);
 			var notUpdatedComment = await DatabaseFixture.UnitOfWork.CommentRepository.GetAsync(2);
 			// Assert
-			Assert.Equal("baz", updatedComment.Content);
-			Assert.Equal("bar", notUpdatedComment.Content);
+			updatedComment.Content.Should().Be("baz");
+			notUpdatedComment.Content.Should().Be("bar");
 		}
 
 		[Fact]
@@ -101,7 +106,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			DatabaseFixture.UnitOfWork.Commit();
 			var all = await DatabaseFixture.UnitOfWork.CommentRepository.GetAllAsync();
 			// Assert
-			Assert.Single(all);
+			all.Should().HaveCount(1);
 		}
 
 		public async Task InitializeAsync()
