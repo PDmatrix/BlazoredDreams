@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
+using FluentAssertions;
 using Xunit;
 
 namespace BlazoredDreams.Persistence.Test.Repositories
@@ -28,7 +29,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			// Act
 			var dream = await DatabaseFixture.UnitOfWork.DreamRepository.GetAsync(1);
 			// Assert
-			Assert.Equal("foo", dream.Content);
+			dream.Content.Should().Be("foo");
 		}
 
 		[Fact]
@@ -39,9 +40,9 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			// Act
 			var all = (await DatabaseFixture.UnitOfWork.DreamRepository.GetAllAsync()).ToList();
 			// Assert
-			Assert.True(all.Count == 2);
-			Assert.Equal("foo", all[0].Content);
-			Assert.Equal("bar", all[1].Content);
+			all.Should().HaveCount(2);
+			all.First().Content.Should().Be("foo");
+			all.Last().Content.Should().Be("bar");
 		}
 
 		[Fact]
@@ -52,8 +53,8 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			// Act
 			var all = (await DatabaseFixture.UnitOfWork.DreamRepository.GetAllAsync(1, 1)).ToList();
 			// Assert
-			Assert.Single(all);
-			Assert.Equal("foo", all[0].Content);
+			all.Should().HaveCount(1);
+			all.First().Content.Should().Be("foo");
 		}
 		
 		[Fact]
@@ -67,8 +68,13 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			DatabaseFixture.UnitOfWork.Commit();
 			var selectedDream = await DatabaseFixture.UnitOfWork.DreamRepository.GetAsync(3);
 			// Assert
-			Assert.Equal(dream.Content, selectedDream.Content);
-			Assert.Equal(dream.UserId, selectedDream.UserId);
+			selectedDream.Should().BeEquivalentTo(dream, options =>
+			{
+				return options
+					.Excluding(r => r.Id)
+					.Excluding(r => r.CreatedAt)
+					.Excluding(r => r.UpdatedAt);
+			});
 		}
 
 		[Fact]
@@ -83,8 +89,8 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			var updatedDream = await DatabaseFixture.UnitOfWork.DreamRepository.GetAsync(1);
 			var notUpdatedDream = await DatabaseFixture.UnitOfWork.DreamRepository.GetAsync(2);
 			// Assert
-			Assert.Equal("baz", updatedDream.Content);
-			Assert.Equal("bar", notUpdatedDream.Content);
+			updatedDream.Content.Should().Be("baz");
+			notUpdatedDream.Content.Should().Be("bar");
 		}
 
 		[Fact]
@@ -97,7 +103,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			DatabaseFixture.UnitOfWork.Commit();
 			var all = await DatabaseFixture.UnitOfWork.DreamRepository.GetAllAsync();
 			// Assert
-			Assert.Single(all);
+			all.Should().HaveCount(1);
 		}
 
 		public async Task InitializeAsync()

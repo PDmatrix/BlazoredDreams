@@ -75,10 +75,13 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			DatabaseFixture.UnitOfWork.Commit();
 			var selectedPost = await DatabaseFixture.UnitOfWork.PostRepository.GetAsync(3);
 			// Assert
-			post.Title.Should().Be(selectedPost.Title);
-			post.UserId.Should().Be(selectedPost.UserId);
-			post.DreamId.Should().Be(selectedPost.DreamId);
-			post.Excerpt.Should().Be(selectedPost.Excerpt);
+			selectedPost.Should().BeEquivalentTo(post, options =>
+			{
+				return options
+					.Excluding(r => r.Id)
+					.Excluding(r => r.CreatedAt)
+					.Excluding(r => r.UpdatedAt);
+			});
 		}
 
 		[Fact]
@@ -136,12 +139,12 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			// Act
 			var posts = await DatabaseFixture.UnitOfWork.PostRepository.GetAllPostsAsync();
 			var getAllPostDtos = posts as GetAllPostDto[] ?? posts.ToArray();
-			expectedFirstPost.Date = getAllPostDtos.First().Date;
-			expectedSecondPost.Date = getAllPostDtos.Last().Date;
 			// Assert
 			getAllPostDtos.Should().HaveCount(2);
-			getAllPostDtos.First().Should().BeEquivalentTo(expectedFirstPost);
-			getAllPostDtos.Last().Should().BeEquivalentTo(expectedSecondPost);
+			getAllPostDtos.First().Should().BeEquivalentTo(expectedFirstPost, options =>
+				options.Excluding(r => r.Date));
+			getAllPostDtos.Last().Should().BeEquivalentTo(expectedSecondPost, options =>
+				options.Excluding(r => r.Date));
 		}
 
 		public async Task InitializeAsync()

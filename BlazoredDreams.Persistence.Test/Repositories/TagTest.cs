@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
+using FluentAssertions;
 using Xunit;
 
 namespace BlazoredDreams.Persistence.Test.Repositories
@@ -27,8 +28,8 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			var fooTag = await DatabaseFixture.UnitOfWork.TagRepository.GetAsync(1);
 			var barTag = await DatabaseFixture.UnitOfWork.TagRepository.GetAsync(2);
 			// Assert
-			Assert.Equal("foo", fooTag.Name);
-			Assert.Equal("bar", barTag.Name);
+			fooTag.Name.Should().Be("foo");
+			barTag.Name.Should().Be("bar");
 		}
 
 		[Fact]
@@ -39,9 +40,9 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			// Act
 			var all = (await DatabaseFixture.UnitOfWork.TagRepository.GetAllAsync()).ToList();
 			// Assert
-			Assert.True(all.Count == 2);
-			Assert.Equal("foo", all[0].Name);
-			Assert.Equal("bar", all[1].Name);
+			all.Should().HaveCount(2);
+			all.First().Name.Should().Be("foo");
+			all.Last().Name.Should().Be("bar");
 		}
 
 		[Fact]
@@ -52,8 +53,8 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			// Act
 			var all = (await DatabaseFixture.UnitOfWork.TagRepository.GetAllAsync(1, 1)).ToList();
 			// Assert
-			Assert.Single(all);
-			Assert.Equal("foo", all[0].Name);
+			all.Should().HaveCount(1);
+			all.First().Name.Should().Be("foo");
 		}
 		
 		[Fact]
@@ -66,7 +67,13 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			DatabaseFixture.UnitOfWork.Commit();
 			var selectedTag = await DatabaseFixture.UnitOfWork.TagRepository.GetAsync(1);
 			// Assert
-			Assert.Equal(tag.Name, selectedTag.Name);
+			selectedTag.Should().BeEquivalentTo(tag, options =>
+			{
+				return options
+					.Excluding(r => r.Id)
+					.Excluding(r => r.CreatedAt)
+					.Excluding(r => r.UpdatedAt);
+			});
 		}
 
 		[Fact]
@@ -81,8 +88,8 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			var selectedTag = await DatabaseFixture.UnitOfWork.TagRepository.GetAsync(1);
 			var notUpdatedTag = await DatabaseFixture.UnitOfWork.TagRepository.GetAsync(2);
 			// Assert
-			Assert.Equal("baz", selectedTag.Name);
-			Assert.Equal("bar", notUpdatedTag.Name);
+			selectedTag.Name.Should().Be("baz");
+			notUpdatedTag.Name.Should().Be("bar");
 		}
 
 		[Fact]
@@ -95,7 +102,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			DatabaseFixture.UnitOfWork.Commit();
 			var all = await DatabaseFixture.UnitOfWork.TagRepository.GetAllAsync();
 			// Assert
-			Assert.Single(all);
+			all.Should().HaveCount(1);
 		}
 
 		public Task InitializeAsync() => TruncateTableAsync("tag");

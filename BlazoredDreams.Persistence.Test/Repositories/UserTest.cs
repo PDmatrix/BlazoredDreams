@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
+using FluentAssertions;
 using Xunit;
 
 namespace BlazoredDreams.Persistence.Test.Repositories
@@ -27,7 +28,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			// Act
 			var user = await DatabaseFixture.UnitOfWork.UserRepository.GetAsync(1);
 			// Assert
-			Assert.Equal("foo", user.Identifier);
+			user.Identifier.Should().Be("foo");
 		}
 
 		[Fact]
@@ -38,9 +39,9 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			// Act
 			var all = (await DatabaseFixture.UnitOfWork.UserRepository.GetAllAsync()).ToList();
 			// Assert
-			Assert.True(all.Count == 2);
-			Assert.Equal("foo", all[0].Identifier);
-			Assert.Equal("bar", all[1].Identifier);
+			all.Should().HaveCount(2);
+			all.First().Identifier.Should().Be("foo");
+			all.Last().Identifier.Should().Be("bar");
 		}
 
 		[Fact]
@@ -51,8 +52,8 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			// Act
 			var all = (await DatabaseFixture.UnitOfWork.UserRepository.GetAllAsync(1, 1)).ToList();
 			// Assert
-			Assert.Single(all);
-			Assert.Equal("foo", all[0].Identifier);
+			all.Should().HaveCount(1);
+			all.First().Identifier.Should().Be("foo");
 		}
 		
 		[Fact]
@@ -66,7 +67,13 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			DatabaseFixture.UnitOfWork.Commit();
 			var selectedUser = await DatabaseFixture.UnitOfWork.UserRepository.GetAsync(3);
 			// Assert
-			Assert.Equal(user.Identifier, selectedUser.Identifier);
+			selectedUser.Should().BeEquivalentTo(user, options =>
+			{
+				return options
+					.Excluding(r => r.Id)
+					.Excluding(r => r.CreatedAt)
+					.Excluding(r => r.UpdatedAt);
+			});
 		}
 
 		[Fact]
@@ -81,8 +88,8 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			var updatedUser = await DatabaseFixture.UnitOfWork.UserRepository.GetAsync(1);
 			var notUpdatedUser = await DatabaseFixture.UnitOfWork.UserRepository.GetAsync(2);
 			// Assert
-			Assert.Equal("baz", updatedUser.Identifier);
-			Assert.Equal("bar", notUpdatedUser.Identifier);
+			updatedUser.Identifier.Should().Be("baz");
+			notUpdatedUser.Identifier.Should().Be("bar");
 		}
 
 		[Fact]
@@ -95,7 +102,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			DatabaseFixture.UnitOfWork.Commit();
 			var all = await DatabaseFixture.UnitOfWork.UserRepository.GetAllAsync();
 			// Assert
-			Assert.Single(all);
+			all.Should().HaveCount(1);
 		}
 
 		public Task InitializeAsync() => TruncateTableAsync("identity_user");

@@ -1,7 +1,9 @@
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using BlazoredDreams.Domain.Entities;
 using Dapper;
+using FluentAssertions;
 using Xunit;
 
 namespace BlazoredDreams.Persistence.Test.Repositories
@@ -24,9 +26,9 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			var userLikes = 
 				(await DatabaseFixture.UnitOfWork.Connection.QueryAsync<UserLikes>(selectSql)).FirstOrDefault();
 			// Assert
-			Assert.NotNull(userLikes);
-			Assert.Equal(1, userLikes.PostId);
-			Assert.Equal(1, userLikes.UserId);
+			userLikes.Should().NotBeNull();
+			userLikes?.PostId.Should().Be(1);
+			userLikes?.UserId.Should().Be(1);
 		}
 
 		[Fact]
@@ -44,7 +46,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 			var userLikes =
 				await DatabaseFixture.UnitOfWork.Connection.QueryAsync<UserLikes>(selectSql);
 			// Assert
-			Assert.Empty(userLikes);
+			userLikes.Should().BeEmpty();
 		}
 
 		[Fact]
