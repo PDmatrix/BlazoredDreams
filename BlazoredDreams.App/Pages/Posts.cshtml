@@ -1,0 +1,123 @@
+@page "/posts"
+@using BlazoredDreams.App.Redux
+@inherits BlazoredDreams.App.BaseComponents.BaseComponent
+<section class="blog-area section_padding_100">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-8">
+                <div class="mosh-blog-posts">
+                    <PostList/>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <div class="mosh-blog-sidebar">
+
+                    <div class="blog-post-search-widget mb-100">
+                        <form action="#">
+                            <input type="search" name="search" id="Search">
+                            <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                        </form>
+                    </div>
+
+                    <div class="blog-post-archives mb-100">
+                        <h5>Archives</h5>
+                        <ul>
+                            <li><a href="#">March 2018</a></li>
+                            <li><a href="#">April 2018</a></li>
+                            <li><a href="#">May 2018</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="blog-post-categories mb-100">
+                        <h5>Categories</h5>
+                        <ul>
+                            <li><a href="#">Entertaiment</a></li>
+                            <li><a href="#">Business &amp; Finance</a></li>
+                            <li><a href="#">Technology</a></li>
+                            <li><a href="#">Creative fields</a></li>
+                            <li><a href="#">Lifestyle &amp; Travel</a></li>
+                            <li><a href="#">Uncategorized</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="latest-blog-posts mb-100">
+                        <h5>Latest Posts</h5>
+                        <!-- Single Latest Blog Post -->
+                        <div class="single-latest-blog-post d-flex">
+                            <div class="latest-blog-post-thumb">
+                                <img src="img/blog-img/lb-1.jpg" alt="">
+                            </div>
+                            <div class="latest-blog-post-content">
+                                <h6><a href="#">A simple blog post</a></h6>
+                                <div class="post-meta">
+                                    <h6>By <a href="#">Jane Smith</a>/<a href="#">Aug 25, 2016</a></h6>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Single Latest Blog Post -->
+                        <div class="single-latest-blog-post d-flex">
+                            <div class="latest-blog-post-thumb">
+                                <img src="img/blog-img/lb-2.jpg" alt="">
+                            </div>
+                            <div class="latest-blog-post-content">
+                                <h6><a href="#">A new way to see things in design</a></h6>
+                                <div class="post-meta">
+                                    <h6>By <a href="#">Jane Smith</a>/<a href="#">Aug 25, 2016</a></h6>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Single Latest Blog Post -->
+                        <div class="single-latest-blog-post d-flex">
+                            <div class="latest-blog-post-thumb">
+                                <img src="img/blog-img/lb-3.jpg" alt="">
+                            </div>
+                            <div class="latest-blog-post-content">
+                                <h6><a href="#">This is just a blog post</a></h6>
+                                <div class="post-meta">
+                                    <h6>By <a href="#">Jane Smith</a>/<a href="#">Aug 25, 2016</a></h6>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Single Latest Blog Post -->
+                        <div class="single-latest-blog-post d-flex">
+                            <div class="latest-blog-post-thumb">
+                                <img src="img/blog-img/lb-4.jpg" alt="">
+                            </div>
+                            <div class="latest-blog-post-content">
+                                <h6><a href="#">Make a good investment in 2018</a></h6>
+                                <div class="post-meta">
+                                    <h6>By <a href="#">Jane Smith</a>/<a href="#">Aug 25, 2016</a></h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="instagram-feeds">
+                        <h5>Instagram</h5>
+                        <ul>
+                            <li><a href="#"><img src="img/blog-img/ins-1.jpg" alt=""></a></li>
+                            <li><a href="#"><img src="img/blog-img/ins-2.jpg" alt=""></a></li>
+                            <li><a href="#"><img src="img/blog-img/ins-3.jpg" alt=""></a></li>
+                            <li><a href="#"><img src="img/blog-img/ins-4.jpg" alt=""></a></li>
+                            <li><a href="#"><img src="img/blog-img/ins-5.jpg" alt=""></a></li>
+                            <li><a href="#"><img src="img/blog-img/ins-6.jpg" alt=""></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@functions
+{
+    protected override void OnInit()
+    {
+        Dispatch(new ChangePageInfo
+        {
+            Title = "Публикации", 
+            BreadCrumb = "Публикации"
+        });
+    }
+}

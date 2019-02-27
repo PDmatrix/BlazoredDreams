@@ -125,7 +125,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 				Title = "foo",
 				Excerpt = "foo",
 				Username = "foo",
-				TotalPages = 2
+				TotalPages = 1
 			};
 			var expectedSecondPost = new GetAllPostDto
 			{
@@ -134,7 +134,7 @@ namespace BlazoredDreams.Persistence.Test.Repositories
 				Title = "bar",
 				Excerpt = "bar",
 				Username = "foo",
-				TotalPages = 2
+				TotalPages = 1
 			};
 			// Act
 			var posts = await DatabaseFixture.UnitOfWork.PostRepository.GetAllPostsAsync();

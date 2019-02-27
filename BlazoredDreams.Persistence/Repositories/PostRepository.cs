@@ -56,7 +56,7 @@ namespace BlazoredDreams.Persistence.Repositories
 				p.excerpt,
 				to_char(p.created_at, 'YYYY.mm.dd') as date,
 				COALESCE(t.name, 'Без тега') as tag,
-				(SELECT COUNT(*) FROM post) as total_pages
+				ceil(cast(count(*) over() as float) / cast(@pageSize as float)) as total_pages
 			FROM post p
 				INNER JOIN identity_user iu on p.user_id = iu.id
 				INNER JOIN dream d on d.id = p.dream_id

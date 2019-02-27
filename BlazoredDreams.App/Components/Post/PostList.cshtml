@@ -1,29 +1,31 @@
 @using BlazoredDreams.App.Redux
 @inherits BlazoredDreams.App.BaseComponents.BaseComponent
+@inject Microsoft.AspNetCore.Blazor.Services.IUriHelper UriHelper
 
-<section class="blog-area section_padding_100">
-<div class="container">
-    <div class="row">
-        <div class="col-12 col-md-8">
-            <div class="mosh-blog-posts">
-                <div class="row">
-                    @if (Store.State.IsLoading)
+<div class="row">
+    @if (Store.State.IsLoading)
+    {
+        <p>Loading...</p>
+    }
+    else
+    {
+        foreach (var post in Store.State.Posts)
+        {
+            <PostItem Post="@post"/>
+        }
+        <!-- Pagination Area Start -->
+        <div class="mosh-pagination-area">
+            <nav>
+                <ul class="pagination">
+                    @for (var i = 1; i <= Store.State.Posts.FirstOrDefault()?.TotalPages; i++)
                     {
-                        <p>Loading...</p>
+                        <li class="page-item"><a class="page-link" href="/posts?page=@i">@i.</a></li>
                     }
-                    else
-                    {
-                        foreach (var post in Store.State.Posts)
-                        {
-                            <PostItem Post="@post"/>
-                        }
-                    }
-                </div>
-            </div>
+                </ul>
+            </nav>
         </div>
-    </div>
+    }
 </div>
-</section>
 
 @functions
 {
