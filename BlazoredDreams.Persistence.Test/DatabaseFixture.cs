@@ -7,7 +7,7 @@ namespace BlazoredDreams.Persistence.Test
 	{
 		public DatabaseFixture()
 		{
-			UnitOfWork = new UnitOfWork("Server=localhost;Port=5432;Database=blazoreddreams;User Id=blazoreddreams;Password=password");	
+			UnitOfWork = new UnitOfWork("Server=localhost;Port=5432;Database=blazoreddreams_test;User Id=postgres;Password=postgres");	
 		}
 		
 		public IUnitOfWork UnitOfWork { get; }

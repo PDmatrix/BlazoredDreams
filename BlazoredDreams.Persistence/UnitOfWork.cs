@@ -13,7 +13,6 @@ namespace BlazoredDreams.Persistence
         private IDreamRepository _dreamRepository;
         private ITagRepository _tagRepository;
         private ICommentRepository _commentRepository;
-        private IUserLikesRepository _userLikesRepository;
         private IUserRepository _userRepository;
         private IPostRepository _postRepository;
         
@@ -45,9 +44,6 @@ namespace BlazoredDreams.Persistence
         public ITagRepository TagRepository =>
             _tagRepository ?? (_tagRepository = new TagRepository(_transaction));
 
-        public IUserLikesRepository UserLikesRepository =>
-            _userLikesRepository ?? (_userLikesRepository = new UserLikesRepository(_transaction));
-
         public IUserRepository UserRepository =>
             _userRepository ?? (_userRepository = new UserRepository(_transaction));
         
@@ -77,7 +73,6 @@ namespace BlazoredDreams.Persistence
             _dreamRepository = null;
             _tagRepository = null;
             _commentRepository = null;
-            _userLikesRepository = null;
             _userRepository = null;
             _postRepository = null;
         }

@@ -9,7 +9,6 @@ namespace BlazoredDreams.Application.Interfaces.DataAccess
 		IDreamRepository DreamRepository { get; }
 		IPostRepository PostRepository { get; }
 		ITagRepository TagRepository { get; }
-		IUserLikesRepository UserLikesRepository { get; }
 		IUserRepository UserRepository { get; }
 		IDbConnection Connection { get; }
 
