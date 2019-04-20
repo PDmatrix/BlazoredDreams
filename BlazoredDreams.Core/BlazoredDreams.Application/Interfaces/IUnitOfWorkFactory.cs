@@ -1,4 +1,4 @@
-namespace Blog.API.Application.Interfaces
+namespace BlazoredDreams.Application.Interfaces
 {
 	public interface IUnitOfWorkFactory
 	{

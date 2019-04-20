@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BlazoredDreams.Test", "Blaz
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazoredDreams.API", "BlazoredDreams.Presentation\BlazoredDreams.API\BlazoredDreams.API.csproj", "{68CE55C8-ACDC-4837-9C75-FF997EFC51CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazoredDreams.API.IntegrationTest", "BlazoredDreams.Test\BlazoredDreams.API.IntegrationTest\BlazoredDreams.API.IntegrationTest.csproj", "{7753C01A-4193-474C-9EDA-62CA431900B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,11 +40,16 @@ Global
 		{68CE55C8-ACDC-4837-9C75-FF997EFC51CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68CE55C8-ACDC-4837-9C75-FF997EFC51CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68CE55C8-ACDC-4837-9C75-FF997EFC51CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7753C01A-4193-474C-9EDA-62CA431900B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7753C01A-4193-474C-9EDA-62CA431900B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7753C01A-4193-474C-9EDA-62CA431900B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7753C01A-4193-474C-9EDA-62CA431900B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0B6D5235-7EE7-47F2-AA6D-73CBC3885ED6} = {4BF99FAD-BE64-4873-A9C8-31B33187D639}
 		{C199B050-4CC0-4B8B-B932-1AE6FFB0B98A} = {4BF99FAD-BE64-4873-A9C8-31B33187D639}
 		{AE78AEC3-ED0C-4177-80D4-0C8E3A3080FA} = {04CD6467-F880-4F25-BE13-F12E615C5D44}
 		{68CE55C8-ACDC-4837-9C75-FF997EFC51CC} = {21BEC5EA-D16B-465F-BFA9-4E133AC21430}
+		{7753C01A-4193-474C-9EDA-62CA431900B2} = {C228BCC0-B169-40C9-9C7D-A9B11D1D0F03}
 	EndGlobalSection
 EndGlobal

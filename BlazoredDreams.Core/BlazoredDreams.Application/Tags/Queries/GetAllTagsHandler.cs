@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using BlazoredDreams.Application.Interfaces;
 using BlazoredDreams.Domain.Entities;
-using Blog.API.Application.Interfaces;
 using MediatR;
 
 namespace BlazoredDreams.Application.Tags.Queries

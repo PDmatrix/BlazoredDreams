@@ -1,6 +1,7 @@
-﻿using BlazoredDreams.Application.Posts.Queries;
+﻿using BlazoredDreams.Application.Interfaces;
+using BlazoredDreams.Application.Posts.Queries;
+using BlazoredDreams.API.Infrastructure;
 using BlazoredDreams.Persistence;
-using Blog.API.Application.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 
+[assembly: ApiConventionType(typeof(DefaultApiConventions))]
 namespace BlazoredDreams.API
 {
 	public class Startup
@@ -25,26 +27,9 @@ namespace BlazoredDreams.API
 		
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddMvcCore()
-				.AddJsonFormatters()
-				.AddCors()
-				.AddJsonOptions(x =>
-				{
-					x.SerializerSettings.ContractResolver = new DefaultContractResolver
-					{
-						NamingStrategy = new SnakeCaseNamingStrategy()
-					};
-				})
-				.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-			
+			services.AddCustomMvc(Environment);
 			services.AddOpenApiDocument();
-			services.AddApiVersioning(options =>
-			{
-				options.AssumeDefaultVersionWhenUnspecified = true;
-				options.ApiVersionReader = new UrlSegmentApiVersionReader();
-				options.DefaultApiVersion = new ApiVersion(1, 0);
-			});
-			services.AddVersionedApiExplorer(options => { options.GroupNameFormat = "VV"; });
+			services.AddCustomApiVersioning();
 			services.AddMediatR(typeof(GetAllPostsHandler));
 			services.AddScoped<IUnitOfWorkFactory>(provider => 
 				new UnitOfWorkFactory(Configuration.GetConnectionString("DefaultConnection")));

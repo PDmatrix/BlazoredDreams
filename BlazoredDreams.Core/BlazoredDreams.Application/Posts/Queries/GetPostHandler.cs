@@ -9,47 +9,40 @@ using MediatR;
 
 namespace BlazoredDreams.Application.Posts.Queries
 {
-	public class GetAllPostsQuery : IRequest<IEnumerable<PostPreviewDto>>
+	public class GetPostQuery : IRequest<PostDto>
 	{
-		public int Page { get; set; } = 1;
+		public int Id { get; set; }
 	}
 	
 	// ReSharper disable once UnusedMember.Global
-	public class GetAllPostsHandler : IRequestHandler<GetAllPostsQuery, IEnumerable<PostPreviewDto>>
+	public class GetPostHandler : IRequestHandler<GetPostQuery, PostDto>
 	{
 		private readonly IUnitOfWork _unitOfWork;
 
-		public GetAllPostsHandler(IUnitOfWorkFactory unitOfWorkFactory)
+		public GetPostHandler(IUnitOfWorkFactory unitOfWorkFactory)
 		{
 			_unitOfWork = unitOfWorkFactory.Create();
 		}
 		
-		public Task<IEnumerable<PostPreviewDto>> Handle(GetAllPostsQuery request, CancellationToken ct)
+		public Task<PostDto> Handle(GetPostQuery request, CancellationToken ct)
 		{
 			const string sql = @"
 			SELECT
 				iu.identifier as username,
 				p.title,
 				(SELECT COUNT(*) FROM comment c WHERE c.post_id = p.id) as comments,
-				p.excerpt,
 				to_char(p.created_at, 'YYYY.mm.dd') as date,
 				COALESCE(t.name, 'Без тега') as tag,
-				ceil(cast(count(*) over() as float) / cast(@pageSize as float)) as total_pages
+			    d.content   
 			FROM post p
 				INNER JOIN identity_user iu on p.user_id = iu.id
 				INNER JOIN dream d on d.id = p.dream_id
 				LEFT JOIN post_tags pt on p.id = pt.post_id
 				LEFT JOIN tag t on pt.tag_id = t.id
-			LIMIT @pageSize OFFSET @page
+			WHERE p.id = @id
 			";
-			const int pageSize = 10;
-			var sqlParam = new
-			{
-				pageSize,
-				page = (request.Page - 1) * pageSize
-			};
-			
-			return _unitOfWork.Connection.QueryAsync<PostPreviewDto>(sql, sqlParam, _unitOfWork.Transaction);
+
+			return _unitOfWork.Connection.QuerySingleOrDefaultAsync<PostDto>(sql, new {request.Id}, _unitOfWork.Transaction);
 		}
 	}
 }

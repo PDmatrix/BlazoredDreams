@@ -1,7 +1,7 @@
 using System;
 using System.Data;
 
-namespace Blog.API.Application.Interfaces
+namespace BlazoredDreams.Application.Interfaces
 {
 	public interface IUnitOfWork : IDisposable
 	{

@@ -1,5 +1,5 @@
 using System.Data;
-using Blog.API.Application.Interfaces;
+using BlazoredDreams.Application.Interfaces;
 using Npgsql;
 
 namespace BlazoredDreams.Persistence
