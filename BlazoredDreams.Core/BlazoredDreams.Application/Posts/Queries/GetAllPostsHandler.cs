@@ -28,6 +28,7 @@ namespace BlazoredDreams.Application.Posts.Queries
 		{
 			const string sql = @"
 			SELECT
+			    p.id,
 				iu.identifier as username,
 				p.title,
 				(SELECT COUNT(*) FROM comment c WHERE c.post_id = p.id) as comments,

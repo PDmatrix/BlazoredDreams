@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using BlazoredDreams.Application.Posts.Models;
-using BlazoredDreams.API.Features.Post;
+using BlazoredDreams.API.Features.Posts;
 using BlazoredDreams.API.IntegrationTest.Infrastructure;
 using FluentAssertions;
 using Xunit;

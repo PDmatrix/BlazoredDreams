@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace BlazoredDreams.API.Features.Post
+namespace BlazoredDreams.API.Features.Posts
 {
 	public class PostRequest
 	{

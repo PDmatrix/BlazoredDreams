@@ -4,11 +4,10 @@ using System.Threading.Tasks;
 using BlazoredDreams.Application.Posts.Commands;
 using BlazoredDreams.Application.Posts.Models;
 using BlazoredDreams.Application.Posts.Queries;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BlazoredDreams.API.Features.Post
+namespace BlazoredDreams.API.Features.Posts
 {
 	public class PostsController : BaseController
 	{
@@ -25,7 +24,7 @@ namespace BlazoredDreams.API.Features.Post
 		}
         
 
-        [HttpGet("{id}", Name = "GetById")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<PostDto>> GetById(int id)
         {
 	        var res = await Mediator.Send(new GetPostQuery {Id = id});
@@ -75,15 +74,5 @@ namespace BlazoredDreams.API.Features.Post
 	        await Mediator.Send(updatePostCommand);
 	        return NoContent();
         }
-
-        /*[HttpPost("preview")]
-        [ProducesDefaultResponseType]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [Consumes("application/json")]
-        [TransactionFree]
-        public async Task<ActionResult<PreviewDto>> Preview(PreviewRequest previewRequest)
-        {
-	        return await Mediator.Send(new PreviewQuery {Content = previewRequest.Content});
-        }*/
 	}
 }
