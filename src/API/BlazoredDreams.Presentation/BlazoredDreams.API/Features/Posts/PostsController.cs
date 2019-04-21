@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using BlazoredDreams.Application.Posts.Commands;
 using BlazoredDreams.Application.Posts.Models;
 using BlazoredDreams.Application.Posts.Queries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,12 +34,13 @@ namespace BlazoredDreams.API.Features.Posts
 	        
 	        return res;
         }
-        
-        // TODO: Authorize
+
+        [Authorize]
         [HttpPost]
         [Consumes("application/json")]
         public async Task<ActionResult> Create(PostRequest postRequest)
         {
+	        
 	        var addPostCommand = new AddPostCommand
 	        {
 		        Title = postRequest.Title,

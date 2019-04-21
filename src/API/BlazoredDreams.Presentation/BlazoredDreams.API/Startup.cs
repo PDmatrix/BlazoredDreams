@@ -6,10 +6,8 @@ using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Serialization;
 
 [assembly: ApiConventionType(typeof(DefaultApiConventions))]
 namespace BlazoredDreams.API
@@ -28,7 +26,8 @@ namespace BlazoredDreams.API
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddCustomMvc(Environment);
-			services.AddOpenApiDocument();
+			services.AddCustomSwagger();
+			services.AddCustomAuthentication();
 			services.AddCustomApiVersioning();
 			services.AddMediatR(typeof(GetAllPostsHandler));
 			services.AddScoped<IUnitOfWorkFactory>(provider => 
@@ -43,7 +42,7 @@ namespace BlazoredDreams.API
 			}
 			
 			app.UseCors(options => options.AllowAnyMethod().AllowAnyOrigin().AllowAnyHeader());
-			
+			app.UseAuthentication();
 			app.UseMvc(routes =>
 			{
 				routes.MapRoute(

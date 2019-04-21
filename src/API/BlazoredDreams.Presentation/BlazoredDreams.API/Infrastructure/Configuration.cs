@@ -1,5 +1,6 @@
 using System;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -57,16 +58,32 @@ namespace BlazoredDreams.API.Infrastructure
 			services.AddVersionedApiExplorer(options => { options.GroupNameFormat = "VV"; });
 		}
 
-		public static void AddCustomAuthentication(this IServiceCollection services, string authority, string audience)
+		public static void AddCustomSwagger(this IServiceCollection services)
 		{
-			services.AddAuthentication("Bearer")
-				.AddJwtBearer("Bearer", options =>
+			services.AddOpenApiDocument(options =>
+			{
+				options.OperationProcessors.Add(new OperationSecurityScopeProcessor("JWT"));
+				options.DocumentProcessors.Add(new SecurityDefinitionAppender("JWT", new SwaggerSecurityScheme
 				{
-					options.Authority = authority;
-					options.RequireHttpsMetadata = false;
+					Type = SwaggerSecuritySchemeType.ApiKey,
+					Name = "Authorization",
+					In = SwaggerSecurityApiKeyLocation.Header,
+					Description = "Type into the textbox: Bearer {your JWT token}."
+				}));
+			});
+		}
 
-					options.Audience = audience;
-				});
+		public static void AddCustomAuthentication(this IServiceCollection services)
+		{
+			services.AddAuthentication(options =>
+			{
+				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+			}).AddJwtBearer(options =>
+			{
+				options.Authority = "https://dtxauth.auth0.com/";
+				options.Audience = "http://localhost:5000/api";
+			});
 		}
 	}
 }
