@@ -1,0 +1,8 @@
+.button {
+    margin-top: 10px;
+}
+.noSelection {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
