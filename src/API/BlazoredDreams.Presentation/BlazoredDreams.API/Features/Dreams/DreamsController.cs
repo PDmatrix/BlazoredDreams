@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BlazoredDreams.Application.Dreams.Commands;
 using BlazoredDreams.Application.Dreams.Models;
 using BlazoredDreams.Application.Dreams.Queries;
+using BlazoredDreams.Application.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,13 +17,18 @@ namespace BlazoredDreams.API.Features.Dreams
 		[HttpGet]
 		[ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<DreamDto>>> GetAll(int page = 1)
+        public async Task<ActionResult<Page<DreamDto>>> GetAll(int page = 1)
 		{
 			if (page < 1)
 				page = 1;
+
+			var getAllDreamsQuery = new GetAllDreamsQuery
+			{
+				Page = page,
+				UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+			};
 			
-			var res = await Mediator.Send(new GetAllDreamsQuery {Page = page});
-			return res.ToList();
+			return await Mediator.Send(getAllDreamsQuery);
 		}
         
 

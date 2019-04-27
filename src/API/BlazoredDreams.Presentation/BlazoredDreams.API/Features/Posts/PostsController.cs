@@ -20,10 +20,8 @@ namespace BlazoredDreams.API.Features.Posts
 			if (page < 1)
 				page = 1;
 			
-			var res = await Mediator.Send(new GetAllPostsQuery {Page = page});
-			return res;
+			return await Mediator.Send(new GetAllPostsQuery {Page = page});
 		}
-        
 
         [HttpGet("{id}")]
         public async Task<ActionResult<PostDto>> GetById(int id)

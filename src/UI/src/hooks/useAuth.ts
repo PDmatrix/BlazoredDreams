@@ -7,11 +7,12 @@ const AUTH_CONFIG = {
   callbackUrl: process.env.AUTH0_CALLBACK_URL,
   clientId: process.env.AUTH0_CLIENT_ID,
   domain: process.env.AUTH0_DOMAIN,
+  audience: process.env.AUTH0_AUDIENCE,
 };
 
 const useAuth = () => {
   const auth = new auth0.WebAuth({
-    audience: 'http://localhost:5000/api',
+    audience: AUTH_CONFIG.audience || '',
     clientID: AUTH_CONFIG.clientId || '',
     domain: AUTH_CONFIG.domain || '',
     redirectUri: AUTH_CONFIG.callbackUrl,

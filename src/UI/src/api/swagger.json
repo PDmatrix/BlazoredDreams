@@ -302,10 +302,7 @@
             "x-nullable": true,
             "description": "",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/DreamDto"
-              }
+              "$ref": "#/definitions/PageOfDreamDto"
             }
           }
         },
@@ -839,11 +836,41 @@
         }
       }
     },
+    "PageOfDreamDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "currentPage",
+        "pageSize",
+        "totalPages"
+      ],
+      "properties": {
+        "currentPage": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "records": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DreamDto"
+          }
+        },
+        "totalPages": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
     "DreamDto": {
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "id"
+        "id",
+        "isPublished"
       ],
       "properties": {
         "id": {
@@ -858,6 +885,9 @@
         },
         "date": {
           "type": "string"
+        },
+        "isPublished": {
+          "type": "boolean"
         }
       }
     },

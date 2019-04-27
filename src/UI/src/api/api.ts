@@ -148,6 +148,12 @@ export interface DreamDto {
    * @memberof DreamDto
    */
   date?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof DreamDto
+   */
+  isPublished: boolean;
 }
 
 /**
@@ -162,6 +168,38 @@ export interface DreamRequest {
    * @memberof DreamRequest
    */
   content?: string;
+}
+
+/**
+ *
+ * @export
+ * @interface PageOfDreamDto
+ */
+export interface PageOfDreamDto {
+  /**
+   *
+   * @type {number}
+   * @memberof PageOfDreamDto
+   */
+  currentPage: number;
+  /**
+   *
+   * @type {number}
+   * @memberof PageOfDreamDto
+   */
+  pageSize: number;
+  /**
+   *
+   * @type {Array<DreamDto>}
+   * @memberof PageOfDreamDto
+   */
+  records?: Array<DreamDto>;
+  /**
+   *
+   * @type {number}
+   * @memberof PageOfDreamDto
+   */
+  totalPages: number;
 }
 
 /**
@@ -1178,7 +1216,7 @@ export const DreamsApiFp = function(configuration?: Configuration) {
     dreamsGetAll(
       page?: number,
       options?: any,
-    ): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<DreamDto>> {
+    ): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageOfDreamDto> {
       const localVarAxiosArgs = DreamsApiAxiosParamCreator(configuration).dreamsGetAll(
         page,
         options,
