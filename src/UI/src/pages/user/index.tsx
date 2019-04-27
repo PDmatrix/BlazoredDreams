@@ -1,4 +1,8 @@
-import { BackTop, Button, Divider, Pagination, Spin } from 'antd';
+/**
+ * Routes:
+ *   - ./src/routes/PrivateRoute.tsx
+ */
+import { BackTop, Divider, Pagination } from 'antd';
 import React, { useEffect, useState } from 'react';
 import useAuth from '@/hooks/useAuth';
 import FetchWrapper from '@/components/Shared/FetchWrapper';
@@ -6,16 +10,16 @@ import UserInfo from '@/components/User/UserInfo';
 import CreateDream from '@/components/User/CreateDream';
 import DreamList from '@/components/User/DreamList';
 import {
-  CommentRequest,
-  CommentsApi,
-  DreamDto,
   DreamRequest,
   DreamsApi,
   PageOfDreamDto,
   PostRequest,
   PostsApi,
+  UserDto,
+  UsersApi,
 } from '@/api';
 import useNotification from '@/hooks/useNotification';
+import Router from 'umi/router';
 
 const User: React.FunctionComponent = () => {
   const auth = useAuth();
@@ -27,6 +31,11 @@ const User: React.FunctionComponent = () => {
     records: [],
     totalPages: 1,
   });
+  const [user, setUser] = useState<UserDto>({
+    email: '',
+    userId: '',
+    username: '',
+  });
   const [page, setPage] = useState(1);
 
   const changePage = async (newPage: number) => {
@@ -35,15 +44,22 @@ const User: React.FunctionComponent = () => {
   };
 
   const getDreams = async (page: number) => {
-    setIsLoading(true);
     const api = new DreamsApi({ apiKey: auth.getAccessToken() });
     const request = await api.dreamsGetAll(page);
     setDreams(request.data);
-    setIsLoading(false);
+  };
+
+  const getUser = async () => {
+    const api = new UsersApi({ apiKey: auth.getAccessToken() });
+    const request = await api.usersGetById();
+    setUser(request.data);
   };
 
   useEffect(() => {
+    setIsLoading(true);
     getDreams(page);
+    getUser();
+    setIsLoading(false);
   }, []);
 
   const createDream = async (dreamRequest: DreamRequest) => {
@@ -86,7 +102,7 @@ const User: React.FunctionComponent = () => {
   return (
     <FetchWrapper isLoading={isLoading}>
       <BackTop />
-      {/*<UserInfo email={data.email} name={data.name} />*/}
+      <UserInfo email={user.email || ''} username={user.username || ''} />
       <CreateDream createDream={createDream} />
       <Divider />
       <RenderDreams />

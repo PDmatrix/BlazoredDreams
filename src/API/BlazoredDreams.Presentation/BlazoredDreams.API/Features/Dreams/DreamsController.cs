@@ -15,8 +15,8 @@ namespace BlazoredDreams.API.Features.Dreams
 	public class DreamsController : BaseController
 	{
 		[HttpGet]
-		[ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesDefaultResponseType]
         public async Task<ActionResult<Page<DreamDto>>> GetAll(int page = 1)
 		{
 			if (page < 1)
@@ -30,9 +30,11 @@ namespace BlazoredDreams.API.Features.Dreams
 			
 			return await Mediator.Send(getAllDreamsQuery);
 		}
-        
 
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<DreamDto>> GetById(int id)
         {
 	        var res = await Mediator.Send(new GetDreamQuery {Id = id});
@@ -44,6 +46,9 @@ namespace BlazoredDreams.API.Features.Dreams
         
         [Authorize]
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesDefaultResponseType]
         [Consumes("application/json")]
         public async Task<ActionResult> Create(DreamRequest dreamRequest)
         {
@@ -59,6 +64,8 @@ namespace BlazoredDreams.API.Features.Dreams
         [Authorize]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult> Delete(int id)
         {
 	        await Mediator.Send(new DeleteDreamCommand {Id = id});
@@ -67,6 +74,9 @@ namespace BlazoredDreams.API.Features.Dreams
         
         [Authorize]
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesDefaultResponseType]
         [Consumes("application/json")]
         public async Task<ActionResult> Update(int id, DreamRequest dreamRequest)
         {

@@ -13,8 +13,8 @@ namespace BlazoredDreams.API.Features.Posts
 	public class PostsController : BaseController
 	{
 		[HttpGet]
-		[ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesDefaultResponseType]
         public async Task<ActionResult<Page<PostPreviewDto>>> GetAll(int page = 1)
 		{
 			if (page < 1)
@@ -24,6 +24,9 @@ namespace BlazoredDreams.API.Features.Posts
 		}
 
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<PostDto>> GetById(int id)
         {
 	        var res = await Mediator.Send(new GetPostQuery {Id = id});
@@ -35,6 +38,9 @@ namespace BlazoredDreams.API.Features.Posts
 
         [Authorize]
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesDefaultResponseType]
         [Consumes("application/json")]
         public async Task<ActionResult> Create(PostRequest postRequest)
         {
@@ -52,6 +58,8 @@ namespace BlazoredDreams.API.Features.Posts
         [Authorize]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult> Delete(int id)
         {
 	        await Mediator.Send(new DeletePostCommand {Id = id});
@@ -60,6 +68,9 @@ namespace BlazoredDreams.API.Features.Posts
         
         [Authorize]
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesDefaultResponseType]
         [Consumes("application/json")]
         public async Task<ActionResult> Update(int id, PostRequest postRequest)
         {

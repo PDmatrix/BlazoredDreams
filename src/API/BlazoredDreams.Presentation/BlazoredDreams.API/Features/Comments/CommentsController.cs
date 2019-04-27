@@ -19,8 +19,8 @@ namespace BlazoredDreams.API.Features.Comments
 	public class CommentsController : BaseController
 	{
 		[HttpGet]
-		[ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesDefaultResponseType]
         public async Task<ActionResult<IEnumerable<CommentDto>>> GetAll(int postId)
 		{
 			var res = await Mediator.Send(new GetAllCommentsQuery {PostId = postId});
@@ -29,8 +29,10 @@ namespace BlazoredDreams.API.Features.Comments
       
         [Authorize]
         [HttpPost]
-        [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesDefaultResponseType]
+        [Consumes("application/json")]
         public async Task<ActionResult> Create(int postId, CommentRequest commentRequest)
         {
 	        var addCommentCommand = new AddCommentCommand
@@ -46,6 +48,8 @@ namespace BlazoredDreams.API.Features.Comments
         [Authorize]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult> Delete(int id)
         {
 	        await Mediator.Send(new DeleteCommentCommand {Id = id});
@@ -54,6 +58,9 @@ namespace BlazoredDreams.API.Features.Comments
         
         [Authorize]
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesDefaultResponseType]
         [Consumes("application/json")]
         public async Task<ActionResult> Update(int id, CommentRequest commentRequest)
         {

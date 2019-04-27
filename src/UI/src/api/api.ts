@@ -401,6 +401,32 @@ export interface ProblemDetails {
 }
 
 /**
+ *
+ * @export
+ * @interface UserDto
+ */
+export interface UserDto {
+  /**
+   *
+   * @type {string}
+   * @memberof UserDto
+   */
+  userId?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof UserDto
+   */
+  username?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof UserDto
+   */
+  email?: string;
+}
+
+/**
  * CommentsApi - axios parameter creator
  * @export
  */
@@ -1921,6 +1947,46 @@ export const UsersApiAxiosParamCreator = function(configuration?: Configuration)
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
+    usersGetById(options: any = {}): RequestArgs {
+      const localVarPath = `/api/Users`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+      const localVarRequestOptions = Object.assign({ method: 'GET' }, baseOptions, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      // authentication JWT required
+      if (configuration && configuration.apiKey) {
+        const localVarApiKeyValue =
+          typeof configuration.apiKey === 'function'
+            ? configuration.apiKey('Authorization')
+            : configuration.apiKey;
+        localVarHeaderParameter['Authorization'] = localVarApiKeyValue;
+      }
+
+      localVarUrlObj.query = Object.assign(
+        {},
+        localVarUrlObj.query,
+        localVarQueryParameter,
+        options.query,
+      );
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
     usersSignIn(options: any = {}): RequestArgs {
       const localVarPath = `/api/Users`;
       const localVarUrlObj = url.parse(localVarPath, true);
@@ -1970,6 +2036,22 @@ export const UsersApiFp = function(configuration?: Configuration) {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
+    usersGetById(
+      options?: any,
+    ): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserDto> {
+      const localVarAxiosArgs = UsersApiAxiosParamCreator(configuration).usersGetById(options);
+      return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+        const axiosRequestArgs = Object.assign(localVarAxiosArgs.options, {
+          url: basePath + localVarAxiosArgs.url,
+        });
+        return axios.request(axiosRequestArgs);
+      };
+    },
+    /**
+     *
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
     usersSignIn(
       options?: any,
     ): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<Response> {
@@ -1999,6 +2081,14 @@ export const UsersApiFactory = function(
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
+    usersGetById(options?: any) {
+      return UsersApiFp(configuration).usersGetById(options)(axios, basePath);
+    },
+    /**
+     *
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
     usersSignIn(options?: any) {
       return UsersApiFp(configuration).usersSignIn(options)(axios, basePath);
     },
@@ -2012,6 +2102,16 @@ export const UsersApiFactory = function(
  * @extends {BaseAPI}
  */
 export class UsersApi extends BaseAPI {
+  /**
+   *
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof UsersApi
+   */
+  public usersGetById(options?: any) {
+    return UsersApiFp(this.configuration).usersGetById(options)(this.axios, this.basePath);
+  }
+
   /**
    *
    * @param {*} [options] Override http request option.

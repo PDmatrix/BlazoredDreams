@@ -3,6 +3,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using BlazoredDreams.Application.Comments.Commands;
 using BlazoredDreams.Application.Users.Commands;
+using BlazoredDreams.Application.Users.Models;
+using BlazoredDreams.Application.Users.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +15,10 @@ namespace BlazoredDreams.API.Features.Users
 	{
         [Authorize]
         [HttpPost]
-        [Consumes("application/json")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesDefaultResponseType]
+        [Consumes("application/json")]
         public async Task<ActionResult> SignIn()
         {
 	        var signInCommand = new SignInCommand
@@ -27,6 +29,20 @@ namespace BlazoredDreams.API.Features.Users
 	        };
 	        await Mediator.Send(signInCommand);
 	        return NoContent();
+        }
+
+        [Authorize]
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<UserDto>> GetById()
+        {
+	        var getUserQuery = new GetUserQuery
+	        {
+		        UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+	        };
+	        return await Mediator.Send(getUserQuery);
         }
 	}
 }

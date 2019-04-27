@@ -1,18 +1,18 @@
 import { Button, Divider, Input, Modal } from 'antd';
 import React from 'react';
-import Auth from '../../lib/Auth';
 import styles from './styles.css';
+import useAuth from '@/hooks/useAuth';
 
 interface IUserInfoInterface {
-  name: string;
+  username: string;
   email: string;
 }
 
-const UserInfo: React.FunctionComponent<IUserInfoInterface> = props => {
+const UserInfo: React.FunctionComponent<IUserInfoInterface> = ({ username, email }) => {
   const [modal, setModal] = React.useState(false);
-
+  const auth = useAuth();
   const handleClick = () => {
-    Auth.getInstance().logout();
+    auth.logout();
   };
 
   const handleModal = () => {
@@ -22,9 +22,9 @@ const UserInfo: React.FunctionComponent<IUserInfoInterface> = props => {
   return (
     <>
       <h4>Имя пользователя:</h4>
-      <span className={styles.userData}>{props.name}</span>
+      <span className={styles.userData}>{username}</span>
       <h4>Электронная почта:</h4>
-      <span className={styles.userData}>{props.email}</span>
+      <span className={styles.userData}>{email}</span>
       <br />
       <Button type={'primary'} onClick={handleClick} htmlType={'button'}>
         Выйти

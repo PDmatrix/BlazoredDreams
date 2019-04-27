@@ -2,6 +2,7 @@ import { Layout } from 'antd';
 import React from 'react';
 import Navigation from './Navigation';
 import styled from 'styled-components';
+import logo from '@/assets/logo.png';
 
 const Header = styled(Layout.Header)`
   background-color: #fff;
@@ -12,7 +13,7 @@ const Title = styled.span`
   font-weight: bold;
   float: right;
 
-  @media screen and (max-width: 680px) {
+  @media screen and (max-width: 880px) {
     display: none;
   }
 `;
@@ -20,7 +21,9 @@ const Title = styled.span`
 const CustomHeader: React.FC = () => {
   return (
     <Header>
-      <Title>Дневник снов</Title>
+      <Title>
+        <img alt="logo" src={logo} />
+      </Title>
       <Navigation />
     </Header>
   );

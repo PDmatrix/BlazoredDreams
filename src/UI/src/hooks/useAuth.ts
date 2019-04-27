@@ -106,7 +106,7 @@ const useAuth = () => {
       localStorage.removeItem('expires_at');
       localStorage.removeItem('scopes');
       clearTimeout(tokenRenewalTimeout);
-      auth.logout({ returnTo: window.location.href });
+      auth.logout({ returnTo: window.location.origin });
     },
   };
 };

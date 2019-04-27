@@ -9,6 +9,9 @@
   "schemes": [
     "http"
   ],
+  "produces": [
+    "application/json"
+  ],
   "paths": {
     "/api/Users": {
       "post": {
@@ -16,15 +19,50 @@
           "Users"
         ],
         "operationId": "Users_SignIn",
-        "produces": [
-          "application/json"
-        ],
         "responses": {
-          "201": {
-            "description": ""
-          },
           "204": {
             "description": ""
+          },
+          "401": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          },
+          "default": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "Users_GetById",
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/UserDto"
+            }
+          },
+          "401": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
           },
           "default": {
             "x-nullable": true,
@@ -47,9 +85,6 @@
           "Posts"
         ],
         "operationId": "Posts_GetAll",
-        "produces": [
-          "application/json"
-        ],
         "parameters": [
           {
             "type": "integer",
@@ -61,18 +96,18 @@
           }
         ],
         "responses": {
-          "default": {
-            "x-nullable": true,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ProblemDetails"
-            }
-          },
           "200": {
             "x-nullable": true,
             "description": "",
             "schema": {
               "$ref": "#/definitions/PageOfPostPreviewDto"
+            }
+          },
+          "default": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         },
@@ -92,9 +127,6 @@
           "application/json",
           "application/*+json"
         ],
-        "produces": [
-          "application/json"
-        ],
         "parameters": [
           {
             "name": "postRequest",
@@ -110,7 +142,7 @@
           "201": {
             "description": ""
           },
-          "400": {
+          "401": {
             "x-nullable": true,
             "description": "",
             "schema": {
@@ -138,9 +170,6 @@
           "Posts"
         ],
         "operationId": "Posts_GetById",
-        "produces": [
-          "application/json"
-        ],
         "parameters": [
           {
             "type": "integer",
@@ -198,6 +227,20 @@
         "responses": {
           "204": {
             "description": ""
+          },
+          "401": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          },
+          "default": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
           }
         },
         "security": [
@@ -215,9 +258,6 @@
           "application/json-patch+json",
           "application/json",
           "application/*+json"
-        ],
-        "produces": [
-          "application/json"
         ],
         "parameters": [
           {
@@ -242,14 +282,7 @@
           "204": {
             "description": ""
           },
-          "404": {
-            "x-nullable": true,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ProblemDetails"
-            }
-          },
-          "400": {
+          "401": {
             "x-nullable": true,
             "description": "",
             "schema": {
@@ -277,9 +310,6 @@
           "Dreams"
         ],
         "operationId": "Dreams_GetAll",
-        "produces": [
-          "application/json"
-        ],
         "parameters": [
           {
             "type": "integer",
@@ -291,18 +321,18 @@
           }
         ],
         "responses": {
-          "default": {
-            "x-nullable": true,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ProblemDetails"
-            }
-          },
           "200": {
             "x-nullable": true,
             "description": "",
             "schema": {
               "$ref": "#/definitions/PageOfDreamDto"
+            }
+          },
+          "default": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         },
@@ -322,9 +352,6 @@
           "application/json",
           "application/*+json"
         ],
-        "produces": [
-          "application/json"
-        ],
         "parameters": [
           {
             "name": "dreamRequest",
@@ -340,7 +367,7 @@
           "201": {
             "description": ""
           },
-          "400": {
+          "401": {
             "x-nullable": true,
             "description": "",
             "schema": {
@@ -368,9 +395,6 @@
           "Dreams"
         ],
         "operationId": "Dreams_GetById",
-        "produces": [
-          "application/json"
-        ],
         "parameters": [
           {
             "type": "integer",
@@ -428,6 +452,20 @@
         "responses": {
           "204": {
             "description": ""
+          },
+          "401": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          },
+          "default": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
           }
         },
         "security": [
@@ -445,9 +483,6 @@
           "application/json-patch+json",
           "application/json",
           "application/*+json"
-        ],
-        "produces": [
-          "application/json"
         ],
         "parameters": [
           {
@@ -472,14 +507,7 @@
           "204": {
             "description": ""
           },
-          "404": {
-            "x-nullable": true,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ProblemDetails"
-            }
-          },
-          "400": {
+          "401": {
             "x-nullable": true,
             "description": "",
             "schema": {
@@ -507,9 +535,6 @@
           "Comments"
         ],
         "operationId": "Comments_GetAll",
-        "produces": [
-          "application/json"
-        ],
         "parameters": [
           {
             "type": "integer",
@@ -521,13 +546,6 @@
           }
         ],
         "responses": {
-          "default": {
-            "x-nullable": true,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ProblemDetails"
-            }
-          },
           "200": {
             "x-nullable": true,
             "description": "",
@@ -536,6 +554,13 @@
               "items": {
                 "$ref": "#/definitions/CommentDto"
               }
+            }
+          },
+          "default": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
             }
           }
         },
@@ -577,6 +602,20 @@
         "responses": {
           "201": {
             "description": ""
+          },
+          "401": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          },
+          "default": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
           }
         },
         "security": [
@@ -612,6 +651,20 @@
         "responses": {
           "204": {
             "description": ""
+          },
+          "401": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          },
+          "default": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
           }
         },
         "security": [
@@ -629,9 +682,6 @@
           "application/json-patch+json",
           "application/json",
           "application/*+json"
-        ],
-        "produces": [
-          "application/json"
         ],
         "parameters": [
           {
@@ -663,14 +713,7 @@
           "204": {
             "description": ""
           },
-          "404": {
-            "x-nullable": true,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ProblemDetails"
-            }
-          },
-          "400": {
+          "401": {
             "x-nullable": true,
             "description": "",
             "schema": {
@@ -719,6 +762,21 @@
         "instance": {
           "type": "string",
           "description": "A URI reference that identifies the specific occurrence of the problem.It may or may not yield further information if dereferenced."
+        }
+      }
+    },
+    "UserDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
         }
       }
     },
