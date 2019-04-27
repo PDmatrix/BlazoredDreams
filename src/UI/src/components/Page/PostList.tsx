@@ -1,14 +1,19 @@
 import React from 'react';
-import Post from './Post';
+import { PageOfPostPreviewDto } from '@/api';
+import PostPreview from '@/components/Page/PostPreview';
 
-const PostList: React.FC = () => {
+interface IPostList {
+  posts: PageOfPostPreviewDto;
+}
+
+const PostList: React.FC<IPostList> = props => {
+  if (!props.posts.records) return null;
   return (
-    <div>Hello</div>
-    /*<>
-      {posts.map(post => (
-        <Post key={post.id} post={post} />
+    <div>
+      {props.posts.records.map(post => (
+        <PostPreview postPreview={post} key={post.id} />
       ))}
-    </>*/
+    </div>
   );
 };
 

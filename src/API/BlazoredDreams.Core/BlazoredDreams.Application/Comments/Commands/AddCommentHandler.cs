@@ -8,10 +8,9 @@ namespace BlazoredDreams.Application.Comments.Commands
 {
 	public class AddCommentCommand : IRequest<int>
 	{
-		public string Title { get; set; }
-		public string Excerpt { get; set; }
-		public int DreamId { get; set; }
-		public int UserId { get; set; }
+		public int PostId { get; set; }
+		public string Content { get; set; }
+		public string UserId { get; set; }
 	}
 	
 	// ReSharper disable once UnusedMember.Global
@@ -24,16 +23,15 @@ namespace BlazoredDreams.Application.Comments.Commands
 			_unitOfWork = unitOfWorkFactory.Create();
 		}
 		
-		public async Task<int> Handle(AddCommentCommand request, CancellationToken cancellationToken)
+		public Task<int> Handle(AddCommentCommand request, CancellationToken cancellationToken)
 		{
 			const string sql =
 				@"
-				INSERT INTO post (title, user_id, dream_id, excerpt) 
-					VALUES (@title, @userId, @dreamId, @excerpt)
+				INSERT INTO comment (content, post_id, user_id)
+					VALUES (@content, @postId, @userId)
 				RETURNING id
 				";
-			var postId = await _unitOfWork.Connection.QuerySingleOrDefaultAsync<int>(sql, request, _unitOfWork.Transaction);
-			return postId;
+			return _unitOfWork.Connection.QuerySingleOrDefaultAsync<int>(sql, request, _unitOfWork.Transaction);
 		}
 	}
 }

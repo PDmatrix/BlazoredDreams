@@ -1,16 +1,16 @@
 using FluentValidation;
 
-namespace BlazoredDreams.API.Features.Dreams
+namespace BlazoredDreams.API.Features.Comments
 {
-	public class DreamRequest
+	public class CommentRequest
 	{
 		public string Content { get; set; }
 	}
 	
 	// ReSharper disable once UnusedMember.Global
-	public class DreamRequestValidator : AbstractValidator<DreamRequest>
+	public class CommentRequestValidator : AbstractValidator<CommentRequest>
 	{
-		public DreamRequestValidator()
+		public CommentRequestValidator()
 		{
 			RuleFor(r => r.Content).NotEmpty();
 		}

@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using BlazoredDreams.Application.Dreams.Commands;
 using BlazoredDreams.Application.Dreams.Models;
 using BlazoredDreams.Application.Dreams.Queries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,7 +36,7 @@ namespace BlazoredDreams.API.Features.Dreams
 	        return res;
         }
         
-        // TODO: Authorize
+        [Authorize]
         [HttpPost]
         [Consumes("application/json")]
         public async Task<ActionResult> Create(DreamRequest dreamRequest)
@@ -42,14 +44,13 @@ namespace BlazoredDreams.API.Features.Dreams
 	        var addDreamCommand = new AddDreamCommand
 	        {
 		        Content = dreamRequest.Content,
-		        // TODO: Calculate userId from context
-		        UserId = 1
+		        UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
 	        };
 	        var createdDreamId = await Mediator.Send(addDreamCommand);
 	        return CreatedAtAction(nameof(GetById), new {id = createdDreamId}, null);
         }
         
-        // TODO: Authorize
+        [Authorize]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> Delete(int id)
@@ -58,7 +59,7 @@ namespace BlazoredDreams.API.Features.Dreams
 	        return NoContent();
         }
         
-        // TODO: Authorize
+        [Authorize]
         [HttpPut("{id}")]
         [Consumes("application/json")]
         public async Task<ActionResult> Update(int id, DreamRequest dreamRequest)

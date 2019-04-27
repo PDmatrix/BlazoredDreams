@@ -29,11 +29,11 @@ namespace BlazoredDreams.Application.Dreams.Queries
 				@"
 				SELECT
 				    d.id,
-					iu.identifier as username,
+					iu.username,
 				    d.content,
 					to_char(d.created_at, 'YYYY.mm.dd') as date
 				FROM dream d
-					INNER JOIN identity_user iu on d.user_id = iu.id
+					INNER JOIN identity_user iu on d.user_id = iu.identifier
 				LIMIT @pageSize OFFSET @page
 				";
 			const int pageSize = 10;

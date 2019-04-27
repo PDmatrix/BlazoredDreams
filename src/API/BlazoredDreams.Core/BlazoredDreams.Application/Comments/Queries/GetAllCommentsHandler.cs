@@ -13,7 +13,7 @@ namespace BlazoredDreams.Application.Comments.Queries
 {
 	public class GetAllCommentsQuery : IRequest<IEnumerable<CommentDto>>
 	{
-		public int Page { get; set; } = 1;
+		public int PostId { get; set; }
 	}
 	
 	// ReSharper disable once UnusedMember.Global
@@ -26,9 +26,20 @@ namespace BlazoredDreams.Application.Comments.Queries
 			_unitOfWork = unitOfWorkFactory.Create();
 		}
 		
-		public async Task<IEnumerable<CommentDto>> Handle(GetAllCommentsQuery request, CancellationToken ct)
+		public Task<IEnumerable<CommentDto>> Handle(GetAllCommentsQuery request, CancellationToken ct)
 		{
-			
+			const string sql =
+				@"
+				SELECT
+					c.id,
+					c.content,
+				    iu.username,
+					to_char(c.created_at, 'YYYY.mm.dd') as date
+				FROM comment c
+					INNER JOIN identity_user iu on c.user_id = iu.identifier
+				WHERE post_id = @postId
+				";
+			return _unitOfWork.Connection.QueryAsync<CommentDto>(sql, request, _unitOfWork.Transaction);
 		}
 	}
 }

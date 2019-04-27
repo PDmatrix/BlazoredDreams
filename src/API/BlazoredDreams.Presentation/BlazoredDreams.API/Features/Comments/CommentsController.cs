@@ -1,74 +1,68 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using BlazoredDreams.Application.Comments.Commands;
+using BlazoredDreams.Application.Comments.Models;
+using BlazoredDreams.Application.Comments.Queries;
 using BlazoredDreams.Application.Dreams.Commands;
 using BlazoredDreams.Application.Dreams.Models;
 using BlazoredDreams.Application.Dreams.Queries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BlazoredDreams.API.Features.Dreams
+namespace BlazoredDreams.API.Features.Comments
 {
-	public class DreamsController : BaseController
+	[Route("api/posts/{postId:int}/comment")]
+	public class CommentsController : BaseController
 	{
 		[HttpGet]
 		[ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<DreamDto>>> GetAll(int page = 1)
+        public async Task<ActionResult<IEnumerable<CommentDto>>> GetAll(int postId)
 		{
-			if (page < 1)
-				page = 1;
-			
-			var res = await Mediator.Send(new GetAllDreamsQuery {Page = page});
+			var res = await Mediator.Send(new GetAllCommentsQuery {PostId = postId});
 			return res.ToList();
 		}
-        
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<DreamDto>> GetById(int id)
-        {
-	        var res = await Mediator.Send(new GetDreamQuery {Id = id});
-	        if (res == null)
-		        return NotFound();
-	        
-	        return res;
-        }
-        
-        // TODO: Authorize
+      
+        [Authorize]
         [HttpPost]
         [Consumes("application/json")]
-        public async Task<ActionResult> Create(DreamRequest dreamRequest)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public async Task<ActionResult> Create(int postId, CommentRequest commentRequest)
         {
-	        var addDreamCommand = new AddDreamCommand
+	        var addCommentCommand = new AddCommentCommand
 	        {
-		        Content = dreamRequest.Content,
-		        // TODO: Calculate userId from context
-		        UserId = 1
+		        Content = commentRequest.Content,
+		        PostId = postId,
+		        UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
 	        };
-	        var createdDreamId = await Mediator.Send(addDreamCommand);
-	        return CreatedAtAction(nameof(GetById), new {id = createdDreamId}, null);
+	        var createdCommentId = await Mediator.Send(addCommentCommand);
+	        return StatusCode(201, createdCommentId);
         }
         
-        // TODO: Authorize
+        [Authorize]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> Delete(int id)
         {
-	        await Mediator.Send(new DeleteDreamCommand {Id = id});
+	        await Mediator.Send(new DeleteCommentCommand {Id = id});
 	        return NoContent();
         }
         
-        // TODO: Authorize
+        [Authorize]
         [HttpPut("{id}")]
         [Consumes("application/json")]
-        public async Task<ActionResult> Update(int id, DreamRequest dreamRequest)
+        public async Task<ActionResult> Update(int id, CommentRequest commentRequest)
         {
-	        var updateDreamCommand = new UpdateDreamCommand
+	        var updateCommentCommand = new UpdateCommentCommand
 	        {
 		        Id = id,
-		        Content = dreamRequest.Content
+		        Content = commentRequest.Content
 	        };
-	        await Mediator.Send(updateDreamCommand);
+	        await Mediator.Send(updateCommentCommand);
 	        return NoContent();
         }
 	}

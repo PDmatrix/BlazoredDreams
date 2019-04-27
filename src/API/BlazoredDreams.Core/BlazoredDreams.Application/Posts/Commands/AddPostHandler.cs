@@ -11,7 +11,7 @@ namespace BlazoredDreams.Application.Posts.Commands
 		public string Title { get; set; }
 		public string Excerpt { get; set; }
 		public int DreamId { get; set; }
-		public int UserId { get; set; }
+		public string UserId { get; set; }
 	}
 	
 	// ReSharper disable once UnusedMember.Global

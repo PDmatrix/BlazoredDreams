@@ -1,14 +1,10 @@
-namespace BlazoredDreams.Application.Posts.Models
+namespace BlazoredDreams.Application.Comments.Models
 {
-	public class PostDto
+	public class CommentDto
 	{
 		public int Id { get; set; }
 		public string Username { get; set; }
-		public string Title { get; set; }
-		public string Date { get; set; }
-		public string Tag { get; set; }
 		public string Content { get; set; }
-		
-		public int Comments { get; set; }
+		public string Date { get; set; }
 	}
 }

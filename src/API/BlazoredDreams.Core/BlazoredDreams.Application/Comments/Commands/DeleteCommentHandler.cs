@@ -25,7 +25,7 @@ namespace BlazoredDreams.Application.Comments.Commands
 		{
 			const string sql =
 				@"
-				DELETE FROM post
+				DELETE FROM comment
 				WHERE id = @id
 				";
 			await _unitOfWork.Connection.ExecuteAsync(sql, new {request.Id}, _unitOfWork.Transaction);

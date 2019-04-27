@@ -10,6 +10,37 @@
     "http"
   ],
   "paths": {
+    "/api/Users": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "Users_SignIn",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          },
+          "204": {
+            "description": ""
+          },
+          "default": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
     "/api/Posts": {
       "get": {
         "tags": [

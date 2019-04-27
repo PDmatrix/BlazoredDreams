@@ -9,12 +9,18 @@
     "precommit": "lint-staged"
   },
   "dependencies": {
+    "@types/auth0-js": "^9.10.2",
     "@types/axios": "^0.14.0",
+    "@types/jwt-decode": "^2.2.1",
     "@types/styled-components": "^4.1.14",
     "antd": "^3.15.0",
+    "auth0-js": "^9.10.2",
     "axios": "^0.18.0",
+    "jwt-decode": "^2.2.0",
+    "prop-types": "^15.7.2",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
+    "react-transition-group": "^4.0.0",
     "styled-components": "^4.2.0"
   },
   "devDependencies": {

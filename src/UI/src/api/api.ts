@@ -1871,3 +1871,116 @@ export class PostsApi extends BaseAPI {
     );
   }
 }
+
+/**
+ * UsersApi - axios parameter creator
+ * @export
+ */
+export const UsersApiAxiosParamCreator = function(configuration?: Configuration) {
+  return {
+    /**
+     *
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    usersSignIn(options: any = {}): RequestArgs {
+      const localVarPath = `/api/Users`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+      const localVarRequestOptions = Object.assign({ method: 'POST' }, baseOptions, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      // authentication JWT required
+      if (configuration && configuration.apiKey) {
+        const localVarApiKeyValue =
+          typeof configuration.apiKey === 'function'
+            ? configuration.apiKey('Authorization')
+            : configuration.apiKey;
+        localVarHeaderParameter['Authorization'] = localVarApiKeyValue;
+      }
+
+      localVarUrlObj.query = Object.assign(
+        {},
+        localVarUrlObj.query,
+        localVarQueryParameter,
+        options.query,
+      );
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+  };
+};
+
+/**
+ * UsersApi - functional programming interface
+ * @export
+ */
+export const UsersApiFp = function(configuration?: Configuration) {
+  return {
+    /**
+     *
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    usersSignIn(
+      options?: any,
+    ): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<Response> {
+      const localVarAxiosArgs = UsersApiAxiosParamCreator(configuration).usersSignIn(options);
+      return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+        const axiosRequestArgs = Object.assign(localVarAxiosArgs.options, {
+          url: basePath + localVarAxiosArgs.url,
+        });
+        return axios.request(axiosRequestArgs);
+      };
+    },
+  };
+};
+
+/**
+ * UsersApi - factory interface
+ * @export
+ */
+export const UsersApiFactory = function(
+  configuration?: Configuration,
+  basePath?: string,
+  axios?: AxiosInstance,
+) {
+  return {
+    /**
+     *
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    usersSignIn(options?: any) {
+      return UsersApiFp(configuration).usersSignIn(options)(axios, basePath);
+    },
+  };
+};
+
+/**
+ * UsersApi - object-oriented interface
+ * @export
+ * @class UsersApi
+ * @extends {BaseAPI}
+ */
+export class UsersApi extends BaseAPI {
+  /**
+   *
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof UsersApi
+   */
+  public usersSignIn(options?: any) {
+    return UsersApiFp(this.configuration).usersSignIn(options)(this.axios, this.basePath);
+  }
+}

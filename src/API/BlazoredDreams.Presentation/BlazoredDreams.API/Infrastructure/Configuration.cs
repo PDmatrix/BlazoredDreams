@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Serialization;
 using NSwag;
 using NSwag.SwaggerGeneration.Processors.Security;
@@ -33,14 +34,6 @@ namespace BlazoredDreams.API.Infrastructure
 				x.RegisterValidatorsFromAssemblyContaining<Startup>();
 				x.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
 			});
-
-			builder.AddJsonOptions(x =>
-			{
-				x.SerializerSettings.ContractResolver = new DefaultContractResolver
-				{
-					NamingStrategy = new SnakeCaseNamingStrategy()
-				};
-			});
 			builder.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 		}
 
@@ -60,7 +53,7 @@ namespace BlazoredDreams.API.Infrastructure
 
 		public static void AddCustomSwagger(this IServiceCollection services)
 		{
-			services.AddOpenApiDocument(options =>
+			services.AddSwaggerDocument(options =>
 			{
 				options.OperationProcessors.Add(new OperationSecurityScopeProcessor("JWT"));
 				options.DocumentProcessors.Add(new SecurityDefinitionAppender("JWT", new SwaggerSecurityScheme
@@ -83,6 +76,7 @@ namespace BlazoredDreams.API.Infrastructure
 			{
 				options.Authority = "https://dtxauth.auth0.com/";
 				options.Audience = "http://localhost:5000/api";
+				options.RequireHttpsMetadata = false;
 			});
 		}
 	}

@@ -32,6 +32,7 @@ namespace BlazoredDreams.API
 			services.AddMediatR(typeof(GetAllPostsHandler));
 			services.AddScoped<IUnitOfWorkFactory>(provider => 
 				new UnitOfWorkFactory(Configuration.GetConnectionString("DefaultConnection")));
+			services.AddHttpClient();
 		}
 
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)

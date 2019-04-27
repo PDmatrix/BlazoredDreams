@@ -27,16 +27,16 @@ namespace BlazoredDreams.Application.Posts.Queries
 		public Task<PostDto> Handle(GetPostQuery request, CancellationToken ct)
 		{
 			const string sql = @"
-			SELECT
+			SELECT DISTINCT
 			    p.id,
-				iu.identifier as username,
+				iu.username,
 				p.title,
 				(SELECT COUNT(*) FROM comment c WHERE c.post_id = p.id) as comments,
 				to_char(p.created_at, 'YYYY.mm.dd') as date,
-				COALESCE(t.name, 'Без тега') as tag,
+				COALESCE(string_agg(t.name, ', ') over (PARTITION BY p.id) , 'Без тега') as tag,
 			    d.content   
 			FROM post p
-				INNER JOIN identity_user iu on p.user_id = iu.id
+				INNER JOIN identity_user iu on p.user_id = iu.identifier
 				INNER JOIN dream d on d.id = p.dream_id
 				LEFT JOIN post_tags pt on p.id = pt.post_id
 				LEFT JOIN tag t on pt.tag_id = t.id

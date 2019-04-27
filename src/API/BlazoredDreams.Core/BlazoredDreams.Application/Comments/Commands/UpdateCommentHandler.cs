@@ -9,8 +9,7 @@ namespace BlazoredDreams.Application.Comments.Commands
 	public class UpdateCommentCommand : IRequest
 	{
 		public int Id { get; set; }
-		public string Title { get; set; }
-		public string Excerpt { get; set; }
+		public string Content { get; set; }
 	}
 	
 	// ReSharper disable once UnusedMember.Global
@@ -27,7 +26,7 @@ namespace BlazoredDreams.Application.Comments.Commands
 		{
 			const string sql =
 				@"
-				UPDATE post SET excerpt = @excerpt, title = @title
+				UPDATE comment SET content = @content
 				WHERE id = @id
 				";
 			await _unitOfWork.Connection.ExecuteAsync(sql, request, _unitOfWork.Transaction);
