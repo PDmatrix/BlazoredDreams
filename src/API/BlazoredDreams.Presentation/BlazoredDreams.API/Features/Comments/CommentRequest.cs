@@ -1,0 +1,18 @@
+using FluentValidation;
+
+namespace BlazoredDreams.API.Features.Dreams
+{
+	public class DreamRequest
+	{
+		public string Content { get; set; }
+	}
+	
+	// ReSharper disable once UnusedMember.Global
+	public class DreamRequestValidator : AbstractValidator<DreamRequest>
+	{
+		public DreamRequestValidator()
+		{
+			RuleFor(r => r.Content).NotEmpty();
+		}
+	}
+}
