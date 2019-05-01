@@ -51,12 +51,13 @@ namespace BlazoredDreams.Application.Users.Commands
 			{
 				Username = userInfo.Nickname,
 				userInfo.Email,
-				request.UserId
+				request.UserId,
+				Avatar = userInfo.Picture
 			};
 			const string sql =
 				@"
 				UPDATE identity_user
-				SET username = @username, email = @email
+				SET username = @username, email = @email, avatar = @avatar
 				WHERE identifier = @userId
 				";
 			await _unitOfWork.Connection.ExecuteAsync(sql, sqlParams, _unitOfWork.Transaction);
@@ -79,6 +80,7 @@ namespace BlazoredDreams.Application.Users.Commands
 		{
 			public string Nickname { get; set; }
 			public string Email { get; set; }
+			public string Picture { get; set; }
 		}
 	}
 }

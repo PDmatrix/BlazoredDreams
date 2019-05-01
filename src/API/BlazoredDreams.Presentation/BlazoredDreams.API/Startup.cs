@@ -2,6 +2,7 @@
 using BlazoredDreams.Application.Posts.Queries;
 using BlazoredDreams.API.Infrastructure;
 using BlazoredDreams.Persistence;
+using CloudinaryDotNet;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,9 +31,11 @@ namespace BlazoredDreams.API
 			services.AddCustomAuthentication();
 			services.AddCustomApiVersioning();
 			services.AddMediatR(typeof(GetAllPostsHandler));
+			services.AddHttpClient();
 			services.AddScoped<IUnitOfWorkFactory>(provider => 
 				new UnitOfWorkFactory(Configuration.GetConnectionString("DefaultConnection")));
-			services.AddHttpClient();
+			services.AddScoped<ICloudinaryService>(provider =>
+				new CloudinaryService(Configuration.GetSection("Cloudinary").GetSection("Url").Value));
 		}
 
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)

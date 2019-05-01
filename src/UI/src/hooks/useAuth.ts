@@ -70,9 +70,6 @@ const useAuth = () => {
       const jwt: { sub: string } = jwt_decode(cookie);
       return jwt.sub;
     },
-    getUserToken: (): string => {
-      return 'Bearer ' + localStorage.getItem('id_token') || '';
-    },
     getAccessToken: (): string => {
       return 'Bearer ' + localStorage.getItem('access_token') || '';
     },

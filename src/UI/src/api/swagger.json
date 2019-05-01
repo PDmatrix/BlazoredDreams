@@ -79,6 +79,86 @@
         ]
       }
     },
+    "/api/Users/image": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "Users_ChangeImage",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "ContentType",
+            "in": "formData",
+            "description": "Gets the raw Content-Type header of the uploaded file.",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "ContentDisposition",
+            "in": "formData",
+            "description": "Gets the raw Content-Disposition header of the uploaded file.",
+            "x-nullable": true
+          },
+          {
+            "type": "object",
+            "name": "Headers",
+            "in": "formData",
+            "description": "Gets the header dictionary of the uploaded file.",
+            "x-schema": {
+              "$ref": "#/definitions/IHeaderDictionary"
+            },
+            "x-nullable": true
+          },
+          {
+            "type": "integer",
+            "name": "Length",
+            "in": "formData",
+            "description": "Gets the file length in bytes.",
+            "format": "int64",
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "Name",
+            "in": "formData",
+            "description": "Gets the form field name from the Content-Disposition header.",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "FileName",
+            "in": "formData",
+            "description": "Gets the file name from the Content-Disposition header.",
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "401": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          },
+          "default": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
     "/api/Posts": {
       "get": {
         "tags": [
@@ -777,6 +857,31 @@
         },
         "email": {
           "type": "string"
+        },
+        "avatar": {
+          "type": "string"
+        }
+      }
+    },
+    "IHeaderDictionary": {
+      "type": "object",
+      "description": "Represents HttpRequest and HttpResponse headers",
+      "x-abstract": true,
+      "additionalProperties": false,
+      "required": [
+        "item"
+      ],
+      "properties": {
+        "item": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "contentLength": {
+          "type": "integer",
+          "description": "Strongly typed access to the Content-Length header. Implementations must keep this in sync with the string representation.",
+          "format": "int64"
         }
       }
     },
@@ -983,6 +1088,9 @@
           "type": "string"
         },
         "date": {
+          "type": "string"
+        },
+        "userId": {
           "type": "string"
         }
       }

@@ -42,10 +42,29 @@ const PostEntry: React.FC<RouteComponentProps<{ id: string }>> = props => {
     notification.success('Комментарий добавлен');
   };
 
+  const deleteComment = async (commentId: number) => {
+    const api = new CommentsApi({ apiKey: auth.getAccessToken() });
+    await api.commentsDelete(commentId, props.match.params.id);
+    await fetchData(Number(props.match.params.id));
+    notification.success('Комментарий удален');
+  };
+
+  const editComment = async (commentId: number, commentRequest: CommentRequest) => {
+    const api = new CommentsApi({ apiKey: auth.getAccessToken() });
+    await api.commentsUpdate(commentId, props.match.params.id, commentRequest);
+    await fetchData(Number(props.match.params.id));
+    notification.success('Комментарий изменен');
+  };
+
   return (
     <FetchWrapper isLoading={isLoading}>
       <Post post={post} />
-      <CommentList addComment={addComment} comments={comments} />
+      <CommentList
+        editComment={editComment}
+        deleteComment={deleteComment}
+        addComment={addComment}
+        comments={comments}
+      />
     </FetchWrapper>
   );
 };

@@ -1,6 +1,8 @@
 import useNotification from '@/hooks/useNotification';
 import axios, { AxiosError } from 'axios';
 import useAuth from '@/hooks/useAuth';
+import * as url from 'url';
+url.URLSearchParams = URLSearchParams;
 
 const render = (oldRender: any) => {
   const notification = useNotification();

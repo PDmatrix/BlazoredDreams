@@ -31,7 +31,8 @@ namespace BlazoredDreams.Application.Users.Queries
 				SELECT
 					identifier as user_id,
 					username,
-				    email
+				    email,
+				    avatar
 				FROM identity_user
 				WHERE identifier = @userId
 				";

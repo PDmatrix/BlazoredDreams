@@ -414,3 +414,5 @@ ASALocalRun/
 healthchecksdb
 
 # End of https://www.gitignore.io/api/rider,visualstudio
+
+appsettings.Development.json

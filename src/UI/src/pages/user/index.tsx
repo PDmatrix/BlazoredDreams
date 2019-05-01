@@ -2,7 +2,7 @@
  * Routes:
  *   - ./src/routes/PrivateRoute.tsx
  */
-import { BackTop, Divider, Pagination } from 'antd';
+import { BackTop, Button, Divider, Icon, Pagination, Upload } from 'antd';
 import React, { useEffect, useState } from 'react';
 import useAuth from '@/hooks/useAuth';
 import FetchWrapper from '@/components/Shared/FetchWrapper';
@@ -17,8 +17,10 @@ import {
   PostsApi,
   UserDto,
   UsersApi,
+  BASE_PATH,
 } from '@/api';
 import useNotification from '@/hooks/useNotification';
+import axios from 'axios';
 
 const User: React.FunctionComponent = () => {
   const auth = useAuth();
@@ -52,6 +54,19 @@ const User: React.FunctionComponent = () => {
     const api = new UsersApi({ apiKey: auth.getAccessToken() });
     const request = await api.usersGetById();
     setUser(request.data);
+  };
+
+  const upload = async (info: any) => {
+    if (info.file.status !== 'done') return;
+    const formData = new FormData();
+    formData.append('file', info.file.originFileObj);
+    await axios({
+      method: 'post',
+      url: `${BASE_PATH}/api/users/image`,
+      data: formData,
+      headers: { 'Content-Type': 'multipart/form-data', Authorization: auth.getAccessToken() },
+    });
+    await getUser();
   };
 
   useEffect(() => {
@@ -98,10 +113,25 @@ const User: React.FunctionComponent = () => {
     );
   };
 
+  const props = {
+    name: 'file',
+    onChange: upload,
+    showUploadList: false,
+  };
+
   return (
     <FetchWrapper isLoading={isLoading}>
       <BackTop />
-      <UserInfo email={user.email || ''} username={user.username || ''} />
+      <Upload {...props}>
+        <Button>
+          <Icon type="upload" /> Click to Upload
+        </Button>
+      </Upload>
+      <UserInfo
+        avatar={user.avatar || ''}
+        email={user.email || ''}
+        username={user.username || ''}
+      />
       <CreateDream createDream={createDream} />
       <Divider />
       <RenderDreams />

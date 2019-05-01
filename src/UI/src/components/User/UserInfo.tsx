@@ -1,4 +1,4 @@
-import { Button, Divider, Input, Modal } from 'antd';
+import { Button, Divider, Modal, Avatar } from 'antd';
 import React from 'react';
 import styles from './styles.css';
 import useAuth from '@/hooks/useAuth';
@@ -6,9 +6,10 @@ import useAuth from '@/hooks/useAuth';
 interface IUserInfoInterface {
   username: string;
   email: string;
+  avatar: string;
 }
 
-const UserInfo: React.FunctionComponent<IUserInfoInterface> = ({ username, email }) => {
+const UserInfo: React.FC<IUserInfoInterface> = ({ username, email, avatar }) => {
   const [modal, setModal] = React.useState(false);
   const auth = useAuth();
   const handleClick = () => {
@@ -21,6 +22,7 @@ const UserInfo: React.FunctionComponent<IUserInfoInterface> = ({ username, email
 
   return (
     <>
+      <Avatar src={avatar} size={128} />
       <h4>Имя пользователя:</h4>
       <span className={styles.userData}>{username}</span>
       <h4>Электронная почта:</h4>

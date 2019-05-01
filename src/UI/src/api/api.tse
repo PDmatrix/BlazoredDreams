@@ -16,7 +16,7 @@ import * as url from 'url';
 import { Configuration } from './configuration';
 import globalAxios, { AxiosPromise, AxiosInstance } from 'axios';
 
-export const BASE_PATH = 'http://localhost:5000'.replace(/\/+$/, '');
+const BASE_PATH = 'http://localhost:5000'.replace(/\/+$/, '');
 
 /**
  *
@@ -514,7 +514,7 @@ export const CommentsApiAxiosParamCreator = function(configuration?: Configurati
         localVarHeaderParameter['Authorization'] = localVarApiKeyValue;
       }
 
-      localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json-patch+json';
 
       localVarUrlObj.query = Object.assign(
         {},
@@ -701,7 +701,7 @@ export const CommentsApiAxiosParamCreator = function(configuration?: Configurati
         localVarHeaderParameter['Authorization'] = localVarApiKeyValue;
       }
 
-      localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json-patch+json';
 
       localVarUrlObj.query = Object.assign(
         {},
@@ -997,7 +997,7 @@ export const DreamsApiAxiosParamCreator = function(configuration?: Configuration
         localVarHeaderParameter['Authorization'] = localVarApiKeyValue;
       }
 
-      localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json-patch+json';
 
       localVarUrlObj.query = Object.assign(
         {},
@@ -1201,7 +1201,7 @@ export const DreamsApiAxiosParamCreator = function(configuration?: Configuration
         localVarHeaderParameter['Authorization'] = localVarApiKeyValue;
       }
 
-      localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json-patch+json';
 
       localVarUrlObj.query = Object.assign(
         {},
@@ -1508,7 +1508,7 @@ export const PostsApiAxiosParamCreator = function(configuration?: Configuration)
         localVarHeaderParameter['Authorization'] = localVarApiKeyValue;
       }
 
-      localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json-patch+json';
 
       localVarUrlObj.query = Object.assign(
         {},
@@ -1712,7 +1712,7 @@ export const PostsApiAxiosParamCreator = function(configuration?: Configuration)
         localVarHeaderParameter['Authorization'] = localVarApiKeyValue;
       }
 
-      localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json-patch+json';
 
       localVarUrlObj.query = Object.assign(
         {},

@@ -1,3 +1,4 @@
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -43,6 +44,23 @@ namespace BlazoredDreams.API.Features.Users
 		        UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
 	        };
 	        return await Mediator.Send(getUserQuery);
+        }
+        
+        [Authorize]
+        [HttpPost("image")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesDefaultResponseType]
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult> ChangeImage([FromForm] IFormFile file)
+        {
+	        await Mediator.Send(new ImageUploadCommand
+	        {
+		        FileStream = file.OpenReadStream(),
+		        FileName = file.FileName,
+		        UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+	        });
+	        return NoContent();
         }
 	}
 }

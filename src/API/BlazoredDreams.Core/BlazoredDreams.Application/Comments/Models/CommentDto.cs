@@ -6,5 +6,6 @@ namespace BlazoredDreams.Application.Comments.Models
 		public string Username { get; set; }
 		public string Content { get; set; }
 		public string Date { get; set; }
+		public string UserId { get; set; }
 	}
 }

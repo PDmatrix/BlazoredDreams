@@ -63,7 +63,11 @@ const Dream: React.FC<IDream> = ({ dream, deleteDream, createPost }) => {
         onOk={handlePublish}
         onCancel={hideModal}
       >
+        <p>Заголовок:</p>
         <Input onKeyUp={changeTitle} />
+        <br />
+        <br />
+        <p>Краткое описание:</p>
         <Input onKeyUp={changeExcerpt} />
       </Modal>
     </>
