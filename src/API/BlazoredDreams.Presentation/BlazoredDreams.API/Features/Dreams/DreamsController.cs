@@ -55,7 +55,8 @@ namespace BlazoredDreams.API.Features.Dreams
 	        var addDreamCommand = new AddDreamCommand
 	        {
 		        Content = dreamRequest.Content,
-		        UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+		        UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+		        Date = dreamRequest.Date
 	        };
 	        var createdDreamId = await Mediator.Send(addDreamCommand);
 	        return CreatedAtAction(nameof(GetById), new {id = createdDreamId}, null);
@@ -83,7 +84,8 @@ namespace BlazoredDreams.API.Features.Dreams
 	        var updateDreamCommand = new UpdateDreamCommand
 	        {
 		        Id = id,
-		        Content = dreamRequest.Content
+		        Content = dreamRequest.Content,
+		        Date = dreamRequest.Date
 	        };
 	        await Mediator.Send(updateDreamCommand);
 	        return NoContent();

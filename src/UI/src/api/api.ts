@@ -168,6 +168,12 @@ export interface DreamRequest {
    * @memberof DreamRequest
    */
   content?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof DreamRequest
+   */
+  date: Date;
 }
 
 /**

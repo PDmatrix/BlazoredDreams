@@ -1,6 +1,7 @@
 import { Button, DatePicker, Input } from 'antd';
 import React, { useState } from 'react';
 import { DreamRequest } from '@/api';
+import { Moment } from 'moment';
 
 interface ICreateDream {
   createDream: (dreamRequest: DreamRequest) => Promise<void>;
@@ -11,17 +12,17 @@ const CreateDream: React.FC<ICreateDream> = ({ createDream }) => {
     setInput(e.currentTarget.value);
   };
 
-  const handleDateChange = ({}, dateString: string) => {
-    setInputDate(dateString);
+  const handleDateChange = (date: Moment) => {
+    setInputDate(date.toDate());
   };
 
   const handleClick = async () => {
     setInput('');
-    await createDream({ content: input });
+    await createDream({ content: input, date: inputDate });
   };
 
   const [input, setInput] = useState('');
-  const [inputDate, setInputDate] = useState('');
+  const [inputDate, setInputDate] = useState(new Date());
   return (
     <>
       <h3>Добавить сон:</h3>

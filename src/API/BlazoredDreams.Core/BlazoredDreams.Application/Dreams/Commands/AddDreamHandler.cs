@@ -1,7 +1,7 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using BlazoredDreams.Application.Interfaces;
-using BlazoredDreams.Application.Posts.Commands;
 using Dapper;
 using MediatR;
 
@@ -11,6 +11,7 @@ namespace BlazoredDreams.Application.Dreams.Commands
 	{
 		public string Content { get; set; }
 		public string UserId { get; set; }
+		public DateTime Date { get; set; }
 	}
 	
 	// ReSharper disable once UnusedMember.Global
@@ -27,8 +28,8 @@ namespace BlazoredDreams.Application.Dreams.Commands
 		{
 			const string sql =
 				@"
-				INSERT INTO dream (content, user_id)
-					VALUES (@content, @userId)
+				INSERT INTO dream (content, user_id, date)
+					VALUES (@content, @userId, @date)
 				RETURNING id
 				";
 			var postId = await _unitOfWork.Connection.QuerySingleOrDefaultAsync<int>(sql, request, _unitOfWork.Transaction);

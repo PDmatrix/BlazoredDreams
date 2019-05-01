@@ -1,12 +1,8 @@
 import { Button, Col, Row } from 'antd';
 import React from 'react';
-import Router from 'umi/router';
+import Link from 'umi/link';
 
 const Index: React.FunctionComponent = () => {
-  const handleClick = () => {
-    Router.push('/posts');
-  };
-
   return (
     <div>
       <Row>
@@ -21,8 +17,8 @@ const Index: React.FunctionComponent = () => {
       </Row>
       <Row>
         <Col span={12}>
-          <Button htmlType={'button'} onClick={handleClick}>
-            Перейти на страницу с постами
+          <Button htmlType={'button'}>
+            <Link to={'/posts'}>Перейти на страницу с постами</Link>
           </Button>
         </Col>
       </Row>

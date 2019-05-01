@@ -19,7 +19,6 @@ import {
   UsersApi,
 } from '@/api';
 import useNotification from '@/hooks/useNotification';
-import Router from 'umi/router';
 
 const User: React.FunctionComponent = () => {
   const auth = useAuth();

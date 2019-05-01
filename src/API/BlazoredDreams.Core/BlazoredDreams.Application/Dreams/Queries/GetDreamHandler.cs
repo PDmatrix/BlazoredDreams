@@ -30,7 +30,7 @@ namespace BlazoredDreams.Application.Dreams.Queries
 				    d.id,
 					iu.username,
 				    d.content,
-					to_char(d.created_at, 'YYYY.mm.dd') as date
+					to_char(d.date, 'YYYY.mm.dd') as date
 				FROM dream d
 					INNER JOIN identity_user iu on d.user_id = iu.identifier
 				WHERE d.id = @id

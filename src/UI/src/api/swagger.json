@@ -952,9 +952,16 @@
     "DreamRequest": {
       "type": "object",
       "additionalProperties": false,
+      "required": [
+        "date"
+      ],
       "properties": {
         "content": {
           "type": "string"
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time"
         }
       }
     },
