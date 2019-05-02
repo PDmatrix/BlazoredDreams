@@ -56,17 +56,21 @@ const User: React.FunctionComponent = () => {
     setUser(request.data);
   };
 
-  const upload = async (info: any) => {
+  const changeUserImage = async (info: any) => {
     if (info.file.status !== 'done') return;
     const formData = new FormData();
     formData.append('file', info.file.originFileObj);
-    await axios({
+    const response = await axios({
       method: 'post',
       url: `${BASE_PATH}/api/users/image`,
       data: formData,
       headers: { 'Content-Type': 'multipart/form-data', Authorization: auth.getAccessToken() },
     });
-    await getUser();
+    if (response.status === 401) auth.login();
+    else {
+      notification.success('Аватар изменен!');
+      await getUser();
+    }
   };
 
   useEffect(() => {
@@ -115,19 +119,15 @@ const User: React.FunctionComponent = () => {
 
   const props = {
     name: 'file',
-    onChange: upload,
+    onChange: changeUserImage,
     showUploadList: false,
   };
 
   return (
     <FetchWrapper isLoading={isLoading}>
       <BackTop />
-      <Upload {...props}>
-        <Button>
-          <Icon type="upload" /> Click to Upload
-        </Button>
-      </Upload>
       <UserInfo
+        changeUserImage={changeUserImage}
         avatar={user.avatar || ''}
         email={user.email || ''}
         username={user.username || ''}

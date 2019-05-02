@@ -108,6 +108,12 @@ export interface CommentDto {
    * @memberof CommentDto
    */
   userId?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CommentDto
+   */
+  avatar?: string;
 }
 
 /**

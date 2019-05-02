@@ -34,8 +34,9 @@ namespace BlazoredDreams.Application.Comments.Queries
 					c.id,
 					c.content,
 				    iu.username,
-					to_char(c.created_at, 'YYYY.mm.dd') as date,
-				    iu.identifier as user_id
+					c.created_at as date,
+				    iu.identifier as user_id,
+				    iu.avatar
 				FROM comment c
 					INNER JOIN identity_user iu on c.user_id = iu.identifier
 				WHERE post_id = @postId

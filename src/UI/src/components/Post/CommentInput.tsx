@@ -1,4 +1,4 @@
-import { Button, Input } from 'antd';
+import { Button, Input, Comment, Avatar } from 'antd';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { CommentRequest } from '@/api';
@@ -9,9 +9,10 @@ const StyledButton = styled(Button)`
 
 interface ICommentInput {
   addComment: (commentRequest: CommentRequest) => Promise<void>;
+  avatar: string;
 }
 
-const CommentInput: React.FC<ICommentInput> = ({ addComment }) => {
+const CommentInput: React.FC<ICommentInput> = ({ addComment, avatar }) => {
   const [input, setInput] = useState('');
   const handleChange = (e: any) => {
     setInput(e.currentTarget.value);
@@ -22,14 +23,21 @@ const CommentInput: React.FC<ICommentInput> = ({ addComment }) => {
   };
   return (
     <>
-      <Input.TextArea
-        autosize={{ minRows: 6, maxRows: 10 }}
-        onChange={handleChange}
-        value={input}
+      <Comment
+        avatar={<Avatar src={avatar} />}
+        content={
+          <div>
+            <Input.TextArea
+              autosize={{ minRows: 6, maxRows: 10 }}
+              onChange={handleChange}
+              value={input}
+            />
+            <StyledButton onClick={handleClick} htmlType={'button'} type="primary">
+              Добавить комментарий
+            </StyledButton>
+          </div>
+        }
       />
-      <StyledButton onClick={handleClick} htmlType={'button'} type="primary">
-        Добавить комментарий
-      </StyledButton>
     </>
   );
 };

@@ -1,4 +1,4 @@
-import { Button, Divider, Modal, Avatar } from 'antd';
+import { Button, Divider, Modal, Avatar, Upload, Tooltip } from 'antd';
 import React from 'react';
 import styles from './styles.css';
 import useAuth from '@/hooks/useAuth';
@@ -7,9 +7,10 @@ interface IUserInfoInterface {
   username: string;
   email: string;
   avatar: string;
+  changeUserImage: (info: any) => Promise<void>;
 }
 
-const UserInfo: React.FC<IUserInfoInterface> = ({ username, email, avatar }) => {
+const UserInfo: React.FC<IUserInfoInterface> = ({ username, email, avatar, changeUserImage }) => {
   const [modal, setModal] = React.useState(false);
   const auth = useAuth();
   const handleClick = () => {
@@ -19,10 +20,14 @@ const UserInfo: React.FC<IUserInfoInterface> = ({ username, email, avatar }) => 
   const handleModal = () => {
     setModal(!modal);
   };
-
   return (
     <>
-      <Avatar src={avatar} size={128} />
+      <Upload name="file" onChange={changeUserImage} showUploadList={false}>
+        <Tooltip placement={'right'} title="Кликните для изменения аватара">
+          <Avatar src={avatar} size={256} />
+        </Tooltip>
+      </Upload>
+
       <h4>Имя пользователя:</h4>
       <span className={styles.userData}>{username}</span>
       <h4>Электронная почта:</h4>

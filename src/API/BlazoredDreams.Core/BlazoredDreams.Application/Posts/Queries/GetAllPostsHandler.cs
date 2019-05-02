@@ -33,7 +33,7 @@ namespace BlazoredDreams.Application.Posts.Queries
 			  p.title,
 			  (SELECT COUNT(*) FROM comment c WHERE c.post_id = p.id) as comments,
 			  p.excerpt,
-			  to_char(p.created_at, 'YYYY.mm.dd') as date,
+			  p.created_at as date,
 			  COALESCE(string_agg(t.name, ', ') over (PARTITION BY p.id) , 'Без тега') as tag
 			FROM post p
 				   INNER JOIN identity_user iu on p.user_id = iu.identifier

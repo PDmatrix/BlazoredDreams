@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import Post from '@/components/Post/Post';
-import { CommentDto, CommentRequest, CommentsApi, PostDto, PostsApi } from '@/api';
+import {
+  CommentDto,
+  CommentRequest,
+  CommentsApi,
+  PostDto,
+  PostsApi,
+  UserDto,
+  UsersApi,
+} from '@/api';
 import FetchWrapper from '@/components/Shared/FetchWrapper';
 import CommentList from '@/components/Post/CommentList';
 import useNotification from '@/hooks/useNotification';
@@ -19,6 +27,12 @@ const PostEntry: React.FC<RouteComponentProps<{ id: string }>> = props => {
     title: 'title',
     username: 'username',
   });
+  const [user, setUser] = useState<UserDto>({
+    avatar: '',
+    username: '',
+    userId: '',
+    email: '',
+  });
   const [comments, setComments] = useState<CommentDto[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const fetchData = async (id: number) => {
@@ -33,6 +47,7 @@ const PostEntry: React.FC<RouteComponentProps<{ id: string }>> = props => {
   };
   useEffect(() => {
     fetchData(Number(props.match.params.id));
+    getUser();
   }, []);
 
   const addComment = async (commentRequest: CommentRequest) => {
@@ -56,6 +71,13 @@ const PostEntry: React.FC<RouteComponentProps<{ id: string }>> = props => {
     notification.success('Комментарий изменен');
   };
 
+  const getUser = async () => {
+    if (!auth.isAuthenticated()) return;
+    const api = new UsersApi({ apiKey: auth.getAccessToken() });
+    const request = await api.usersGetById();
+    setUser(request.data);
+  };
+
   return (
     <FetchWrapper isLoading={isLoading}>
       <Post post={post} />
@@ -64,6 +86,7 @@ const PostEntry: React.FC<RouteComponentProps<{ id: string }>> = props => {
         deleteComment={deleteComment}
         addComment={addComment}
         comments={comments}
+        avatar={user.avatar || ''}
       />
     </FetchWrapper>
   );

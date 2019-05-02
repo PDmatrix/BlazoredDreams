@@ -1092,6 +1092,9 @@
         },
         "userId": {
           "type": "string"
+        },
+        "avatar": {
+          "type": "string"
         }
       }
     },

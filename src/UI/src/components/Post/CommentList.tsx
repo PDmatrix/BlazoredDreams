@@ -12,6 +12,7 @@ interface ICommentList {
   addComment: (commentRequest: CommentRequest) => Promise<void>;
   deleteComment: (commentId: number) => Promise<void>;
   editComment: (commentId: number, commentRequest: CommentRequest) => Promise<void>;
+  avatar: string;
 }
 
 const CommentList: React.FC<ICommentList> = ({
@@ -19,26 +20,18 @@ const CommentList: React.FC<ICommentList> = ({
   addComment,
   deleteComment,
   editComment,
+  avatar,
 }) => {
   const auth = useAuth();
 
   const formattedComments = comments.map(comment => {
     return {
-      actions: [<span>Reply to</span>],
       author: comment.username,
-      avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+      avatar: comment.avatar,
       content: <p>{comment.content}</p>,
       datetime: (
-        <Tooltip
-          title={moment()
-            .subtract(1, 'days')
-            .format('YYYY-MM-DD HH:mm:ss')}
-        >
-          <span>
-            {moment()
-              .subtract(1, 'days')
-              .fromNow()}
-          </span>
+        <Tooltip title={moment(comment.date).format('YYYY-MM-DD HH:mm:ss')}>
+          <span>{moment(comment.date).fromNow()}</span>
         </Tooltip>
       ),
     };
@@ -46,29 +39,22 @@ const CommentList: React.FC<ICommentList> = ({
 
   return (
     <Segment>
-      <List
-        header={`${formattedComments.length} комментария`}
-        itemLayout="horizontal"
-        dataSource={formattedComments}
-        renderItem={item => (
-          <Comment
-            actions={item.actions}
-            author={item.author}
-            avatar={item.avatar}
-            content={item.content}
-            datetime={item.datetime}
-          />
-        )}
-      />
-      {/*      {comments.map(comment => (
-        <Comment
-          editComment={editComment}
-          deleteComment={deleteComment}
-          key={comment.id}
-          comment={comment}
+      {comments.length > 0 && (
+        <List
+          header={`${formattedComments.length} комментария`}
+          itemLayout="horizontal"
+          dataSource={formattedComments}
+          renderItem={item => (
+            <Comment
+              author={item.author}
+              avatar={item.avatar}
+              content={item.content}
+              datetime={item.datetime}
+            />
+          )}
         />
-      ))}*/}
-      {auth.isAuthenticated() && <CommentInput addComment={addComment} />}
+      )}
+      {auth.isAuthenticated() && <CommentInput avatar={avatar} addComment={addComment} />}
     </Segment>
   );
 };
