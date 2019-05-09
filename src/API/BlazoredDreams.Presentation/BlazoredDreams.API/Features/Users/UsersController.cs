@@ -48,7 +48,7 @@ namespace BlazoredDreams.API.Features.Users
         
         [Authorize]
         [HttpPost("image")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesDefaultResponseType]
         [Consumes("multipart/form-data")]
@@ -60,6 +60,7 @@ namespace BlazoredDreams.API.Features.Users
 		        FileName = file.FileName,
 		        UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
 	        });
+	        
 	        return NoContent();
         }
 	}
