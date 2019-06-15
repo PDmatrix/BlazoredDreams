@@ -1,20 +1,25 @@
-import { Divider, Tag, Tooltip } from 'antd';
+import { Divider, Tag, Tooltip, Typography } from 'antd';
 import React from 'react';
 import Link from 'umi/link';
 import CommentIcon from '../Shared/CommentIcon';
 import { Segment } from '../Shared/Segment';
-import { PostPreviewDto } from '@/api';
+import { PostPreviewDto, PostRequest } from '@/api';
 import moment from 'moment';
+import useAuth from '@/hooks/useAuth';
+
+const { Title, Paragraph } = Typography;
 
 interface IPostPreview {
   postPreview: PostPreviewDto;
+  editPost: (postId: number, postRequest: PostRequest) => Promise<void>;
 }
 
-const PostPreview: React.FC<IPostPreview> = ({ postPreview }) => {
+const PostPreview: React.FC<IPostPreview> = ({ postPreview, editPost }) => {
+  const auth = useAuth();
   return (
     <Segment>
       <Link to={`/posts/${postPreview.id}`}>
-        <h3>{postPreview.title}</h3>
+        <Title level={4}>{postPreview.title}</Title>
       </Link>
       <p>
         <Tooltip title={moment(postPreview.date).format('YYYY-MM-DD HH:mm:ss')}>
@@ -24,8 +29,20 @@ const PostPreview: React.FC<IPostPreview> = ({ postPreview }) => {
         пользователем {postPreview.username}
       </p>
       <Divider />
-      <p>{postPreview.excerpt}</p>
-      Теги: <Tag> {postPreview.tag}</Tag>
+      <Paragraph
+        {...postPreview.username === auth.getUserData().nickname && {
+          editable: {
+            onChange: value =>
+              editPost(postPreview.id, { title: postPreview.title, excerpt: value }),
+          },
+        }}
+      >
+        {postPreview.excerpt}
+      </Paragraph>
+      Теги:{' '}
+      {postPreview.tag.split(',').map((tag, idx) => {
+        return <Tag key={idx}>{tag}</Tag>;
+      })}
       <Divider />
       <Link to={`/posts/${postPreview.id}`}>
         <CommentIcon />

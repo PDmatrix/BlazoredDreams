@@ -8,7 +8,7 @@ namespace BlazoredDreams.API.Infrastructure
 {
 	public class CloudinaryService : ICloudinaryService
 	{
-		private Cloudinary _cloudinary;
+		private readonly Cloudinary _cloudinary;
 		
 		public CloudinaryService(string cloudinaryUrl)
 		{
@@ -21,7 +21,7 @@ namespace BlazoredDreams.API.Infrastructure
 			{
 				File = file
 			});
-			return response.Uri.ToString();
+			return response.SecureUri.ToString();
 		}
 	}
 }

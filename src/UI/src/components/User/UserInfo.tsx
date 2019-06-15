@@ -1,4 +1,4 @@
-import { Button, Divider, Modal, Avatar, Upload, Tooltip } from 'antd';
+import { Button, Divider, Modal, Avatar, Upload, Tooltip, Row, Col } from 'antd';
 import React from 'react';
 import styles from './styles.css';
 import useAuth from '@/hooks/useAuth';
@@ -27,7 +27,6 @@ const UserInfo: React.FC<IUserInfoInterface> = ({ username, email, avatar, chang
           <Avatar src={avatar} size={256} />
         </Tooltip>
       </Upload>
-
       <h4>Имя пользователя:</h4>
       <span className={styles.userData}>{username}</span>
       <h4>Электронная почта:</h4>

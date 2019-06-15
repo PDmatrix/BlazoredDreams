@@ -11,7 +11,6 @@ namespace BlazoredDreams.Application.Dreams.Commands
 	{
 		public int Id { get; set; }
 		public string Content { get; set; }
-		public DateTime Date { get; set; }
 	}
 	
 	// ReSharper disable once UnusedMember.Global
@@ -28,7 +27,7 @@ namespace BlazoredDreams.Application.Dreams.Commands
 		{
 			const string sql =
 				@"
-				UPDATE dream SET content = @content, date = @date
+				UPDATE dream SET content = @content
 				WHERE id = @id
 				";
 			await _unitOfWork.Connection.ExecuteAsync(sql, request, _unitOfWork.Transaction);

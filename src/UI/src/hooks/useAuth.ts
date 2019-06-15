@@ -62,6 +62,13 @@ const useAuth = () => {
   };
 
   return {
+    getUserData: (): any => {
+      const cookie = localStorage.getItem('id_token');
+      if (!cookie) {
+        return '';
+      }
+      return jwt_decode(cookie);
+    },
     getUserId: (): string => {
       const cookie = localStorage.getItem('id_token');
       if (!cookie) {

@@ -316,6 +316,12 @@ export interface PostDto {
   content?: string;
   /**
    *
+   * @type {string}
+   * @memberof PostDto
+   */
+  cover?: string;
+  /**
+   *
    * @type {number}
    * @memberof PostDto
    */
@@ -396,6 +402,12 @@ export interface PostRequest {
    * @memberof PostRequest
    */
   dreamId: number;
+  /**
+   *
+   * @type {string}
+   * @memberof PostRequest
+   */
+  tags?: string;
 }
 
 /**
@@ -1483,6 +1495,100 @@ export const PostsApiAxiosParamCreator = function(configuration?: Configuration)
   return {
     /**
      *
+     * @param {number} id
+     * @param {string} [contentType] Gets the raw Content-Type header of the uploaded file.
+     * @param {string} [contentDisposition] Gets the raw Content-Disposition header of the uploaded file.
+     * @param {any} [headers] Gets the header dictionary of the uploaded file.
+     * @param {number} [length] Gets the file length in bytes.
+     * @param {string} [name] Gets the form field name from the Content-Disposition header.
+     * @param {string} [fileName] Gets the file name from the Content-Disposition header.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    postsAddImageToPost(
+      id: number,
+      contentType?: string,
+      contentDisposition?: string,
+      headers?: any,
+      length?: number,
+      name?: string,
+      fileName?: string,
+      options: any = {},
+    ): RequestArgs {
+      // verify required parameter 'id' is not null or undefined
+      if (id === null || id === undefined) {
+        throw new RequiredError(
+          'id',
+          'Required parameter id was null or undefined when calling postsAddImageToPost.',
+        );
+      }
+      const localVarPath = `/api/Posts/{id}/image`.replace(
+        `{${'id'}}`,
+        encodeURIComponent(String(id)),
+      );
+      const localVarUrlObj = url.parse(localVarPath, true);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+      const localVarRequestOptions = Object.assign({ method: 'PUT' }, baseOptions, options);
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+      const localVarFormParams = new url.URLSearchParams();
+
+      // authentication JWT required
+      if (configuration && configuration.apiKey) {
+        const localVarApiKeyValue =
+          typeof configuration.apiKey === 'function'
+            ? configuration.apiKey('Authorization')
+            : configuration.apiKey;
+        localVarHeaderParameter['Authorization'] = localVarApiKeyValue;
+      }
+
+      if (contentType !== undefined) {
+        localVarFormParams.set('ContentType', contentType as any);
+      }
+
+      if (contentDisposition !== undefined) {
+        localVarFormParams.set('ContentDisposition', contentDisposition as any);
+      }
+
+      if (headers !== undefined) {
+        localVarFormParams.set('Headers', headers as any);
+      }
+
+      if (length !== undefined) {
+        localVarFormParams.set('Length', length as any);
+      }
+
+      if (name !== undefined) {
+        localVarFormParams.set('Name', name as any);
+      }
+
+      if (fileName !== undefined) {
+        localVarFormParams.set('FileName', fileName as any);
+      }
+
+      localVarHeaderParameter['Content-Type'] = 'application/x-www-form-urlencoded';
+
+      localVarUrlObj.query = Object.assign(
+        {},
+        localVarUrlObj.query,
+        localVarQueryParameter,
+        options.query,
+      );
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarRequestOptions.data = localVarFormParams.toString();
+
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
      * @param {PostRequest} postRequest
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1751,6 +1857,45 @@ export const PostsApiFp = function(configuration?: Configuration) {
   return {
     /**
      *
+     * @param {number} id
+     * @param {string} [contentType] Gets the raw Content-Type header of the uploaded file.
+     * @param {string} [contentDisposition] Gets the raw Content-Disposition header of the uploaded file.
+     * @param {any} [headers] Gets the header dictionary of the uploaded file.
+     * @param {number} [length] Gets the file length in bytes.
+     * @param {string} [name] Gets the form field name from the Content-Disposition header.
+     * @param {string} [fileName] Gets the file name from the Content-Disposition header.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    postsAddImageToPost(
+      id: number,
+      contentType?: string,
+      contentDisposition?: string,
+      headers?: any,
+      length?: number,
+      name?: string,
+      fileName?: string,
+      options?: any,
+    ): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<Response> {
+      const localVarAxiosArgs = PostsApiAxiosParamCreator(configuration).postsAddImageToPost(
+        id,
+        contentType,
+        contentDisposition,
+        headers,
+        length,
+        name,
+        fileName,
+        options,
+      );
+      return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+        const axiosRequestArgs = Object.assign(localVarAxiosArgs.options, {
+          url: basePath + localVarAxiosArgs.url,
+        });
+        return axios.request(axiosRequestArgs);
+      };
+    },
+    /**
+     *
      * @param {PostRequest} postRequest
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1863,6 +2008,39 @@ export const PostsApiFactory = function(
   return {
     /**
      *
+     * @param {number} id
+     * @param {string} [contentType] Gets the raw Content-Type header of the uploaded file.
+     * @param {string} [contentDisposition] Gets the raw Content-Disposition header of the uploaded file.
+     * @param {any} [headers] Gets the header dictionary of the uploaded file.
+     * @param {number} [length] Gets the file length in bytes.
+     * @param {string} [name] Gets the form field name from the Content-Disposition header.
+     * @param {string} [fileName] Gets the file name from the Content-Disposition header.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    postsAddImageToPost(
+      id: number,
+      contentType?: string,
+      contentDisposition?: string,
+      headers?: any,
+      length?: number,
+      name?: string,
+      fileName?: string,
+      options?: any,
+    ) {
+      return PostsApiFp(configuration).postsAddImageToPost(
+        id,
+        contentType,
+        contentDisposition,
+        headers,
+        length,
+        name,
+        fileName,
+        options,
+      )(axios, basePath);
+    },
+    /**
+     *
      * @param {PostRequest} postRequest
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1917,6 +2095,41 @@ export const PostsApiFactory = function(
  * @extends {BaseAPI}
  */
 export class PostsApi extends BaseAPI {
+  /**
+   *
+   * @param {number} id
+   * @param {string} [contentType] Gets the raw Content-Type header of the uploaded file.
+   * @param {string} [contentDisposition] Gets the raw Content-Disposition header of the uploaded file.
+   * @param {any} [headers] Gets the header dictionary of the uploaded file.
+   * @param {number} [length] Gets the file length in bytes.
+   * @param {string} [name] Gets the form field name from the Content-Disposition header.
+   * @param {string} [fileName] Gets the file name from the Content-Disposition header.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof PostsApi
+   */
+  public postsAddImageToPost(
+    id: number,
+    contentType?: string,
+    contentDisposition?: string,
+    headers?: any,
+    length?: number,
+    name?: string,
+    fileName?: string,
+    options?: any,
+  ) {
+    return PostsApiFp(this.configuration).postsAddImageToPost(
+      id,
+      contentType,
+      contentDisposition,
+      headers,
+      length,
+      name,
+      fileName,
+      options,
+    )(this.axios, this.basePath);
+  }
+
   /**
    *
    * @param {PostRequest} postRequest

@@ -85,7 +85,6 @@ namespace BlazoredDreams.API.Features.Dreams
 	        {
 		        Id = id,
 		        Content = dreamRequest.Content,
-		        Date = dreamRequest.Date
 	        };
 	        await Mediator.Send(updateDreamCommand);
 	        return NoContent();

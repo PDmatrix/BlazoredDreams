@@ -1,4 +1,3 @@
-using System;
 using CloudinaryDotNet;
 
 namespace BlazoredDreams.Application.Interfaces

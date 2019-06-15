@@ -2,6 +2,7 @@ import { Button, Input, Comment, Avatar } from 'antd';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { CommentRequest } from '@/api';
+import useNotification from '@/hooks/useNotification';
 
 const StyledButton = styled(Button)`
   margin-top: 10px;
@@ -13,13 +14,18 @@ interface ICommentInput {
 }
 
 const CommentInput: React.FC<ICommentInput> = ({ addComment, avatar }) => {
+  const notification = useNotification();
   const [input, setInput] = useState('');
   const handleChange = (e: any) => {
     setInput(e.currentTarget.value);
   };
   const handleClick = async () => {
-    setInput('');
-    await addComment({ content: input });
+    if (input) {
+      setInput('');
+      await addComment({ content: input });
+    } else {
+      notification.error('Не заполнены необходимые поля!');
+    }
   };
   return (
     <>

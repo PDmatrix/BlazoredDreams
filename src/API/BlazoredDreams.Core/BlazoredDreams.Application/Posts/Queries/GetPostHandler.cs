@@ -33,8 +33,9 @@ namespace BlazoredDreams.Application.Posts.Queries
 				p.title,
 				(SELECT COUNT(*) FROM comment c WHERE c.post_id = p.id) as comments,
 				p.created_at as date,
-				COALESCE(string_agg(t.name, ', ') over (PARTITION BY p.id) , 'Без тега') as tag,
-			    d.content   
+				COALESCE(string_agg(t.name, ',') over (PARTITION BY p.id) , 'Без тега') as tag,
+			    d.content,
+			    p.cover
 			FROM post p
 				INNER JOIN identity_user iu on p.user_id = iu.identifier
 				INNER JOIN dream d on d.id = p.dream_id

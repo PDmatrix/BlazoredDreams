@@ -1,23 +1,32 @@
-import { Button, Divider, Input, Modal } from 'antd';
+import { Button, Divider, Input, Modal, Popconfirm, Typography } from 'antd';
 import React, { useState } from 'react';
-import { DreamDto, PostRequest } from '@/api';
+import { DreamDto, DreamRequest, PostRequest } from '@/api';
+import useNotification from '@/hooks/useNotification';
+
+const { Title, Paragraph } = Typography;
 
 interface IDream {
   dream: DreamDto;
   deleteDream: (id: number) => Promise<void>;
   createPost: (postRequest: PostRequest) => Promise<void>;
+  editDream: (id: number, content: string) => Promise<void>;
 }
 
-const Dream: React.FC<IDream> = ({ dream, deleteDream, createPost }) => {
+const Dream: React.FC<IDream> = ({ dream, deleteDream, createPost, editDream }) => {
+  const notification = useNotification();
   const handleDelete = async () => {
     await deleteDream(dream.id);
   };
 
   const handlePublish = async () => {
-    setModal(false);
-    setExcerpt('');
-    setTitle('');
-    await createPost({ dreamId: dream.id, excerpt: except, title: title });
+    if (excerpt && title) {
+      setModal(false);
+      setExcerpt('');
+      setTitle('');
+      await createPost({ dreamId: dream.id, excerpt: excerpt, title: title, tags: tags });
+    } else {
+      notification.error('Не заполнены необходимые поля!');
+    }
   };
 
   const changeTitle = (e: any) => {
@@ -26,6 +35,10 @@ const Dream: React.FC<IDream> = ({ dream, deleteDream, createPost }) => {
 
   const changeExcerpt = (e: any) => {
     setExcerpt(e.currentTarget.value);
+  };
+
+  const changeTags = (e: any) => {
+    setTags(e.currentTarget.value);
   };
 
   const showModal = () => {
@@ -38,11 +51,14 @@ const Dream: React.FC<IDream> = ({ dream, deleteDream, createPost }) => {
 
   const [modal, setModal] = useState(false);
   const [title, setTitle] = useState('');
-  const [except, setExcerpt] = useState('');
+  const [excerpt, setExcerpt] = useState('');
+  const [tags, setTags] = useState('');
 
   return (
     <>
-      <h3>{dream.content}</h3>
+      <Paragraph editable={{ onChange: value => editDream(dream.id, value) }}>
+        {dream.content}
+      </Paragraph>
       <span>Дата: {dream.date}</span>
       <br />
       {!dream.isPublished && (
@@ -51,14 +67,21 @@ const Dream: React.FC<IDream> = ({ dream, deleteDream, createPost }) => {
             Опубликовать сон
           </Button>
           <Divider type={'vertical'} />
-          <Button onClick={handleDelete} type={'danger'} htmlType={'button'}>
-            Удалить сон
-          </Button>
+          <Popconfirm
+            title={'Вы действительно хотите удалить сон?'}
+            onConfirm={handleDelete}
+            okText={'Да'}
+            cancelText={'Нет'}
+          >
+            <Button type={'danger'} htmlType={'button'}>
+              Удалить сон
+            </Button>
+          </Popconfirm>
         </>
       )}
       <Divider />
       <Modal
-        title="Введите заголовок записи и краткое описание"
+        title="Введите заголовок записи, краткое описание, тэги"
         visible={modal}
         onOk={handlePublish}
         onCancel={hideModal}
@@ -69,6 +92,10 @@ const Dream: React.FC<IDream> = ({ dream, deleteDream, createPost }) => {
         <br />
         <p>Краткое описание:</p>
         <Input onKeyUp={changeExcerpt} />
+        <br />
+        <br />
+        <p>Тэги:</p>
+        <Input onKeyUp={changeTags} />
       </Modal>
     </>
   );

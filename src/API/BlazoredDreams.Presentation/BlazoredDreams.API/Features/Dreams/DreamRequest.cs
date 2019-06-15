@@ -15,7 +15,6 @@ namespace BlazoredDreams.API.Features.Dreams
 		public DreamRequestValidator()
 		{
 			RuleFor(r => r.Content).NotEmpty();
-			RuleFor(r => r.Date).NotEmpty();
 		}
 	}
 }

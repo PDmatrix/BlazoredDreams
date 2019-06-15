@@ -134,7 +134,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": ""
           },
           "401": {
@@ -356,6 +356,94 @@
               "$ref": "#/definitions/PostRequest"
             },
             "x-nullable": false
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "401": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          },
+          "default": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetails"
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Posts/{id}/image": {
+      "put": {
+        "tags": [
+          "Posts"
+        ],
+        "operationId": "Posts_AddImageToPost",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "ContentType",
+            "in": "formData",
+            "description": "Gets the raw Content-Type header of the uploaded file.",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "ContentDisposition",
+            "in": "formData",
+            "description": "Gets the raw Content-Disposition header of the uploaded file.",
+            "x-nullable": true
+          },
+          {
+            "type": "object",
+            "name": "Headers",
+            "in": "formData",
+            "description": "Gets the header dictionary of the uploaded file.",
+            "x-schema": {
+              "$ref": "#/definitions/IHeaderDictionary"
+            },
+            "x-nullable": true
+          },
+          {
+            "type": "integer",
+            "name": "Length",
+            "in": "formData",
+            "description": "Gets the file length in bytes.",
+            "format": "int64",
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "Name",
+            "in": "formData",
+            "description": "Gets the form field name from the Content-Disposition header.",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "FileName",
+            "in": "formData",
+            "description": "Gets the file name from the Content-Disposition header.",
+            "x-nullable": true
           }
         ],
         "responses": {
@@ -974,6 +1062,9 @@
         "content": {
           "type": "string"
         },
+        "cover": {
+          "type": "string"
+        },
         "comments": {
           "type": "integer",
           "format": "int32"
@@ -996,6 +1087,9 @@
         "dreamId": {
           "type": "integer",
           "format": "int32"
+        },
+        "tags": {
+          "type": "string"
         }
       }
     },

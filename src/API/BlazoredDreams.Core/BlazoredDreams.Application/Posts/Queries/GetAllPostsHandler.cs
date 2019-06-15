@@ -34,12 +34,13 @@ namespace BlazoredDreams.Application.Posts.Queries
 			  (SELECT COUNT(*) FROM comment c WHERE c.post_id = p.id) as comments,
 			  p.excerpt,
 			  p.created_at as date,
-			  COALESCE(string_agg(t.name, ', ') over (PARTITION BY p.id) , 'Без тега') as tag
+			  COALESCE(string_agg(t.name, ',') over (PARTITION BY p.id) , 'Без тега') as tag
 			FROM post p
 				   INNER JOIN identity_user iu on p.user_id = iu.identifier
 				   INNER JOIN dream d on d.id = p.dream_id
 				   LEFT JOIN post_tags pt on p.id = pt.post_id
 				   LEFT JOIN tag t on pt.tag_id = t.id
+			ORDER BY p.created_at desc
 			LIMIT @pageSize OFFSET @page
 			";
 			var sqlParam = new

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import Post from '@/components/Post/Post';
 import {
+  BASE_PATH,
   CommentDto,
   CommentRequest,
   CommentsApi,
@@ -14,6 +15,7 @@ import FetchWrapper from '@/components/Shared/FetchWrapper';
 import CommentList from '@/components/Post/CommentList';
 import useNotification from '@/hooks/useNotification';
 import useAuth from '@/hooks/useAuth';
+import axios from 'axios';
 
 const PostEntry: React.FC<RouteComponentProps<{ id: string }>> = props => {
   const auth = useAuth();
@@ -78,9 +80,28 @@ const PostEntry: React.FC<RouteComponentProps<{ id: string }>> = props => {
     setUser(request.data);
   };
 
+  const changeUserImage = (postId: number) => {
+    return async (info: any) => {
+      if (info.file.status !== 'done') return;
+      const formData = new FormData();
+      formData.append('file', info.file.originFileObj);
+      const response = await axios({
+        method: 'put',
+        url: `${BASE_PATH}/api/posts/${postId}/image`,
+        data: formData,
+        headers: { 'Content-Type': 'multipart/form-data', Authorization: auth.getAccessToken() },
+      });
+      if (response.status === 401) auth.login();
+      else {
+        notification.success('Обложка добавлена!');
+        await fetchData(Number(props.match.params.id));
+      }
+    };
+  };
+
   return (
     <FetchWrapper isLoading={isLoading}>
-      <Post post={post} />
+      <Post changeUserImage={changeUserImage} post={post} />
       <CommentList
         editComment={editComment}
         deleteComment={deleteComment}

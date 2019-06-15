@@ -1,9 +1,10 @@
 import React from 'react';
-import { PageOfPostPreviewDto } from '@/api';
+import { PageOfPostPreviewDto, PostRequest } from '@/api';
 import PostPreview from '@/components/Page/PostPreview';
 
 interface IPostList {
   posts: PageOfPostPreviewDto;
+  editPost: (postId: number, postRequest: PostRequest) => Promise<void>;
 }
 
 const PostList: React.FC<IPostList> = props => {
@@ -11,7 +12,7 @@ const PostList: React.FC<IPostList> = props => {
   return (
     <div>
       {props.posts.records.map(post => (
-        <PostPreview postPreview={post} key={post.id} />
+        <PostPreview editPost={props.editPost} postPreview={post} key={post.id} />
       ))}
     </div>
   );

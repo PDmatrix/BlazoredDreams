@@ -49,6 +49,7 @@ namespace BlazoredDreams.API.Features.Posts
 		        Title = postRequest.Title,
 		        Excerpt = postRequest.Excerpt,
 		        DreamId = postRequest.DreamId,
+		        Tags = postRequest.Tags.Split(','),
 		        UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
 	        };
 	        var createdPostId = await Mediator.Send(addPostCommand);
@@ -81,6 +82,24 @@ namespace BlazoredDreams.API.Features.Posts
 		        Excerpt = postRequest.Excerpt
 	        };
 	        await Mediator.Send(updatePostCommand);
+	        return NoContent();
+        }
+        
+        [Authorize]
+        [HttpPut("{id}/image")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesDefaultResponseType]
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult> AddImageToPost(int id, [FromForm] IFormFile file)
+        {
+	        var addImageToPostCommand = new AddImageToPostCommand
+	        {
+		        Id = id,
+		        FileName = file.FileName,
+		        FileStream = file.OpenReadStream()
+	        };
+	        await Mediator.Send(addImageToPostCommand);
 	        return NoContent();
         }
 	}

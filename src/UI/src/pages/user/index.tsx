@@ -94,6 +94,13 @@ const User: React.FunctionComponent = () => {
     notification.success('Сон удален');
   };
 
+  const editDream = async (id: number, content: string) => {
+    const api = new DreamsApi({ apiKey: auth.getAccessToken() });
+    await api.dreamsUpdate(id, { content });
+    await getDreams(1);
+    notification.success('Сон изменен');
+  };
+
   const createPost = async (postRequest: PostRequest) => {
     const api = new PostsApi({ apiKey: auth.getAccessToken() });
     await api.postsCreate(postRequest);
@@ -109,7 +116,12 @@ const User: React.FunctionComponent = () => {
         {dreams.records.length > 0 && (
           <>
             <h3>Список снов:</h3>
-            <DreamList createPost={createPost} deleteDream={deleteDream} dreams={dreams.records} />
+            <DreamList
+              editDream={editDream}
+              createPost={createPost}
+              deleteDream={deleteDream}
+              dreams={dreams.records}
+            />
             <Pagination onChange={changePage} current={page} total={dreams.totalPages * 10} />
           </>
         )}

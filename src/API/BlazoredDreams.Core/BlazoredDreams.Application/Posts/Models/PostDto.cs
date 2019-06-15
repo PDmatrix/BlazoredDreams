@@ -8,6 +8,7 @@ namespace BlazoredDreams.Application.Posts.Models
 		public string Date { get; set; }
 		public string Tag { get; set; }
 		public string Content { get; set; }
+		public string Cover { get; set; }
 		
 		public int Comments { get; set; }
 	}

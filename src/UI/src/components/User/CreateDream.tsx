@@ -2,12 +2,14 @@ import { Button, DatePicker, Input } from 'antd';
 import React, { useState } from 'react';
 import { DreamRequest } from '@/api';
 import { Moment } from 'moment';
+import useNotification from '@/hooks/useNotification';
 
 interface ICreateDream {
   createDream: (dreamRequest: DreamRequest) => Promise<void>;
 }
 
 const CreateDream: React.FC<ICreateDream> = ({ createDream }) => {
+  const notification = useNotification();
   const handleChange = (e: any) => {
     setInput(e.currentTarget.value);
   };
@@ -17,8 +19,12 @@ const CreateDream: React.FC<ICreateDream> = ({ createDream }) => {
   };
 
   const handleClick = async () => {
-    setInput('');
-    await createDream({ content: input, date: inputDate });
+    if (input && inputDate) {
+      setInput('');
+      await createDream({ content: input, date: inputDate });
+    } else {
+      notification.error('Не заполнены необходимые поля!');
+    }
   };
 
   const [input, setInput] = useState('');

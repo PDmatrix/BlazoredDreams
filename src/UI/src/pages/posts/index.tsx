@@ -1,10 +1,14 @@
 import { BackTop, Pagination, Spin } from 'antd';
 import React, { useState, useEffect } from 'react';
 import PostList from '../../components/Page/PostList';
-import { PostsApi, PageOfPostPreviewDto } from '@/api';
+import { PostsApi, PageOfPostPreviewDto, PostRequest } from '@/api';
 import FetchWrapper from '@/components/Shared/FetchWrapper';
+import useAuth from '@/hooks/useAuth';
+import useNotification from '@/hooks/useNotification';
 
 const Post: React.FC = () => {
+  const auth = useAuth();
+  const notification = useNotification();
   const [page, setPage] = useState(1);
   const [posts, setPosts] = useState<PageOfPostPreviewDto>({
     records: [],
@@ -27,6 +31,13 @@ const Post: React.FC = () => {
     setIsLoading(false);
   };
 
+  const editPost = async (postId: number, postRequest: PostRequest) => {
+    const api = new PostsApi({ apiKey: auth.getAccessToken() });
+    await api.postsUpdate(postId, postRequest);
+    await GetPosts(page);
+    notification.success('Пост изменен!');
+  };
+
   useEffect(() => {
     GetPosts(1);
   }, []);
@@ -34,7 +45,7 @@ const Post: React.FC = () => {
   return (
     <FetchWrapper isLoading={isLoading}>
       <BackTop />
-      <PostList posts={posts} />
+      <PostList editPost={editPost} posts={posts} />
       <Pagination onChange={changePage} current={page} total={posts.totalPages * 10} />
     </FetchWrapper>
   );

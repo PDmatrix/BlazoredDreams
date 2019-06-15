@@ -19,12 +19,7 @@
       <PackageReference Include="Dapper" Version="1.60.6" />
       <PackageReference Include="MediatR" Version="6.0.0" />
       <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="Microsoft.Extensions.Http, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
-        <HintPath>..\..\..\..\..\..\..\.nuget\packages\microsoft.extensions.http\2.2.0\lib\netstandard2.0\Microsoft.Extensions.Http.dll</HintPath>
-      </Reference>
+      <PackageReference Include="Microsoft.Extensions.Http" Version="2.2.0" />
     </ItemGroup>
 
 </Project>
