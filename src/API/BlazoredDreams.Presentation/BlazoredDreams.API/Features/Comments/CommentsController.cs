@@ -1,32 +1,28 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using BlazoredDreams.Application.Comments.Commands;
 using BlazoredDreams.Application.Comments.Models;
 using BlazoredDreams.Application.Comments.Queries;
-using BlazoredDreams.Application.Dreams.Commands;
-using BlazoredDreams.Application.Dreams.Models;
-using BlazoredDreams.Application.Dreams.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlazoredDreams.API.Features.Comments
 {
-	[Route("api/posts/{postId:int}/comment")]
-	public class CommentsController : BaseController
-	{
-		[HttpGet]
+    [Route("api/posts/{postId:int}/comment")]
+    public class CommentsController : BaseController
+    {
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesDefaultResponseType]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<IEnumerable<CommentDto>>> GetAll(int postId)
-		{
-			var res = await Mediator.Send(new GetAllCommentsQuery {PostId = postId});
-			return res.ToList();
-		}
-      
+        {
+	        var res = await Mediator.Send(new GetAllCommentsQuery {PostId = postId});
+	        return res.ToList();
+        }
+
         [Authorize]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -44,7 +40,7 @@ namespace BlazoredDreams.API.Features.Comments
 	        var createdCommentId = await Mediator.Send(addCommentCommand);
 	        return StatusCode(201, createdCommentId);
         }
-        
+
         [Authorize]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -55,7 +51,7 @@ namespace BlazoredDreams.API.Features.Comments
 	        await Mediator.Send(new DeleteCommentCommand {Id = id});
 	        return NoContent();
         }
-        
+
         [Authorize]
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -72,5 +68,5 @@ namespace BlazoredDreams.API.Features.Comments
 	        await Mediator.Send(updateCommentCommand);
 	        return NoContent();
         }
-	}
+    }
 }

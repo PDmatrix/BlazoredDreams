@@ -12,24 +12,24 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BlazoredDreams.API.Features.Dreams
 {
-	public class DreamsController : BaseController
-	{
-		[HttpGet]
+    public class DreamsController : BaseController
+    {
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesDefaultResponseType]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<Page<DreamDto>>> GetAll(int page = 1)
-		{
-			if (page < 1)
-				page = 1;
+        {
+	        if (page < 1)
+		        page = 1;
 
-			var getAllDreamsQuery = new GetAllDreamsQuery
-			{
-				Page = page,
-				UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
-			};
-			
-			return await Mediator.Send(getAllDreamsQuery);
-		}
+	        var getAllDreamsQuery = new GetAllDreamsQuery
+	        {
+		        Page = page,
+		        UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+	        };
+	        
+	        return await Mediator.Send(getAllDreamsQuery);
+        }
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -43,7 +43,7 @@ namespace BlazoredDreams.API.Features.Dreams
 	        
 	        return res;
         }
-        
+
         [Authorize]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -61,7 +61,7 @@ namespace BlazoredDreams.API.Features.Dreams
 	        var createdDreamId = await Mediator.Send(addDreamCommand);
 	        return CreatedAtAction(nameof(GetById), new {id = createdDreamId}, null);
         }
-        
+
         [Authorize]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -72,7 +72,7 @@ namespace BlazoredDreams.API.Features.Dreams
 	        await Mediator.Send(new DeleteDreamCommand {Id = id});
 	        return NoContent();
         }
-        
+
         [Authorize]
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -89,5 +89,5 @@ namespace BlazoredDreams.API.Features.Dreams
 	        await Mediator.Send(updateDreamCommand);
 	        return NoContent();
         }
-	}
+    }
 }

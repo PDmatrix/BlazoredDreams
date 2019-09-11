@@ -1,8 +1,6 @@
-using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using BlazoredDreams.Application.Comments.Commands;
 using BlazoredDreams.Application.Users.Commands;
 using BlazoredDreams.Application.Users.Models;
 using BlazoredDreams.Application.Users.Queries;
@@ -12,8 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BlazoredDreams.API.Features.Users
 {
-	public class UsersController : BaseController
-	{
+    public class UsersController : BaseController
+    {
         [Authorize]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -45,7 +43,7 @@ namespace BlazoredDreams.API.Features.Users
 	        };
 	        return await Mediator.Send(getUserQuery);
         }
-        
+
         [Authorize]
         [HttpPost("image")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -63,5 +61,5 @@ namespace BlazoredDreams.API.Features.Users
 	        
 	        return NoContent();
         }
-	}
+    }
 }

@@ -10,18 +10,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BlazoredDreams.API.Features.Posts
 {
-	public class PostsController : BaseController
-	{
-		[HttpGet]
+    public class PostsController : BaseController
+    {
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesDefaultResponseType]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<Page<PostPreviewDto>>> GetAll(int page = 1)
-		{
-			if (page < 1)
-				page = 1;
-			
-			return await Mediator.Send(new GetAllPostsQuery {Page = page});
-		}
+        {
+	        if (page < 1)
+		        page = 1;
+	        
+	        return await Mediator.Send(new GetAllPostsQuery {Page = page});
+        }
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -55,7 +55,7 @@ namespace BlazoredDreams.API.Features.Posts
 	        var createdPostId = await Mediator.Send(addPostCommand);
 	        return CreatedAtAction(nameof(GetById), new {id = createdPostId}, null);
         }
-        
+
         [Authorize]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -66,7 +66,7 @@ namespace BlazoredDreams.API.Features.Posts
 	        await Mediator.Send(new DeletePostCommand {Id = id});
 	        return NoContent();
         }
-        
+
         [Authorize]
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -84,7 +84,7 @@ namespace BlazoredDreams.API.Features.Posts
 	        await Mediator.Send(updatePostCommand);
 	        return NoContent();
         }
-        
+
         [Authorize]
         [HttpPut("{id}/image")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -102,5 +102,5 @@ namespace BlazoredDreams.API.Features.Posts
 	        await Mediator.Send(addImageToPostCommand);
 	        return NoContent();
         }
-	}
+    }
 }
